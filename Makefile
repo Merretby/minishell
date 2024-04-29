@@ -1,7 +1,7 @@
-NAME = so_long
+NAME = minishell
 CC = cc
 CFLAGS = -Wall -Werror -Wextra #-g -fsanitize=address
-CFILES = 
+CFILES = minishell.c
 RFLAGS = -lreadline
 
 OFILSE = $(CFILES:.c=.o)

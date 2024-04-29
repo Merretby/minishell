@@ -6,7 +6,7 @@
 #    By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/02 19:20:08 by mnachit           #+#    #+#              #
-#    Updated: 2023/11/19 16:20:38 by mnachit          ###   ########.fr        #
+#    Updated: 2024/04/29 15:38:09 by mnachit          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,31 +47,27 @@ SRC = ft_isalpha.c \
 	  ft_putchar_fd.c \
 	  ft_putstr_fd.c \
 	  ft_putendl_fd.c \
-	  ft_putnbr_fd.c
+	  ft_putnbr_fd.c \
+	  ft_lstadd_back.c \
+	  ft_lstadd_front.c \
+	  ft_lstclear.c \
+	  ft_lstdelone.c \
+	  ft_lstiter.c \
+	  ft_lstlast.c \
+	  ft_lstmap.c \
+	  ft_lstnew.c \
+	  ft_lstsize.c \
 
 OBJS = $(SRC:.c=.o)
 
-BSRCS = ft_lstadd_back.c \
-		ft_lstadd_front.c \
-		ft_lstclear.c \
-		ft_lstdelone.c \
-		ft_lstiter.c \
-		ft_lstlast.c \
-		ft_lstmap.c \
-		ft_lstnew.c \
-		ft_lstsize.c \
 		
-BOBJS = $(BSRCS:.c=.o)
 all : $(NAME)
 	
 $(NAME) : $(OBJS)
 	ar rc $(NAME) $(OBJS)
-
-bonus : $(NAME) $(BOBJS)
-	ar rc $(NAME) $(BOBJS)
 	
 clean:	
-	$(RM) $(OBJS) $(BOBJS)
+	$(RM) $(OBJS) 
 
 fclean:	clean
 	$(RM) $(NAME)
