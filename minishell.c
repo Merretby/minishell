@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/04/29 15:41:03 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/05/01 22:13:06 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,29 @@ void    ft_splitstring(char *str, t_list **words)
     }
 }
 
+void    ft_lexer(t_list *words)
+{
+    int i;
+
+    i = 0;
+    while (words)
+    {
+        ft_first_check(words, i);
+        words = words->next;
+        i++;
+    }
+}
+
 int main()
 {
     char    *str;
-    t_list  *words;
+    t_list  *words = NULL;
     str = readline("minishell > ");
     while (str)
     {
+        add_history(str);
         ft_splitstring(str, &words);
+        ft_lexer(words);
         str = readline("minishell > ");
     }
 }
