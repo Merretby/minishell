@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/02 14:40:39 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/05/03 15:28:34 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,36 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-typedef enum {
-	WORD = -1,
-	WHITE_SPACE = ' ',
-	NEW_LINE = '\n',
-	QOUTE = '\'',
-	DOUBLE_QUOTE = '\"',
-	ESCAPE = '\\',
-	ENV = '$',
-	PIPE_LINE = '|',
-	REDIR_IN = '<',
-	REDIR_OUT = '>',
+typedef struct s_lixer
+{
+	char	c;
+	size_t	i;
+	char	*content;
+} t_lexer;
 
-} TokenType;
-typedef struct Token {
-    TokenType type;
-    char *value;
-    int position;
-    struct token *next;
-} Token;
+typedef struct s_token
+{
+	enum
+	{
+		TOKEN_ID,           // a-zA-Z0-9
+		TOKEN_STRING,       //""
+		TOKEN_PIPE,         // | 
+		TOKEN_REDIR_IN,     // <
+		TOKEN_REDIR_OUT,    // >
+		TOKEN_REDIR_APPEND, // >>
+	} type;
+	char *value;
+} t_token;
 
-void    ft_first_check(t_list *words, int i);
+//lexter
+t_lexer *init_lexer(char *content);
+void	advance(t_lexer *lexer);
+void	skip_whitespace(t_lexer *lexer);
 
+//token
+t_token	*init_token(int type, char *value);
+t_token	*lexer_to_next_token(t_lexer *lexer);
+t_token	*advance_token(t_lexer *lexer, t_token *token);
+t_token	take_string(t_lexer *lexer);
+char	*get_the_string(t_lexer *lexer);
 #endif

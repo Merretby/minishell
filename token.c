@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/30 18:14:29 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/03 15:04:49 by moer-ret         ###   ########.fr       */
+/*   Created: 2024/05/03 14:38:13 by moer-ret          #+#    #+#             */
+/*   Updated: 2024/05/03 14:39:13 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-size_t	ft_strlen(const char *s)
+t_token *init_token(int type, char *value)
 {
-	size_t	i;
+	t_token *token;
 
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
+	token = malloc(sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token->type = type;
+	token->value = value;
+	return (token);
 }
