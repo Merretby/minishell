@@ -1,34 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   linkedlist.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/03 17:46:13 by moer-ret         ###   ########.fr       */
+/*   Created: 2024/05/03 17:32:13 by moer-ret          #+#    #+#             */
+/*   Updated: 2024/05/03 17:34:47 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main()
+t_token	*ft_lstlast1(t_token *lst)
 {
-	char    *str;
-	t_lexer  *words = NULL;
-	t_token  *token = NULL;
-	str = readline("minishell > ");
-	while (str)
+	if (!lst)
+		return (NULL);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
+}
+
+void	ft_lstadd_back1(t_token **lst, t_token *new)
+{
+	if (lst != NULL && new != NULL)
 	{
-		words = init_lexer(str);
-		token = lexer_to_next_token(words);
-		while (token)
+		if (*lst == NULL)
 		{
-			printf("type: %d, value: %s\n", token->type, token->value);
-			token = token->next;
+			*lst = new;
+			new->next = NULL;
 		}
-		add_history(str);
-		
-		str = readline("minishell > ");
+		else
+			ft_lstlast1(*lst)->next = new;
 	}
 }

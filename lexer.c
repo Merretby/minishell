@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 20:43:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/03 17:08:22 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:41:58 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,29 +90,36 @@ char	*get_the_word(t_lexer *lexer)
 
 t_token	*lexer_to_next_token(t_lexer *lexer)
 {
+	t_token *token = NULL;
 	while (lexer->c != '\0' && ft_strlen(lexer->content) > lexer->i)
 	{
 		if (lexer->c == ' ' || (lexer->c >= 9 && lexer->c <= 13))
 			skip_whitespace(lexer);
 		if (ft_isalnum(lexer->c))
-			return (advance_token(lexer, init_token(TOKEN_ID, get_the_word(lexer))));
+		ft_lstadd_back1(&token,advance_token(lexer, init_token(TOKEN_ID, get_the_word(lexer))));
 		else if (lexer->c == '"')
-			return (advance_token(lexer, init_token(TOKEN_STRING, get_the_string(lexer))));
+		ft_lstadd_back1(&token,advance_token(lexer, init_token(TOKEN_STRING, get_the_string(lexer))));
 		else if (lexer->c == '|')
-			return (advance_token(lexer, init_token(TOKEN_PIPE, "|")));
+		ft_lstadd_back1(&token,advance_token(lexer, init_token(TOKEN_PIPE, "|")));
 		else if (lexer->c == '>' && lexer->content[lexer->i + 1] == '>')
-			return (advance_token(lexer, init_token(TOKEN_REDIR_APPEND, ">>")));
+		{
+			ft_lstadd_back1(&token,advance_token(lexer, init_token(TOKEN_REDIR_APPEND, ">>")));
+			advance(lexer);
+		}
 		else if (lexer->c == '<' && lexer->content[lexer->i + 1] == '<')
-			return (advance_token(lexer, init_token(TOKEN_HEREDOC, "<<")));
+		{
+			ft_lstadd_back1(&token,advance_token(lexer, init_token(TOKEN_HEREDOC, "<<")));
+			advance(lexer);
+		}
 		else if (lexer->c == '<')
-			return (advance_token(lexer, init_token(TOKEN_REDIR_IN, "<")));
+		ft_lstadd_back1(&token,advance_token(lexer, init_token(TOKEN_REDIR_IN, "<")));
 		else if (lexer->c == '>')
-			return (advance_token(lexer, init_token(TOKEN_REDIR_OUT, ">")));
+		ft_lstadd_back1(&token,advance_token(lexer, init_token(TOKEN_REDIR_OUT, ">")));
 		else if (lexer->c == '&')
-			return (advance_token(lexer, init_token(TOKEN_AMPERSAND, "&")));
+		ft_lstadd_back1(&token,advance_token(lexer, init_token(TOKEN_AMPERSAND, "&")));
 		else if (lexer->c == '$')
-			return (advance_token(lexer, init_token(TOKEN_DOLLAR, "$")));
+		ft_lstadd_back1(&token,advance_token(lexer, init_token(TOKEN_DOLLAR, "$")));
 		
 	}
-	return (NULL);
+	return (token);
 }
