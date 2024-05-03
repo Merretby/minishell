@@ -3,32 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/03 17:46:13 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/03 19:45:49 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main()
+int	main(void)
 {
-	char    *str;
-	t_lexer  *words = NULL;
-	t_token  *token = NULL;
+	char	*str;
+	t_lexer	*words;
+	t_token	*token;
+
+	words = NULL;
+	token = NULL;
 	str = readline("minishell > ");
 	while (str)
 	{
 		words = init_lexer(str);
-		token = lexer_to_next_token(words);
+		lexer_to_next_token(words, &token);
 		while (token)
 		{
 			printf("type: %d, value: %s\n", token->type, token->value);
 			token = token->next;
 		}
 		add_history(str);
-		
 		str = readline("minishell > ");
 	}
 }
