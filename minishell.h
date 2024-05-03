@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/03 15:28:34 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:05:03 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,13 @@ typedef struct s_token
 		TOKEN_PIPE,         // | 
 		TOKEN_REDIR_IN,     // <
 		TOKEN_REDIR_OUT,    // >
+		TOKEN_DOLLAR,       // $
+		TOKEN_AMPERSAND,    // &
 		TOKEN_REDIR_APPEND, // >>
+		TOKEN_HEREDOC,      // <<
 	} type;
 	char *value;
+	struct s_token *next;
 } t_token;
 
 //lexter

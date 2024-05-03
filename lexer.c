@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 20:43:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/03 15:41:05 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:08:22 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,26 +44,6 @@ t_token	*advance_token(t_lexer *lexer, t_token *token)
 	advance(lexer);
 	return (token);
 }
-
-t_token	*lexer_to_next_token(t_lexer *lexer)
-{
-	while (lexer->c != '\0' && ft_strlen(lexer->content) > lexer->i)
-	{
-		if (lexer->c == ' ' || (lexer->c >= 9 && lexer->c <= 13))
-			skip_whitespace(lexer);
-		if (ft_isalnum(lexer->c))
-			return (advance_token(lexer, init_token(TOKEN_ID, lexer->content)));
-		else if (lexer->c == '"')
-			return (advance_token(lexer, init_token(TOKEN_STRING, get_the_string(lexer))));
-		else if (lexer->c == '|')
-			return (advance_token(lexer, init_token(TOKEN_PIPE, "|")));
-		else if (lexer->c == '<')
-			return (advance_token(lexer, init_token(TOKEN_REDIR_IN, "<")));
-		else if (lexer->c == '>')
-			return (advance_token(lexer, init_token(TOKEN_REDIR_OUT, ">")));
-	}
-	return (NULL);
-}
 char	*get_the_string(t_lexer *lexer)
 {
 	char	*str;
@@ -72,11 +52,67 @@ char	*get_the_string(t_lexer *lexer)
 	i = 0;
 	str = malloc(sizeof(char) * ft_strlen(lexer->content));
 	advance(lexer);
-	while (lexer->i != '"' && lexer->i != '\0')
+	while (lexer->c != '"' && lexer->c != '\0')
 	{
-		str[i] = lexer->i;
+		str[i] = lexer->c;
 		i++;
 		advance(lexer);
 	}
+	str[i] = '\0';
 	return (str);
+}
+
+char	*get_the_word(t_lexer *lexer)
+{
+	char *str;
+	int j;
+	t_lexer tmp;
+
+	tmp = *lexer;
+	j = 0;
+	while (ft_isalnum(tmp.c))
+	{
+		j++;
+		tmp.i++;
+		tmp.c = tmp.content[tmp.i];
+	}
+	str = malloc(sizeof(char) * (j + 1));
+	j = 0;
+	while (ft_isalnum(lexer->c))
+	{
+		str[j] = lexer->c;
+		j++;
+		advance(lexer);
+	}
+	str[j] = '\0';
+	return (str);
+}
+
+t_token	*lexer_to_next_token(t_lexer *lexer)
+{
+	while (lexer->c != '\0' && ft_strlen(lexer->content) > lexer->i)
+	{
+		if (lexer->c == ' ' || (lexer->c >= 9 && lexer->c <= 13))
+			skip_whitespace(lexer);
+		if (ft_isalnum(lexer->c))
+			return (advance_token(lexer, init_token(TOKEN_ID, get_the_word(lexer))));
+		else if (lexer->c == '"')
+			return (advance_token(lexer, init_token(TOKEN_STRING, get_the_string(lexer))));
+		else if (lexer->c == '|')
+			return (advance_token(lexer, init_token(TOKEN_PIPE, "|")));
+		else if (lexer->c == '>' && lexer->content[lexer->i + 1] == '>')
+			return (advance_token(lexer, init_token(TOKEN_REDIR_APPEND, ">>")));
+		else if (lexer->c == '<' && lexer->content[lexer->i + 1] == '<')
+			return (advance_token(lexer, init_token(TOKEN_HEREDOC, "<<")));
+		else if (lexer->c == '<')
+			return (advance_token(lexer, init_token(TOKEN_REDIR_IN, "<")));
+		else if (lexer->c == '>')
+			return (advance_token(lexer, init_token(TOKEN_REDIR_OUT, ">")));
+		else if (lexer->c == '&')
+			return (advance_token(lexer, init_token(TOKEN_AMPERSAND, "&")));
+		else if (lexer->c == '$')
+			return (advance_token(lexer, init_token(TOKEN_DOLLAR, "$")));
+		
+	}
+	return (NULL);
 }
