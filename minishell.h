@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/04 13:41:29 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/04 18:25:50 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ typedef	enum e_type
 	TOKEN_DOLLAR,       // $
 	TOKEN_REDIR_APPEND, // >>
 	TOKEN_HEREDOC,      // <<
+	TOKEN_OUTFILE,
+	TOKEN_FILE,
 } t_type;
 
 typedef struct s_token

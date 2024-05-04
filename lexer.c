@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 20:43:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/04 13:43:54 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/04 18:26:50 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@ char	*defin(int c)
 			return ("APPEND");
 		case TOKEN_HEREDOC:
 			return ("HEREDOC");
+		case TOKEN_OUTFILE:
+			return ("OUTFILE");
+		case TOKEN_FILE:
+			return ("FILE");
 		default:
 			return ("CMD");
 	}
@@ -78,15 +82,17 @@ char	*get_the_string(t_lexer *lexer, char c)
 	{
 		str[j++] = lexer->c;
 		advance(lexer);
+		// if (lexer->c == '\0')
+		// 	printf("minishell: syntax error near unexpected token `%c'\n", c);
 	}
 	str[j] = '\0';
 	return (str);
 }
 
 int	ft_check_alnum(char c)
-{
+{// 3la 9bal had lcase ls -al ... 5asa t3ti ls / -al
 	if (c == '$' || c == '|' || c == '>' || c == '<' || c == '"' \
-	|| c == '\0' || c == ' ' || (c >= 9 && c <= 13))
+	|| c == '\0' || c == ' ' || (c >= 9 && c <= 13) || c == '\'')
 		return (0);
 	return (1);
 }
