@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/04 11:19:04 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/04 13:41:29 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,21 @@ typedef struct s_lixer
 	char			*content;
 }					t_lexer;
 
+typedef	enum e_type
+{
+	TOKEN_ID,          // a-zA-Z0-9
+	TOKEN_STRING,       //"" ''
+	TOKEN_PIPE,         // |
+	TOKEN_REDIR_IN,     // <
+	TOKEN_REDIR_OUT,    // >
+	TOKEN_DOLLAR,       // $
+	TOKEN_REDIR_APPEND, // >>
+	TOKEN_HEREDOC,      // <<
+} t_type;
+
 typedef struct s_token
 {
-	enum
-	{
-		TOKEN_ID,           // a-zA-Z0-9
-		TOKEN_STRING,       //""
-		TOKEN_PIPE,         // |
-		TOKEN_REDIR_IN,     // <
-		TOKEN_REDIR_OUT,    // >
-		TOKEN_DOLLAR,       // $
-		TOKEN_REDIR_APPEND, // >>
-		TOKEN_HEREDOC,      // <<
-	} type;
+	t_type           type;
 	int 			flag;
 	char			*value;
 	struct s_token	*next;
@@ -57,6 +59,7 @@ char				*get_the_string(t_lexer *lexer, char c);
 t_token				*advance_token(t_lexer *lexer, t_token *token);
 void				skip_whitespace(t_lexer *lexer);
 void				advance(t_lexer *lexer);
+char				*defin(int c);
 
 // token
 t_token				*init_token(int type, char *value, char c);

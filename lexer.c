@@ -6,11 +6,35 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 20:43:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/04 11:23:06 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/04 13:43:54 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*defin(int c)
+{
+	switch(c)
+	{
+		case TOKEN_REDIR_OUT:
+			return ("REDIR_OUT");
+		case TOKEN_REDIR_IN:
+			return ("REDIR_IN");
+		case TOKEN_PIPE:
+			return ("PIPE");
+		case TOKEN_DOLLAR:
+			return ("DOLLAR");
+		case TOKEN_STRING:
+			return ("STRING");
+		case TOKEN_REDIR_APPEND:
+			return ("APPEND");
+		case TOKEN_HEREDOC:
+			return ("HEREDOC");
+		default:
+			return ("CMD");
+	}
+	return (NULL);
+}
 
 void	advance(t_lexer *lexer)
 {
