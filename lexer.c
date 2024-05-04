@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 20:43:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/04 18:26:50 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/04 19:18:23 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,28 @@
 
 char	*defin(int c)
 {
-	switch(c)
+	switch (c)
 	{
-		case TOKEN_REDIR_OUT:
-			return ("REDIR_OUT");
-		case TOKEN_REDIR_IN:
-			return ("REDIR_IN");
-		case TOKEN_PIPE:
-			return ("PIPE");
-		case TOKEN_DOLLAR:
-			return ("DOLLAR");
-		case TOKEN_STRING:
-			return ("STRING");
-		case TOKEN_REDIR_APPEND:
-			return ("APPEND");
-		case TOKEN_HEREDOC:
-			return ("HEREDOC");
-		case TOKEN_OUTFILE:
-			return ("OUTFILE");
-		case TOKEN_FILE:
-			return ("FILE");
-		default:
-			return ("CMD");
+	case TOKEN_REDIR_OUT:
+		return ("REDIR_OUT");
+	case TOKEN_REDIR_IN:
+		return ("REDIR_IN");
+	case TOKEN_PIPE:
+		return ("PIPE");
+	case TOKEN_DOLLAR:
+		return ("DOLLAR");
+	case TOKEN_STRING:
+		return ("STRING");
+	case TOKEN_REDIR_APPEND:
+		return ("APPEND");
+	case TOKEN_HEREDOC:
+		return ("HEREDOC");
+	case TOKEN_OUTFILE:
+		return ("OUTFILE");
+	case TOKEN_FILE:
+		return ("FILE");
+	default:
+		return ("CMD");
 	}
 	return (NULL);
 }
@@ -82,17 +82,21 @@ char	*get_the_string(t_lexer *lexer, char c)
 	{
 		str[j++] = lexer->c;
 		advance(lexer);
-		// if (lexer->c == '\0')
-		// 	printf("minishell: syntax error near unexpected token `%c'\n", c);
+		if (lexer->c == '\0')
+		{
+			printf("minishell: syntax error near unexpected token `%c'\n", c);
+			exit(258);
+		}
 	}
 	str[j] = '\0';
 	return (str);
 }
 
 int	ft_check_alnum(char c)
-{// 3la 9bal had lcase ls -al ... 5asa t3ti ls / -al
-	if (c == '$' || c == '|' || c == '>' || c == '<' || c == '"' \
-	|| c == '\0' || c == ' ' || (c >= 9 && c <= 13) || c == '\'')
+{
+	// 3la 9bal had lcase ls -al ... 5asa t3ti ls / -al
+	if (c == '$' || c == '|' || c == '>' || c == '<' || c == '"' || c == '\0'
+		|| c == ' ' || (c >= 9 && c <= 13) || c == '\'')
 		return (0);
 	return (1);
 }

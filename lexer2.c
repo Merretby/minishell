@@ -27,17 +27,17 @@ t_lexer	*init_lexer(char *content)
 
 static void	redirection_append(t_lexer **lexer, t_token **token)
 {
-	ft_lstadd_back1(token, advance_token(*lexer,
-			init_token(TOKEN_REDIR_APPEND, ">>", (*lexer)->c)));
+	ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_REDIR_APPEND,
+				">>", (*lexer)->c)));
 	advance(*lexer);
-	if ((*lexer)->c == ' ' || ((*lexer)->c >= 9 && (*lexer)->c<= 13))
-	skip_whitespace(*lexer);
+	if ((*lexer)->c == ' ' || ((*lexer)->c >= 9 && (*lexer)->c <= 13))
+		skip_whitespace(*lexer);
 	if ((*lexer)->c == ft_isalnum((*lexer)->c))
-	ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_OUTFILE,
-				get_the_word(*lexer), (*lexer)->c)));
+		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_OUTFILE,
+					get_the_word(*lexer), (*lexer)->c)));
 	else if ((*lexer)->c == '\'' || (*lexer)->c == '"')
-	ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_OUTFILE,
-				get_the_string(*lexer, (*lexer)->c), (*lexer)->c)));
+		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_OUTFILE,
+					get_the_string(*lexer, (*lexer)->c), (*lexer)->c)));
 }
 
 static void	redirection(t_lexer **lexer, t_token **token)
@@ -46,20 +46,22 @@ static void	redirection(t_lexer **lexer, t_token **token)
 	{
 		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_REDIR_OUT,
 					">", (*lexer)->c)));
-		if ((*lexer)->c == ' ' || ((*lexer)->c >= 9 && (*lexer)->c<= 13))
+		if ((*lexer)->c == ' ' || ((*lexer)->c >= 9 && (*lexer)->c <= 13))
 			skip_whitespace(*lexer);
 		if ((*lexer)->c == ft_isalnum((*lexer)->c))
-			ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_OUTFILE,
-						get_the_word(*lexer), (*lexer)->c)));
+			ft_lstadd_back1(token, advance_token(*lexer,
+					init_token(TOKEN_OUTFILE, get_the_word(*lexer),
+						(*lexer)->c)));
 		else if ((*lexer)->c == '\'' || (*lexer)->c == '"')
-			ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_OUTFILE,
-						get_the_string(*lexer, (*lexer)->c), (*lexer)->c)));
+			ft_lstadd_back1(token, advance_token(*lexer,
+					init_token(TOKEN_OUTFILE, get_the_string(*lexer,
+							(*lexer)->c), (*lexer)->c)));
 	}
 	else if ((*lexer)->c == '<')
 	{
 		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_REDIR_IN,
 					"<", (*lexer)->c)));
-		if ((*lexer)->c == ' ' || ((*lexer)->c >= 9 && (*lexer)->c<= 13))
+		if ((*lexer)->c == ' ' || ((*lexer)->c >= 9 && (*lexer)->c <= 13))
 			skip_whitespace(*lexer);
 		if ((*lexer)->c == ft_isalnum((*lexer)->c))
 			ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_FILE,
@@ -79,18 +81,20 @@ static void	lexer_to_next_token2(t_lexer **lexer, t_token **token)
 	{
 		if ((*lexer)->c == '\'')
 		{
-			ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_STRING,
-						get_the_string(*lexer, '\''), (*lexer)->c)));
+			ft_lstadd_back1(token, advance_token(*lexer,
+					init_token(TOKEN_STRING, get_the_string(*lexer, '\''),
+							(*lexer)->c)));
 		}
-		else if((*lexer)->c == '"')
+		else if ((*lexer)->c == '"')
 		{
-			ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_STRING,
-						get_the_string(*lexer, '"'), (*lexer)->c)));
-		} 
+			ft_lstadd_back1(token, advance_token(*lexer,
+					init_token(TOKEN_STRING, get_the_string(*lexer, '"'),
+						(*lexer)->c)));
+		}
 	}
 	else if ((*lexer)->c == '|')
-		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_PIPE,
-					"|", (*lexer)->c)));
+		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_PIPE, "|",
+					(*lexer)->c)));
 	else
 		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_ID,
 					get_the_word(*lexer), (*lexer)->c)));
