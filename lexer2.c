@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 19:02:49 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/03 19:48:35 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/05/04 09:50:19 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ static void	lexer_to_next_token2(t_lexer **lexer, t_token **token)
 		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_PIPE,
 					"|")));
 	else
-		advance(*lexer);
+		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_ID,
+					get_the_word(*lexer))));
 }
 
 void	lexer_to_next_token(t_lexer *lexer, t_token **token)
@@ -55,9 +56,6 @@ void	lexer_to_next_token(t_lexer *lexer, t_token **token)
 	{
 		if (lexer->c == ' ' || (lexer->c >= 9 && lexer->c <= 13))
 			skip_whitespace(lexer);
-		if (ft_isalnum(lexer->c))
-			ft_lstadd_back1(token, advance_token(lexer, init_token(TOKEN_ID,
-						get_the_word(lexer))));
 		else if (lexer->c == '>' && lexer->content[lexer->i + 1] == '>')
 		{
 			ft_lstadd_back1(token, advance_token(lexer,

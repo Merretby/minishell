@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 20:43:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/03 19:05:50 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/05/04 09:52:54 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,13 @@ char	*get_the_string(t_lexer *lexer)
 	return (str);
 }
 
+int	ft_check_alnum(char c)
+{
+	if (c == '$' || c == '|' || c == '>' || c == '<' || c == '&' || c == '"' || c == '\0' || c == ' ' || (c >= 9 && c <= 13))
+		return (0);
+	return (1);
+}
+
 char	*get_the_word(t_lexer *lexer)
 {
 	char	*str;
@@ -67,7 +74,7 @@ char	*get_the_word(t_lexer *lexer)
 	}
 	str = malloc(sizeof(char) * (j + 1));
 	j = 0;
-	while (ft_isalnum(lexer->c))
+	while (ft_check_alnum(lexer->c))
 	{
 		str[j] = lexer->c;
 		j++;
