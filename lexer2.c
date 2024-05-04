@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 19:02:49 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/04 09:50:19 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/05/04 10:59:40 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,24 @@ t_lexer	*init_lexer(char *content)
 
 static void	lexer_to_next_token2(t_lexer **lexer, t_token **token)
 {
-	if ((*lexer)->c == '<')
-		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_REDIR_IN,
-					"<")));
-	else if ((*lexer)->c == '>')
-		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_REDIR_OUT,
-					">")));
-	else if ((*lexer)->c == '&')
-		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_AMPERSAND,
-					"&")));
-	else if ((*lexer)->c == '$')
+	if ((*lexer)->c == '$')
 		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_DOLLAR,
 					"$")));
-	else if ((*lexer)->c == '"')
-		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_STRING,
-					get_the_string(*lexer))));
+	else if (((*lexer)->c == '"') || ((*lexer)->c == '\''))
+	{
+		if ((*lexer)->c == '"')
+		{
+			(*token)->flag = 0;
+			ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_STRING,
+						get_the_string(*lexer, '"'))));
+		}
+		else
+		{
+			(*token)->flag = 1;
+			ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_STRING,
+						get_the_string(*lexer, '\''))));
+		} 
+	}
 	else if ((*lexer)->c == '|')
 		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_PIPE,
 					"|")));
@@ -68,6 +71,12 @@ void	lexer_to_next_token(t_lexer *lexer, t_token **token)
 					init_token(TOKEN_HEREDOC, "<<")));
 			advance(lexer);
 		}
+		else if (lexer->c == '<')
+			ft_lstadd_back1(token, advance_token(lexer, init_token(TOKEN_REDIR_IN,
+						"<")));
+		else if (lexer->c == '>')
+			ft_lstadd_back1(token, advance_token(lexer, init_token(TOKEN_REDIR_OUT,
+						">")));
 		else
 			lexer_to_next_token2(&lexer, token);
 	}

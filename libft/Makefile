@@ -6,13 +6,13 @@
 #    By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/02 19:20:08 by mnachit           #+#    #+#              #
-#    Updated: 2024/05/03 15:07:53 by moer-ret         ###   ########.fr        #
+#    Updated: 2024/05/04 10:03:43 by moer-ret         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
 RM = rm -f
 SRC = ft_isalpha.c \
 	  ft_isdigit.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 20:43:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/04 09:52:54 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/05/04 10:59:09 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,27 +33,39 @@ t_token	*advance_token(t_lexer *lexer, t_token *token)
 	return (token);
 }
 
-char	*get_the_string(t_lexer *lexer)
+char	*get_the_string(t_lexer *lexer, char c)
 {
+	t_lexer	tmp;
 	char	*str;
-	size_t	i;
+	size_t	j;
 
-	i = 0;
-	str = malloc(sizeof(char) * ft_strlen(lexer->content));
-	advance(lexer);
-	while (lexer->c != '"' && lexer->c != '\0')
+	tmp = *lexer;
+	j = 0;
+	tmp.i++;
+	tmp.c = tmp.content[tmp.i];
+	while (tmp.c != c && tmp.c != '\0')
 	{
-		str[i] = lexer->c;
-		i++;
+		j++;
+		tmp.i++;
+		tmp.c = tmp.content[tmp.i];
+	}
+	str = malloc(sizeof(char) * (j + 1));
+	advance(lexer);
+	j = 0;
+	while (lexer->c != c && lexer->c != '\0')
+	{
+		str[j] = lexer->c;
+		j++;
 		advance(lexer);
 	}
-	str[i] = '\0';
+	str[j] = '\0';
 	return (str);
 }
 
 int	ft_check_alnum(char c)
 {
-	if (c == '$' || c == '|' || c == '>' || c == '<' || c == '&' || c == '"' || c == '\0' || c == ' ' || (c >= 9 && c <= 13))
+	if (c == '$' || c == '|' || c == '>' || c == '<' || c == '"' \
+	|| c == '\0' || c == ' ' || (c >= 9 && c <= 13))
 		return (0);
 	return (1);
 }
@@ -66,7 +78,7 @@ char	*get_the_word(t_lexer *lexer)
 
 	tmp = *lexer;
 	j = 0;
-	while (ft_isalnum(tmp.c))
+	while (ft_check_alnum(tmp.c))
 	{
 		j++;
 		tmp.i++;
@@ -78,7 +90,7 @@ char	*get_the_word(t_lexer *lexer)
 	{
 		str[j] = lexer->c;
 		j++;
-		if (!ft_isalnum(lexer->content[lexer->i + 1]))
+		if (!ft_check_alnum(lexer->content[lexer->i + 1]))
 			break ;
 		advance(lexer);
 	}
