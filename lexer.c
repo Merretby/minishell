@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 20:43:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/04 10:59:09 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/04 11:23:06 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,18 @@ char	*get_the_string(t_lexer *lexer, char c)
 
 	tmp = *lexer;
 	j = 0;
-	tmp.i++;
-	tmp.c = tmp.content[tmp.i];
+	tmp.c = tmp.content[++tmp.i];
 	while (tmp.c != c && tmp.c != '\0')
 	{
 		j++;
-		tmp.i++;
-		tmp.c = tmp.content[tmp.i];
+		tmp.c = tmp.content[tmp.i++];
 	}
 	str = malloc(sizeof(char) * (j + 1));
 	advance(lexer);
 	j = 0;
 	while (lexer->c != c && lexer->c != '\0')
 	{
-		str[j] = lexer->c;
-		j++;
+		str[j++] = lexer->c;
 		advance(lexer);
 	}
 	str[j] = '\0';

@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/04 10:56:00 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/04 11:19:04 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ typedef struct s_token
 		TOKEN_REDIR_APPEND, // >>
 		TOKEN_HEREDOC,      // <<
 	} type;
-	size_t 			flag;
+	int 			flag;
 	char			*value;
 	struct s_token	*next;
 }					t_token;
@@ -59,10 +59,10 @@ void				skip_whitespace(t_lexer *lexer);
 void				advance(t_lexer *lexer);
 
 // token
-t_token				*init_token(int type, char *value);
+t_token				*init_token(int type, char *value, char c);
 void				lexer_to_next_token(t_lexer *lexer, t_token **token);
 t_token				*advance_token(t_lexer *lexer, t_token *token);
-t_token				take_string(t_lexer *lexer);
+// t_token				take_string(t_lexer *lexer);
 
 // linkedlist
 t_token				*ft_lstlast1(t_token *lst);

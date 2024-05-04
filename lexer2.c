@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 19:02:49 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/04 10:59:40 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/04 11:22:15 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,28 +29,26 @@ static void	lexer_to_next_token2(t_lexer **lexer, t_token **token)
 {
 	if ((*lexer)->c == '$')
 		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_DOLLAR,
-					"$")));
+					"$", (*lexer)->c)));
 	else if (((*lexer)->c == '"') || ((*lexer)->c == '\''))
 	{
 		if ((*lexer)->c == '"')
 		{
-			(*token)->flag = 0;
 			ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_STRING,
-						get_the_string(*lexer, '"'))));
+						get_the_string(*lexer, '"'), (*lexer)->c)));
 		}
 		else
 		{
-			(*token)->flag = 1;
 			ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_STRING,
-						get_the_string(*lexer, '\''))));
+						get_the_string(*lexer, '\''), (*lexer)->c)));
 		} 
 	}
 	else if ((*lexer)->c == '|')
 		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_PIPE,
-					"|")));
+					"|", (*lexer)->c)));
 	else
 		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_ID,
-					get_the_word(*lexer))));
+					get_the_word(*lexer), (*lexer)->c)));
 }
 
 void	lexer_to_next_token(t_lexer *lexer, t_token **token)
@@ -62,21 +60,21 @@ void	lexer_to_next_token(t_lexer *lexer, t_token **token)
 		else if (lexer->c == '>' && lexer->content[lexer->i + 1] == '>')
 		{
 			ft_lstadd_back1(token, advance_token(lexer,
-					init_token(TOKEN_REDIR_APPEND, ">>")));
+					init_token(TOKEN_REDIR_APPEND, ">>", lexer->c)));
 			advance(lexer);
 		}
 		else if (lexer->c == '<' && lexer->content[lexer->i + 1] == '<')
 		{
 			ft_lstadd_back1(token, advance_token(lexer,
-					init_token(TOKEN_HEREDOC, "<<")));
+					init_token(TOKEN_HEREDOC, "<<", lexer->c)));
 			advance(lexer);
 		}
 		else if (lexer->c == '<')
 			ft_lstadd_back1(token, advance_token(lexer, init_token(TOKEN_REDIR_IN,
-						"<")));
+						"<", lexer->c)));
 		else if (lexer->c == '>')
 			ft_lstadd_back1(token, advance_token(lexer, init_token(TOKEN_REDIR_OUT,
-						">")));
+						">", lexer->c)));
 		else
 			lexer_to_next_token2(&lexer, token);
 	}
