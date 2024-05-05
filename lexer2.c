@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 19:02:49 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/04 18:52:49 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/05 15:59:19 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,20 @@ static void	redirection_append(t_lexer **lexer, t_token **token)
 					get_the_string(*lexer, (*lexer)->c), (*lexer)->c)));
 }
 
+static void	redirection2(t_lexer **lexer, t_token **token)
+{
+	ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_REDIR_IN, "<",
+				(*lexer)->c)));
+	if ((*lexer)->c == ' ' || ((*lexer)->c >= 9 && (*lexer)->c <= 13))
+		skip_whitespace(*lexer);
+	if ((*lexer)->c == ft_isalnum((*lexer)->c))
+		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_FILE,
+					get_the_word(*lexer), (*lexer)->c)));
+	else if ((*lexer)->c == '\'' || (*lexer)->c == '"')
+		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_FILE,
+					get_the_string(*lexer, (*lexer)->c), (*lexer)->c)));
+}
+
 static void	redirection(t_lexer **lexer, t_token **token)
 {
 	if ((*lexer)->c == '>')
@@ -58,18 +72,7 @@ static void	redirection(t_lexer **lexer, t_token **token)
 							(*lexer)->c), (*lexer)->c)));
 	}
 	else if ((*lexer)->c == '<')
-	{
-		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_REDIR_IN,
-					"<", (*lexer)->c)));
-		if ((*lexer)->c == ' ' || ((*lexer)->c >= 9 && (*lexer)->c <= 13))
-			skip_whitespace(*lexer);
-		if ((*lexer)->c == ft_isalnum((*lexer)->c))
-			ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_FILE,
-						get_the_word(*lexer), (*lexer)->c)));
-		else if ((*lexer)->c == '\'' || (*lexer)->c == '"')
-			ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_FILE,
-						get_the_string(*lexer, (*lexer)->c), (*lexer)->c)));
-	}
+		redirection2(lexer, token);
 }
 
 static void	lexer_to_next_token2(t_lexer **lexer, t_token **token)
@@ -83,7 +86,7 @@ static void	lexer_to_next_token2(t_lexer **lexer, t_token **token)
 		{
 			ft_lstadd_back1(token, advance_token(*lexer,
 					init_token(TOKEN_STRING, get_the_string(*lexer, '\''),
-							(*lexer)->c)));
+						(*lexer)->c)));
 		}
 		else if ((*lexer)->c == '"')
 		{

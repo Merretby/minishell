@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/05 13:38:11 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/05 15:46:20 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,9 @@ void				ft_lstadd_back1(t_token **lst, t_token *new);
 //env
 void				take_env(char **env);
 // void				print_env(t_env *env);
+
+// parsing
+void				parsing(t_token *token);
+void				ft_free(t_token **token, t_lexer **lexer);
 
 #endif

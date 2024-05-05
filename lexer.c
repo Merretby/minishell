@@ -85,7 +85,7 @@ char	*get_the_string(t_lexer *lexer, char c)
 		// if (lexer->c == '\0')
 		// {
 		// 	printf("minishell: syntax error near unexpected token `%c'\n", c);
-		// 	break;
+		// 	break ;
 		// }
 	}
 	str[j] = '\0';
