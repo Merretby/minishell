@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 20:43:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/04 19:18:23 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/05 11:51:40 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,11 @@ char	*get_the_string(t_lexer *lexer, char c)
 	{
 		str[j++] = lexer->c;
 		advance(lexer);
-		if (lexer->c == '\0')
-		{
-			printf("minishell: syntax error near unexpected token `%c'\n", c);
-			exit(258);
-		}
+		// if (lexer->c == '\0')
+		// {
+		// 	printf("minishell: syntax error near unexpected token `%c'\n", c);
+		// 	break;
+		// }
 	}
 	str[j] = '\0';
 	return (str);

@@ -6,14 +6,16 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/04 19:11:52 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/05 13:36:02 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(void)
+int	main(int ac, char **av, char **env)
 {
+	(void)ac;
+	(void)av;
 	char	*str;
 	t_lexer	*lexer;
 	t_token	*token;
@@ -23,6 +25,8 @@ int	main(void)
 	str = readline("minishell > ");
 	while (str)
 	{
+		if (ft_strncmp(str, "env", 3) == 0)	
+			take_env(env);
 		lexer = init_lexer(str);
 		lexer_to_next_token(lexer, &token);
 		while (token)
