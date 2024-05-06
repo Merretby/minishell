@@ -2,7 +2,7 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -g -fsanitize=address
 CFILES = minishell.c lexer.c token.c linkedlist.c lexer2.c environment.c \
-	parsing.c free.c
+	parsing.c free.c init.c 
 RFLAGS = -lreadline
 
 OFILSE = $(CFILES:.c=.o)

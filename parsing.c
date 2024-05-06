@@ -3,18 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/05 15:00:52 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/05/06 16:58:27 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void parsing(t_token *token)
+void	join_cmd(t_token *token)
 {
-    if (token && ft_strncmp("CMD", defin(token->type), 3) &&
-        ft_strncmp("STRING", defin(token->type), 6) )
-        printf("bash: syntax error near unexpected token `%s'\n", token->value);
+	t_cmd *cmd;
+	char *tmp;
+
+	cmd = init_cmd(token->value);
+	token = token->next;
+	while (token  && (token->type == TOKEN_ID || token->type == TOKEN_STRING))
+	{
+		cmd->cmd = ft_strjoin(cmd->cmd, " ");
+		tmp = cmd->cmd;
+		if (token)
+		{
+			cmd->cmd = ft_strjoin(tmp, token->value);
+			free(tmp);
+		}
+		token = token->next;
+	}
+	printf("%s\n", cmd->cmd);
 }
+
+// void	print_cmd(t_cmd *cmd)
+// {
+// 	while (cmd)
+// 	{
+// 		printf("%s\n", cmd->cmd);
+// 		cmd = cmd->next;
+// 	}
+// }
