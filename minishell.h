@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/06 18:14:22 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/07 12:26:01 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,19 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
-// typedef struct s_pipe
-// {
-// 	t_cmd			*cmd;
-// 	struct s_pipe	*next;
-// }					t_pipe;
+typedef struct s_pipe
+{
+	t_cmd			*cmd;
+	struct s_pipe	*next;
+}					t_pipe;
 
-// typedef struct s_redir
-// {
-// 	t_pipe			*pipe;
-// 	// char *file;
-// 	// char *type;
-// 	struct s_redir	*next;
-// }					t_redir;
+typedef struct s_redir
+{
+	t_pipe			*pipe;
+	// char *file;
+	// char *type;
+	struct s_redir	*next;
+}					t_redir;
 
 typedef struct s_env
 {

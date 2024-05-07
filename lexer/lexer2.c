@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/03 19:02:49 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/06 13:52:04 by moer-ret         ###   ########.fr       */
+/*   Created: 2024/05/06 13:52:04 by moer-ret          #+#    #+#             */
+/*   Updated: 2024/05/07 12:28:12 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 t_lexer	*init_lexer(char *content)
 {

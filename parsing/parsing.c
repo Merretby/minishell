@@ -6,11 +6,11 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/06 16:58:27 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/07 12:52:51 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	join_cmd(t_token *token)
 {
@@ -19,7 +19,7 @@ void	join_cmd(t_token *token)
 
 	cmd = init_cmd(token->value);
 	token = token->next;
-	while (token  && (token->type == TOKEN_ID || token->type == TOKEN_STRING))
+	while (token  && token->type != TOKEN_PIPE)
 	{
 		cmd->cmd = ft_strjoin(cmd->cmd, " ");
 		tmp = cmd->cmd;
