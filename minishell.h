@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/07 12:26:01 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/07 14:56:39 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,8 @@ t_cmd				*init_cmd(char *cmd);
 t_tree				*init_tree(char *cmd);
 
 // parsing
-void				join_cmd(t_token *token);
+char				*join_cmd(t_token *token);
+t_tree				*create_tree(t_token *token);
 void				ft_free(t_token **token, t_lexer **lexer);
 
 #endif

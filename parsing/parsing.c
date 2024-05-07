@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/07 12:52:51 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/07 16:14:40 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	join_cmd(t_token *token)
+char 	*join_cmd(t_token *token)
 {
 	t_cmd *cmd;
 	char *tmp;
@@ -30,8 +30,61 @@ void	join_cmd(t_token *token)
 		}
 		token = token->next;
 	}
-	printf("%s\n", cmd->cmd);
+	return (cmd->cmd);
 }
+int check_pipe(t_token *token)
+{
+	int i;
+
+	i = 0;
+	while (token)
+	{
+		if (token->type == TOKEN_PIPE)
+			i++;
+		token = token->next;
+	}
+	return (i);
+}
+void	print_tree(t_tree *tree)
+{
+	if (tree)
+	{
+		//printf("cmd: %s\n", tree->cmd);
+		print_tree(tree->left);
+		print_tree(tree->right);
+	}
+}
+t_tree			*create_tree(t_token *token)
+{ 
+	t_tree *head = NULL;
+	t_tree	*tmp = NULL;
+	int		i;
+
+	i = check_pipe(token);
+	if (check_pipe(token))
+		head = init_tree("|");
+	else
+		head = init_tree(join_cmd(token));
+	i--;	
+	tmp = head; 
+	while (token)
+	{
+		if (token->type == TOKEN_ID)
+			tmp->left = init_tree(join_cmd(token));
+		else if (token->type == TOKEN_PIPE && i > 0)
+		 {
+			tmp->right = init_tree("|");
+			i--;
+			tmp = tmp->right;
+		}
+		else 
+			tmp->right = init_tree(join_cmd(token));
+		token = token->next;
+	}
+	// print_tree(head);
+	return (head);
+}
+
 
 // void	print_cmd(t_cmd *cmd)
 // {
