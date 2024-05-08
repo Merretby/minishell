@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linkedlist.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 17:32:13 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/03 18:56:01 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/05/08 14:57:03 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,21 @@ t_token	*ft_lstlast1(t_token *lst)
 
 void	ft_lstadd_back1(t_token **lst, t_token *new)
 {
+	t_token *tmp;
+
 	if (lst != NULL && new != NULL)
 	{
 		if (*lst == NULL)
 		{
 			*lst = new;
 			new->next = NULL;
+			new->prev = NULL;
 		}
 		else
+		{
+			tmp = ft_lstlast1(*lst);
 			ft_lstlast1(*lst)->next = new;
+			new->prev = tmp;
+		}
 	}
 }

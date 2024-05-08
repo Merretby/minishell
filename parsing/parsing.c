@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/07 16:14:40 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/05/08 17:05:15 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char 	*join_cmd(t_token *token)
 	t_cmd *cmd;
 	char *tmp;
 
+	if (!token)
+		return (NULL);
 	cmd = init_cmd(token->value);
 	token = token->next;
 	while (token  && token->type != TOKEN_PIPE)
@@ -49,39 +51,55 @@ void	print_tree(t_tree *tree)
 {
 	if (tree)
 	{
-		//printf("cmd: %s\n", tree->cmd);
+		printf("cmd: %s\n", tree->cmd);
+		// printf("right: %s\n", tree->right->cmd);
+		// printf("left: %s\n", tree->left->cmd);
 		print_tree(tree->left);
 		print_tree(tree->right);
 	}
 }
+
 t_tree			*create_tree(t_token *token)
-{ 
+{
 	t_tree *head = NULL;
 	t_tree	*tmp = NULL;
 	int		i;
 
 	i = check_pipe(token);
-	if (check_pipe(token))
+	if (i == 1)
+	{
+		head = init_tree("|");
+		head->left = init_tree(join_cmd(token));
+		while (token->type != TOKEN_PIPE)
+			token = token->next;
+		head->right = init_tree(join_cmd(token->next));
+		print_tree(head);
+		return (head);
+	}
+	else if (i > 1)
 		head = init_tree("|");
 	else
 		head = init_tree(join_cmd(token));
-	i--;	
-	tmp = head; 
+	i--;
+	tmp = head;
 	while (token)
 	{
-		if (token->type == TOKEN_ID)
+		if (token->type == TOKEN_ID && i == 0)
+		{
+			tmp->right = init_tree(join_cmd(token));
+			tmp->left = init_tree(join_cmd(token->prev->prev));
+		}
+		else if (token->type == TOKEN_ID)
 			tmp->left = init_tree(join_cmd(token));
 		else if (token->type == TOKEN_PIPE && i > 0)
 		 {
 			tmp->right = init_tree("|");
-			i--;
 			tmp = tmp->right;
+			i--;
 		}
-		else 
-			tmp->right = init_tree(join_cmd(token));
 		token = token->next;
 	}
-	// print_tree(head);
+	print_tree(head);
 	return (head);
 }
 
