@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/09 20:09:48 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/09 21:29:47 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ char 	*join_cmd(t_token *token)
 		return (NULL);
 	cmd = init_cmd(token->value);
 	token = token->next;
+
 	while (token  && token->type != TOKEN_PIPE)
 	{
 		if (token->prev->helper_flag == 1 || token->prev->helper_flag == 0)
@@ -100,15 +101,15 @@ t_tree			*create_tree(t_token *token)
 	tmp = head;
 	while (token)
 	{
-		if (token->type == TOKEN_ID && i == 0)
+		if (i == 0)
 		{
 			tmp->left = init_tree(join_cmd(token));
-			while (token->type != TOKEN_PIPE)
-				token = token->next;
+			while (token && token->type != TOKEN_PIPE)
+				token = token->next; 
 			tmp->right = init_tree(join_cmd(token->next));
 			break ;
 		}
-		else if (token->type == TOKEN_ID)
+		else if (token->type == TOKEN_ID || token->type == TOKEN_REDIR_IN || token->type == TOKEN_REDIR_OUT)
 		{
 			tmp->left = init_tree(join_cmd(token));
 			while (token->next->type != TOKEN_PIPE)
