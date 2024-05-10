@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/09 21:29:47 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/09 22:11:26 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ void	print_tree(t_tree *tree)
 	}
 }
 
-
-void print_tokens(t_token *token)
+void	print_tokens(t_token *token)
 {
 	while (token)
 	{
@@ -33,25 +32,44 @@ void print_tokens(t_token *token)
 		token = token->next;
 	}
 }
-
+int  check_erro(t_tree *tree)
+{
+	while (tree)
+	{
+		if (ft_strncmp(tree->cmd, "|", 1) == 0 && (tree->right->cmd == NULL || tree->left->cmd == NULL))
+		{
+			printf("Error: syntax error near unexpected token '|'\n");
+			return 1;
+		}
+		tree = tree->right;
+	}
+	return 0;
+}
 void	helper(t_token *token)
 {
-	t_tree *tree;
+	t_tree	*tree;
+
 	// join_tokens(token);
-	tree = 	create_tree(token);
+	if (token && token->type == TOKEN_PIPE)
+	{
+		printf("Error: syntax error near unexpected token '|'\n");
+		return ;
+	}
+	tree = create_tree(token);
+	if (check_erro(tree))
+		return ;
 	print_tree(tree);
 }
-char 	*join_cmd(t_token *token)
+char	*join_cmd(t_token *token)
 {
-	t_cmd *cmd;
-	char *tmp;
+	t_cmd	*cmd;
+	char	*tmp;
 
 	if (!token)
 		return (NULL);
 	cmd = init_cmd(token->value);
 	token = token->next;
-
-	while (token  && token->type != TOKEN_PIPE)
+	while (token && token->type != TOKEN_PIPE)
 	{
 		if (token->prev->helper_flag == 1 || token->prev->helper_flag == 0)
 			cmd->cmd = ft_strjoin(cmd->cmd, token->value);
@@ -69,9 +87,9 @@ char 	*join_cmd(t_token *token)
 	}
 	return (cmd->cmd);
 }
-int check_pipe(t_token *token)
+int	check_pipe(t_token *token)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (token)
@@ -83,12 +101,14 @@ int check_pipe(t_token *token)
 	return (i);
 }
 
-t_tree			*create_tree(t_token *token)
+t_tree	*create_tree(t_token *token)
 {
-	t_tree *head = NULL;
-	t_tree	*tmp = NULL;
+	t_tree	*head;
+	t_tree	*tmp;
 	int		i;
 
+	head = NULL;
+	tmp = NULL;
 	i = check_pipe(token);
 	if (i != 0)
 		head = init_tree("|");
@@ -105,18 +125,18 @@ t_tree			*create_tree(t_token *token)
 		{
 			tmp->left = init_tree(join_cmd(token));
 			while (token && token->type != TOKEN_PIPE)
-				token = token->next; 
+				token = token->next;
 			tmp->right = init_tree(join_cmd(token->next));
 			break ;
 		}
-		else if (token->type == TOKEN_ID || token->type == TOKEN_REDIR_IN || token->type == TOKEN_REDIR_OUT)
+		else if (token->type != TOKEN_PIPE)
 		{
 			tmp->left = init_tree(join_cmd(token));
 			while (token->next->type != TOKEN_PIPE)
 				token = token->next;
 		}
 		else if (token->type == TOKEN_PIPE && i > 0)
-		 {
+		{
 			tmp->right = init_tree("|");
 			tmp = tmp->right;
 			i--;

@@ -14,7 +14,7 @@
 
 t_tree	*init_tree(char *cmd)
 {
-	t_tree *new;
+	t_tree	*new;
 
 	new = malloc(sizeof(t_tree));
 	if (!new)
@@ -27,7 +27,7 @@ t_tree	*init_tree(char *cmd)
 
 t_cmd	*init_cmd(char *cmd)
 {
-	t_cmd *new;
+	t_cmd	*new;
 
 	new = malloc(sizeof(t_cmd));
 	if (!new)
@@ -39,7 +39,7 @@ t_cmd	*init_cmd(char *cmd)
 
 t_pipe	*init_pipe(t_cmd *cmd)
 {
-	t_pipe *new;
+	t_pipe	*new;
 
 	new = malloc(sizeof(t_pipe));
 	if (!new)
