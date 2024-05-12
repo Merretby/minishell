@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/09 12:39:03 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/12 15:45:22 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,32 +23,55 @@
 # include <time.h>
 # include <unistd.h>
 
-typedef struct s_tree
+typedef	enum e_type
 {
-	char			*cmd;
-	struct s_tree	*left;
-	struct s_tree	*right;
-}					t_tree;
+	TOKEN_ID,          // a-zA-Z0-9
+	TOKEN_STRING,       //"" ''
+	TOKEN_PIPE,         // |
+	TOKEN_REDIR_IN,     // <
+	TOKEN_REDIR_OUT,    // >
+	TOKEN_DOLLAR,       // $
+	TOKEN_REDIR_APPEND, // >>
+	TOKEN_HEREDOC,      // <<
+	TOKEN_OUTFILE,
+	TOKEN_FILE,
+} t_type;
 
-typedef struct s_cmd
+typedef enum e_rd
 {
-	char			*cmd; 
-	struct s_cmd	*next;
-}					t_cmd;
-
-typedef struct s_pipe
-{
-	t_cmd			*cmd;
-	struct s_pipe	*next;
-}					t_pipe;
+	CMD = 0,
+	REDIR = 1,
+}				t_rd;
 
 typedef struct s_redir
 {
-	t_pipe			*pipe;
-	// char *file;
-	// char *type;
+	char			*value;
+	int 			type;
 	struct s_redir	*next;
 }					t_redir;
+
+typedef struct s_cmd
+{
+	char			*cmd;
+	char			**args;
+	int				type;
+	// struct s_cmd	*next;
+}					t_cmd;
+
+typedef union u_data
+{
+	t_cmd			*cmd;
+	t_redir			*red;
+}					t_data;
+
+typedef struct s_tree
+{
+	t_data			*data;
+	t_rd			type;
+	char			*value;
+	struct s_tree	*left;
+	struct s_tree	*right;
+}					t_tree;
 
 typedef struct s_env
 {
@@ -64,22 +87,9 @@ typedef struct s_lixer
 	char			*content;
 }					t_lexer;
 
-typedef	enum e_type
-{
-	TOKEN_ID,          // a-zA-Z0-9
-	TOKEN_STRING,       //"" ''
-	TOKEN_PIPE,         // |
-	TOKEN_REDIR_IN,     // <
-	TOKEN_REDIR_OUT,    // >
-	TOKEN_DOLLAR,       // $
-	TOKEN_REDIR_APPEND, // >>
-	TOKEN_HEREDOC,      // <<
-	TOKEN_OUTFILE,
-	TOKEN_FILE,
-} t_type;
-
 typedef struct s_token
 {
+	t_redir			*red;
 	t_type           type;
 	int				helper_flag;
 	int 			flag;
@@ -116,13 +126,12 @@ t_lexer				*init_lexer(char *content);
 t_token				*init_token(int type, char *value, char c);
 // t_pipe				*init_pipe(t_cmd *cmd);
 t_cmd				*init_cmd(char *cmd);
-// t_redir				*init_redir(t_pipe *pipe);
-t_tree				*init_tree(char *cmd);
+t_redir				*init_redir(t_token *token);
+t_tree				*init_tree(t_token *token);
 
 // parsing
-void	helper(t_token *token);
-char				*join_cmd(t_token *token);
-t_tree				*create_tree(t_token *token);
+void				helper(t_token *token);
+// t_tree				*create_tree(t_token *token);
 void				ft_free(t_token **token, t_lexer **lexer);
 
 #endif
