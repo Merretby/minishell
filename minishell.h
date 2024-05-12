@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/12 15:45:22 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/12 15:55:57 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef enum e_rd
 {
 	CMD = 0,
 	REDIR = 1,
-}				t_rd;
+} t_rd;
 
 typedef struct s_redir
 {

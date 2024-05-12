@@ -6,25 +6,27 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 16:57:56 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/12 15:22:04 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/12 16:00:29 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_tree	*init_tree(t_token *token)
+t_tree	*init_tree(t_token *token, int type)
 {
 	t_tree	*new;
-
+	
 	new = malloc(sizeof(t_tree));
 	if (!new)
 		return (NULL);
-	new->red = NULL;
-	new->type = token->type;
 	new->value = token->value;
+	new->type = type;
+	if (type == REDIR)
+		new->data->red = init_redir(token);
+	else
+		new->data->cmd = init_cmd(token);
 	new->left = NULL;
 	new->right = NULL;
-	return (new);
 }
 
 t_cmd	*init_cmd(t_token *token)
@@ -37,7 +39,6 @@ t_cmd	*init_cmd(t_token *token)
 	new->cmd = token->value;
 	new->args = NULL;
 	new->type =token->type;
-	new->next = NULL;
 	return (new);
 }
 
