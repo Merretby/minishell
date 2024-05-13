@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/12 15:55:57 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/13 14:02:57 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,24 @@ typedef enum e_rd
 	CMD = 0,
 	REDIR = 1,
 } t_rd;
+
+
+typedef struct s_token
+{
+	t_type           type;
+	int				helper_flag;
+	int 			flag;
+	char			*value;
+	struct s_token	*prev;
+	struct s_token	*next;
+}					t_token;
+
+typedef struct t_node
+{
+	t_token			*token;
+	struct t_node	*left;
+	struct t_node	*right;
+}					t_node;
 
 typedef struct s_redir
 {
@@ -87,16 +105,10 @@ typedef struct s_lixer
 	char			*content;
 }					t_lexer;
 
-typedef struct s_token
-{
-	t_redir			*red;
-	t_type           type;
-	int				helper_flag;
-	int 			flag;
-	char			*value;
-	struct s_token	*prev;
-	struct s_token	*next;
-}					t_token;
+t_node				*new_node(t_token *token);
+t_node				*rederiction(t_token *token);
+t_node				*command(t_token *token);
+t_node				*pipeline(t_token *token);
 
 // lexter
 void				advance(t_lexer *lexer);
@@ -127,7 +139,7 @@ t_token				*init_token(int type, char *value, char c);
 // t_pipe				*init_pipe(t_cmd *cmd);
 t_cmd				*init_cmd(char *cmd);
 t_redir				*init_redir(t_token *token);
-t_tree				*init_tree(t_token *token);
+t_tree				*init_tree(t_token *token, int type);
 
 // parsing
 void				helper(t_token *token);
