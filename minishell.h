@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/13 14:02:57 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/13 18:26:28 by monachit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,9 @@ typedef struct s_lixer
 }					t_lexer;
 
 t_node				*new_node(t_token *token);
-t_node				*rederiction(t_token *token);
-t_node				*command(t_token *token);
-t_node				*pipeline(t_token *token);
+t_node				*rederiction(t_token **token);
+t_node				*command(t_token **token);
+t_node				*pipeline(t_token **token);
 
 // lexter
 void				advance(t_lexer *lexer);

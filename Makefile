@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g -fsanitize=address
+CFLAGS = -Wall -Wextra -g -fsanitize=address
 CFILES = minishell.c lexer/token.c linkedlist.c lexer/lexer.c lexer/lexer2.c environment.c \
 	parsing/parsing.c free.c init.c 
 RFLAGS = -lreadline

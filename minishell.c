@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/09 21:39:30 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/05/13 14:51:09 by monachit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ int	main(int ac, char **av, char **env)
 		helper(token);
 		// while (token)
 		// {
-		// 	printf("type: %s  value: %s  helper_flag: %d\n", defin(token->type),
-		//token->value, token->helper_flag);
+		// 	printf("Token type:%s\n", defin(token->type));
 		// 	token = token->next;
 		// }
 		// t_tree *tmp = create_tree(token);
