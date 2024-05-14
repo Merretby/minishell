@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/13 18:32:11 by monachit         ###   ########.fr       */
+/*   Updated: 2024/05/14 18:00:51 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,24 @@ t_node *new_node(t_token *token)
 	new->token = token;
 	new->left = NULL;
 	new->right = NULL;
-	
 	return new;
 }
 
 t_node *command(t_token **token)
 {
 	t_node *new;
-
+	
 	if((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING\
-		|| (*token)->type == TOKEN_DOLLAR || (*token)->type == TOKEN_OUTFILE\
-		|| (*token)->type == TOKEN_FILE)
+		|| (*token)->type == TOKEN_DOLLAR)
 	{
 		new = new_node(*token);
 		*token = (*token)->next;
 		return new;
+	}
+	else
+	{
+		*token = (*token)->next;
+		return (NULL);
 	}
 	return NULL;
 }
@@ -62,7 +65,7 @@ t_node  *pipeline(t_token **token)
 	t_node *new;
 
 	left = rederiction(token);
-	while((*token)&& (*token)->type == TOKEN_PIPE)
+	while((*token) && (*token)->type == TOKEN_PIPE)
 	{
 		new = new_node(*token);
 		*token = (*token)->next;
@@ -82,10 +85,11 @@ t_node	*rederiction(t_token **token)
 	while((*token) && ((*token)->type == TOKEN_REDIR_IN ||\
 	 (*token)->type == TOKEN_REDIR_OUT ||\
 	 (*token)->type == TOKEN_REDIR_APPEND ||\
-	 (*token)->type == TOKEN_HEREDOC))
+	 (*token)->type == TOKEN_OUTFILE ||\
+	(*token)->type == TOKEN_FILE))
 	{
 		new = new_node(*token);
-		*token = (*token)->next;
+		(*token) = (*token)->next;
 		new->left = left;
 		new->right = rederiction(token);
 		left = new;
