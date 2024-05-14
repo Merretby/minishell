@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/14 18:01:42 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/14 18:22:01 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,6 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
-typedef struct t_node
-{
-	t_token			*token;
-	struct t_node	*left;
-	struct t_node	*right;
-}					t_node;
-
 typedef struct s_redir
 {
 	char			*value;
@@ -104,6 +97,14 @@ typedef struct s_lixer
 	size_t			i;
 	char			*content;
 }					t_lexer;
+
+typedef struct t_node
+{
+	t_token			*token;
+	t_data			*data;
+	struct t_node	*left;
+	struct t_node	*right;
+}					t_node;
 
 t_node				*new_node(t_token *token);
 t_node				*rederiction(t_token **token);
