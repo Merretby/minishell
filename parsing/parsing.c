@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/14 21:02:14 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/15 18:36:57 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,18 +53,32 @@ t_node *new_node(t_token *token)
 t_node *command(t_token **token)
 {
 	t_node *new;
+	char *str;
 	
 	if((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING\
 		|| (*token)->type == TOKEN_DOLLAR))
 	{
 		new = new_node(*token);
 		*token = (*token)->next;
+		while ((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING\
+			|| (*token)->type == TOKEN_DOLLAR))
+		{
+			if ((*token)->prev->helper_flag == 1 || (*token)->prev->helper_flag == 0)
+				new->token->value = ft_strjoin(new->token->value, (*token)->value);
+			else
+			{
+				str = ft_strjoin(new->token->value, " ");
+				new->token->value = ft_strjoin(str, (*token)->value);
+				free (str);
+			}
+			*token = (*token)->next;
+		}
 		return new;
 	}
 	else
 	{
 		if (*token)
-		*	token = (*token)->next;
+		*token = (*token)->next;
 		return (NULL);
 	}
 	return NULL;
@@ -78,7 +92,7 @@ t_node  *pipeline(t_token **token)
 	if (token == NULL)
 		return NULL;
 	left = rederiction(token);
-	printf("rani dezt mn hnaya\n");
+	printf("rani dezt mn pipe\n");
 	while((*token) && (*token)->type == TOKEN_PIPE)
 	{
 		new = new_node(*token);
@@ -140,6 +154,7 @@ t_node	*rederiction(t_token **token)
 	
 	if (token == NULL)
 		return NULL;
+	new = NULL;
 	left = command(token);
 	if ((*token) && ((*token)->type == TOKEN_REDIR_IN ||\
 	 (*token)->type == TOKEN_REDIR_OUT ||\
@@ -161,11 +176,26 @@ t_node	*rederiction(t_token **token)
 			(*token) = (*token)->next;
 		 }
 		 print_redir(tmp);
-		 new = new_node((*token)->next);
-		 new->left = left;
 		 if (*token)
-			 new->right = rederiction(token);
-		 left = new;
+		 {
+			printf ("token value fred %s\n", (*token)->value);
+			if ((*token)->type == TOKEN_PIPE)
+			{
+				new = new_node((*token));
+				(*token) = (*token)->next;
+				new->left = left;
+				new->right = pipeline(token);
+				left = new;
+			}
+			else
+			{
+				new = new_node((*token));
+				(*token) = (*token)->next;
+				new->left = left;
+				new->right = rederiction(token);
+				left = new;
+			}
+		 }
 	}
 	return left;
 }
