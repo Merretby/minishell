@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/15 18:38:17 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/15 20:48:05 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct s_lixer
 typedef struct t_node
 {
 	t_token			*token;
+	t_rd			type;
 	t_data			*data;
 	struct t_node	*left;
 	struct t_node	*right;
@@ -139,7 +140,7 @@ t_lexer				*init_lexer(char *content);
 t_token				*init_token(int type, char *value, char c);
 // t_pipe				*init_pipe(t_cmd *cmd);
 t_cmd				*init_cmd(char *cmd);
-t_redir				*init_redir(t_token *token);
+// t_redir				*init_redir(t_token *token);
 // t_tree				*init_tree(t_token *token, int type);
 
 // parsing

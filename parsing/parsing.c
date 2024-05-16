@@ -6,17 +6,26 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/15 18:36:57 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/16 08:32:09 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
 
 void   print_tree(t_node *tree)
 {
 	if(tree == NULL)
 		return;
 	printf("---> %s\n", tree->token->value);
+	// if (tree->type == REDIR)
+	// {
+	// 	printf("redirection %s\n", tree->token->value);
+	// }
+	// else
+	// {
+	// 	printf("command %s\n", tree->token->value);
+	// }
 	print_tree(tree->left);
 	print_tree(tree->right);
 }
@@ -59,6 +68,7 @@ t_node *command(t_token **token)
 		|| (*token)->type == TOKEN_DOLLAR))
 	{
 		new = new_node(*token);
+		new->type = CMD;
 		*token = (*token)->next;
 		while ((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING\
 			|| (*token)->type == TOKEN_DOLLAR))
@@ -96,6 +106,7 @@ t_node  *pipeline(t_token **token)
 	while((*token) && (*token)->type == TOKEN_PIPE)
 	{
 		new = new_node(*token);
+		new->type = CMD;
 		*token = (*token)->next;
 		new->left = left;
 		new->right = pipeline(token);
@@ -135,13 +146,10 @@ void ft_last_back_red(t_redir **lst, t_redir *new)
 
 void print_redir(t_redir *red)
 {
-	t_redir *tmp;
-
-	tmp = red;
-	while (tmp)
+	while (red)
 	{
-		printf("value: %s\n", tmp->value);
-		tmp = tmp->next;
+		printf("redirection %s\n", red->value);
+		red = red->next;
 	}
 }
 
@@ -189,7 +197,9 @@ t_node	*rederiction(t_token **token)
 			}
 			else
 			{
+				printf("dezt hna\n");
 				new = new_node((*token));
+				new->type = REDIR;
 				(*token) = (*token)->next;
 				new->left = left;
 				new->right = rederiction(token);
