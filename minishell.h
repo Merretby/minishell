@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/16 10:17:40 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/16 15:34:18 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,10 @@ typedef struct s_redir
 
 typedef struct s_cmd
 {
-	char			*cmd;
+	char			*value;
 	char			**args;
 	int				type;
-	// struct s_cmd	*next;
+	struct s_cmd	*next;
 }					t_cmd;
 
 typedef union u_data
