@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/15 20:48:05 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/16 10:17:40 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ typedef struct t_node
 	t_token			*token;
 	t_rd			type;
 	t_data			*data;
+	t_redir			*red;
 	struct t_node	*left;
 	struct t_node	*right;
 }					t_node;

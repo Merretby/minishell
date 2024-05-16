@@ -6,37 +6,35 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/16 08:32:09 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/16 11:47:50 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+void print_redir(t_redir *red);
 
 void   print_tree(t_node *tree)
 {
+	   
 	if(tree == NULL)
 		return;
 	printf("---> %s\n", tree->token->value);
-	// if (tree->type == REDIR)
-	// {
-	// 	printf("redirection %s\n", tree->token->value);
-	// }
-	// else
-	// {
-	// 	printf("command %s\n", tree->token->value);
-	// }
 	print_tree(tree->left);
 	print_tree(tree->right);
 }
 
-t_redir  *new_redir(t_token *token)
+t_node *new_redir(t_token *token)
 {
-	t_redir *new;
-	new = malloc(sizeof(t_redir));
-	new->value = token->value;
-	new->type = token->type;
-	new->next = NULL;
+	t_node *new;
+	new = malloc(sizeof(t_node));
+	new->data = malloc(sizeof(t_data));
+	new->data->red = malloc(sizeof(t_redir));
+	new->data->red->type = token->type;
+	new->data->red->value = token->value;
+	new->data->red->next = NULL;
+	new->left = NULL;
+	new->right = NULL;
 	return new;
 }
 
@@ -85,14 +83,9 @@ t_node *command(t_token **token)
 		}
 		return new;
 	}
-	else
-	{
-		if (*token)
-		*token = (*token)->next;
-		return (NULL);
-	}
 	return NULL;
 }
+
 
 t_node  *pipeline(t_token **token)
 {
@@ -102,7 +95,7 @@ t_node  *pipeline(t_token **token)
 	if (token == NULL)
 		return NULL;
 	left = rederiction(token);
-	printf("rani dezt mn pipe\n");
+	// printf("rani dezt mn pipe\n");
 	while((*token) && (*token)->type == TOKEN_PIPE)
 	{
 		new = new_node(*token);
@@ -119,11 +112,10 @@ t_redir *ft_lstlast_red(t_redir *lst)
 {
 	if (lst == NULL)
 		return NULL;
-	while (lst && lst->next)
+	while (lst != NULL && lst->next != NULL)
 		lst = lst->next;
 	return lst;
 }
-
 void ft_last_back_red(t_redir **lst, t_redir *new)
 {
 	t_redir *tmp;
@@ -144,11 +136,11 @@ void ft_last_back_red(t_redir **lst, t_redir *new)
 	}
 }
 
-void print_redir(t_redir *red)
+void print_redir(t_redir*red)
 {
 	while (red)
 	{
-		printf("redirection %s\n", red->value);
+		printf("redirection--> %s\n", red->value);
 		red = red->next;
 	}
 }
@@ -157,8 +149,9 @@ t_node	*rederiction(t_token **token)
 {
 	t_node *left;
 	t_node *new;
-	t_redir *red;
-	t_redir *tmp;
+	t_node *red;
+	t_node *tmp;
+	t_node *tmp2;
 	
 	if (token == NULL)
 		return NULL;
@@ -179,14 +172,15 @@ t_node	*rederiction(t_token **token)
 		 (*token)->type == TOKEN_OUTFILE ||\
 		 (*token)->type == TOKEN_FILE))
 		 {
-			printf("tokeb type %d	token value %s\n", (*token)->type, (*token)->value);
-			ft_last_back_red(&red, new_redir(*token));
+			tmp2 = new_redir(*token);
+			ft_last_back_red(&red->data->red, tmp2->data->red);
 			(*token) = (*token)->next;
 		 }
-		 print_redir(tmp);
+		 printf("-------------------\n");
+		 print_redir(red->data->red);
 		 if (*token)
 		 {
-			printf ("token value fred %s\n", (*token)->value);
+			//printf ("token value fred %s\n", (*token)->value);
 			if ((*token)->type == TOKEN_PIPE)
 			{
 				new = new_node((*token));
@@ -197,7 +191,7 @@ t_node	*rederiction(t_token **token)
 			}
 			else
 			{
-				printf("dezt hna\n");
+				//printf("dezt hna\n");
 				new = new_node((*token));
 				new->type = REDIR;
 				(*token) = (*token)->next;
