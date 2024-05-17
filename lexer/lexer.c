@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 20:43:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/17 09:36:47 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/17 14:08:50 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,7 @@ char	*get_the_string(t_lexer *lexer, char c)
 		advance(lexer);
 		if (lexer->c == '\0')
 		{
-			printf("minishell: unexpected EOF while looking for matching `%c'\n", c);
-			printf("minishell: syntax error: unexpected end of file\n");
+			printf("minishell: not close with `%c'\n", c);
 			return (NULL);
 		}
 	}

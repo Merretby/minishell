@@ -6,11 +6,13 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/17 09:34:36 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/17 14:17:39 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void print_redir(t_redir*red);
 
 void   print_tree(t_node *tree)
 {
@@ -23,6 +25,7 @@ void   print_tree(t_node *tree)
 	else if (tree->type == REDIR)
 	{
 		printf("REDIR: %s\n", tree->data->red->value);
+		print_redir(tree->data->red);
 	}
 	print_tree(tree->left);
 	print_tree(tree->right);
