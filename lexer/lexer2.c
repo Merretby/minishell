@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 13:52:04 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/07 12:28:12 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/17 10:16:05 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,15 @@ static void	redirection_append(t_lexer **lexer, t_token **token)
 	advance(*lexer);
 	if ((*lexer)->c == ' ' || ((*lexer)->c >= 9 && (*lexer)->c <= 13))
 		skip_whitespace(*lexer);
-	if ((*lexer)->c == ft_isalnum((*lexer)->c))
-		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_OUTFILE,
-					get_the_word(*lexer), (*lexer)->c)));
-	else if ((*lexer)->c == '\'' || (*lexer)->c == '"')
-		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_OUTFILE,
-					get_the_string(*lexer, (*lexer)->c), (*lexer)->c)));
+	if ((*lexer)->c != '\0')
+	{
+		if ((*lexer)->c == ft_isalnum((*lexer)->c))
+			ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_OUTFILE,
+						get_the_word(*lexer), (*lexer)->c)));
+		else if ((*lexer)->c == '\'' || (*lexer)->c == '"')
+			ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_OUTFILE,
+						get_the_string(*lexer, (*lexer)->c), (*lexer)->c)));
+	}
 }
 
 static void	redirection2(t_lexer **lexer, t_token **token)
@@ -46,12 +49,15 @@ static void	redirection2(t_lexer **lexer, t_token **token)
 				(*lexer)->c)));
 	if ((*lexer)->c == ' ' || ((*lexer)->c >= 9 && (*lexer)->c <= 13))
 		skip_whitespace(*lexer);
-	if ((*lexer)->c == ft_isalnum((*lexer)->c))
-		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_FILE,
-					get_the_word(*lexer), (*lexer)->c)));
-	else if ((*lexer)->c == '\'' || (*lexer)->c == '"')
-		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_FILE,
-					get_the_string(*lexer, (*lexer)->c), (*lexer)->c)));
+	if ((*lexer)->c != '\0')
+	{
+		if ((*lexer)->c == ft_isalnum((*lexer)->c))
+			ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_FILE,
+						get_the_word(*lexer), (*lexer)->c)));
+		else if ((*lexer)->c == '\'' || (*lexer)->c == '"')
+			ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_FILE,
+						get_the_string(*lexer, (*lexer)->c), (*lexer)->c)));
+	}
 }
 
 static void	redirection(t_lexer **lexer, t_token **token)
@@ -62,14 +68,17 @@ static void	redirection(t_lexer **lexer, t_token **token)
 					">", (*lexer)->c)));
 		if ((*lexer)->c == ' ' || ((*lexer)->c >= 9 && (*lexer)->c <= 13))
 			skip_whitespace(*lexer);
-		if ((*lexer)->c == ft_isalnum((*lexer)->c))
-			ft_lstadd_back1(token, advance_token(*lexer,
-					init_token(TOKEN_OUTFILE, get_the_word(*lexer),
-						(*lexer)->c)));
-		else if ((*lexer)->c == '\'' || (*lexer)->c == '"')
-			ft_lstadd_back1(token, advance_token(*lexer,
-					init_token(TOKEN_OUTFILE, get_the_string(*lexer,
-							(*lexer)->c), (*lexer)->c)));
+		if ((*lexer)->c != '\0')
+		{
+			if ((*lexer)->c == ft_isalnum((*lexer)->c))
+				ft_lstadd_back1(token, advance_token(*lexer,
+						init_token(TOKEN_OUTFILE, get_the_word(*lexer),
+							(*lexer)->c)));
+			else if ((*lexer)->c == '\'' || (*lexer)->c == '"')
+				ft_lstadd_back1(token, advance_token(*lexer,
+						init_token(TOKEN_OUTFILE, get_the_string(*lexer,
+								(*lexer)->c), (*lexer)->c)));
+		}
 	}
 	else if ((*lexer)->c == '<')
 		redirection2(lexer, token);

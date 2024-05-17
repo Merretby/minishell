@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 12:14:12 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/05 15:48:40 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/05/16 18:31:23 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,17 @@ void	add_env(t_env **env_list, char *env)
 		tmp->next = new;
 	}
 }
-// void	print_env(t_env *env)
-// {
-// 	t_env *tmp;
+void	print_env(t_env *env)
+{
+	t_env *tmp;
 
-// 	tmp = env;
-// 	while (tmp)
-// 	{
-// 		printf("tmp--> %s\n	value--> %s\n", tmp->key, tmp->value);
-// 		tmp = tmp->next;
-// 	}
-// }
+	tmp = env;
+	while (tmp)
+	{
+		printf("tmp--> %s\n	value--> %s\n", tmp->key, tmp->value);
+		tmp = tmp->next;
+	}
+}
 
 void	take_env(char **env)
 {
@@ -62,5 +62,5 @@ void	take_env(char **env)
 		add_env(&env_list, tmp[i]);
 		i++;
 	}
-	// print_env(env_list);
+	print_env(env_list);
 }

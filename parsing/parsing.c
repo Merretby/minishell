@@ -6,13 +6,11 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/16 17:00:08 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/17 09:34:36 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void print_redir(t_redir *red);
 
 void   print_tree(t_node *tree)
 {
@@ -28,6 +26,17 @@ void   print_tree(t_node *tree)
 	}
 	print_tree(tree->left);
 	print_tree(tree->right);
+}
+
+void     helper(t_token *token)
+{
+	t_node *tree = NULL;
+
+	if (token == NULL)
+		return ;
+	if (parss_command(token) == 1)
+		tree = pipeline(&token);
+	// print_tree(tree);
 }
 
 t_redir	*create_redirection(t_token *token)
@@ -53,16 +62,6 @@ t_node *new_redir(t_token *token)
 	return (node);
 }
 
-void     helper(t_token *token)
-{
-	t_node *tree;
-
-	if (token == NULL)
-		return ;
-	tree = pipeline(&token);
-	print_tree(tree);
-}
-
 t_node *new_node(t_token *token)
 {
 	t_node	*node;
@@ -75,6 +74,7 @@ t_node *new_node(t_token *token)
 	else
 		node->data->cmd->value = NULL;
 	node->data->cmd->type = token->type;
+	node->data->cmd->args = ft_split(node->data->cmd->value, ' ');
 	node->type = CMD;
 	return (node);
 }
@@ -93,11 +93,11 @@ t_node *command(t_token **token)
 			|| (*token)->type == TOKEN_DOLLAR))
 		{
 			if ((*token)->prev->helper_flag == 1 || (*token)->prev->helper_flag == 0)
-				new->token->value = ft_strjoin(new->token->prev->value, (*token)->value);
+				new->data->cmd->value  = ft_strjoin(new->data->cmd->value, (*token)->value);
 			else
 			{
-				str = ft_strjoin(new->token->value, " ");
-				new->token->value = ft_strjoin(str, (*token)->value);
+				str = ft_strjoin(new->data->cmd->value, " ");
+				new->data->cmd->value = ft_strjoin(str, (*token)->value);
 				free (str);
 			}
 			*token = (*token)->next;
@@ -174,11 +174,19 @@ t_node	*rederiction(t_token **token)
 
 	
 	left = command(token);
+	if ((*token) && ((*token)->type == TOKEN_HEREDOC))
+	{
+		red = new_redir((*token));
+		red->left = left;
+		*token = (*token)->next;
+		red->right = command(token);
+		left = red;
+	}
 	if ((*token) && ((*token)->type == TOKEN_REDIR_IN ||\
 	 (*token)->type == TOKEN_REDIR_OUT ||\
 	 (*token)->type == TOKEN_REDIR_APPEND ||\
 	 (*token)->type == TOKEN_OUTFILE ||\
-	(*token)->type == TOKEN_FILE))
+	 (*token)->type == TOKEN_FILE))
 	{
 		red = new_redir(*token);
 		tmp = red->data->red;

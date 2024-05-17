@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/16 15:34:18 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/17 08:52:00 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,6 @@ typedef union u_data
 	t_redir			*red;
 }					t_data;
 
-// typedef struct s_tree
-// {
-// 	t_data			*data;
-// 	t_rd			type;
-// 	char			*value;
-// 	struct s_tree	*left;
-// 	struct s_tree	*right;
-// }					t_tree;
-
 typedef struct s_env
 {
 	char			*key;
@@ -126,7 +117,6 @@ char				*defin(int c);
 // token
 void				lexer_to_next_token(t_lexer *lexer, t_token **token);
 t_token				*advance_token(t_lexer *lexer, t_token *token);
-// t_token				take_string(t_lexer *lexer);
 
 // linkedlist
 t_token				*ft_lstlast1(t_token *lst);
@@ -134,19 +124,14 @@ void				ft_lstadd_back1(t_token **lst, t_token *new);
 
 //env
 void				take_env(char **env);
-// void				print_env(t_env *env);
 
 // init
 t_lexer				*init_lexer(char *content);
 t_token				*init_token(int type, char *value, char c);
-// t_pipe				*init_pipe(t_cmd *cmd);
-t_cmd				*init_cmd(char *cmd);
-// t_redir				*init_redir(t_token *token);
-// t_tree				*init_tree(t_token *token, int type);
 
 // parsing
 void				helper(t_token *token);
-// t_tree				*create_tree(t_token *token);
 void				ft_free(t_token **token, t_lexer **lexer);
+int				parss_command(t_token *token);
 
 #endif 
