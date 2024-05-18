@@ -6,13 +6,14 @@
 /*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:54:32 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/18 14:00:53 by monachit         ###   ########.fr       */
+/*   Updated: 2024/05/18 14:39:59 by monachit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int ft_exit(t_node *node)
 {
-    
+    (void )node;
+    return 0;
 }

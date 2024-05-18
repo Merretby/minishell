@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 08:37:18 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/17 14:21:52 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/18 14:34:21 by monachit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 int	parss_command(t_token *token)
 {
 	t_token	*tmp;
-	t_token *tmp2;
+	// t_token *tmp2;
 
 	tmp = token;
-	tmp2 = token;
+	// tmp2 = token;
 	// while (tmp2)
 	// {
 	// 	printf("token: %s, value: %s\n", defin(tmp2->type), tmp2->value);

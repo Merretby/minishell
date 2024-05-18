@@ -6,11 +6,11 @@
 /*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 13:58:43 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/18 14:10:43 by monachit         ###   ########.fr       */
+/*   Updated: 2024/05/18 14:37:08 by monachit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	add_env(t_env **env_list, char *env)
 {
@@ -66,6 +66,6 @@ void	take_env(char **env)
 }
 int ft_env(t_node *node)
 {
-	take_env(node->env);
+	take_env(node->env1);
 	return (0);   
 }

@@ -6,7 +6,7 @@
 /*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/18 14:11:28 by monachit         ###   ########.fr       */
+/*   Updated: 2024/05/18 14:33:22 by monachit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ typedef struct t_node
 	t_data			*data;
 	t_redir			*red;
 	t_env			*env;
-	char			**env;
+	char 			**env1;
 	struct t_node	*left;
 	struct t_node	*right;
 }					t_node;

@@ -6,11 +6,11 @@
 /*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 11:38:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/18 12:39:08 by monachit         ###   ########.fr       */
+/*   Updated: 2024/05/18 14:38:46 by monachit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int     check_arg(char **str)
 {
@@ -51,7 +51,7 @@ void    ft_print(char **s, int i)
         i++;
     }
 }
-void      ft_print(char **str)
+void      ft_print2(char **str)
 {
     int i;
     int j;

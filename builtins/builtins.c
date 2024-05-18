@@ -6,11 +6,11 @@
 /*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 11:31:46 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/18 11:35:59 by monachit         ###   ########.fr       */
+/*   Updated: 2024/05/18 14:36:51 by monachit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int ft_builtins(char *str, t_node *tree)
 {

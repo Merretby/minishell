@@ -6,7 +6,7 @@
 /*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/18 14:05:37 by monachit         ###   ########.fr       */
+/*   Updated: 2024/05/18 14:34:00 by monachit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void     helper(t_token *token, char **env)
 		return ;
 	if (parss_command(token) == 1)
 		tree = pipeline(&token);
-	tree->env = env;
+	tree->env1 = env;
 	ft_builtins(tree->data->cmd->value, tree);
 	print_tree(tree);
 }
