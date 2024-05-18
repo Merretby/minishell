@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/18 12:00:37 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/18 14:11:28 by monachit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <sys/wait.h>
 # include <time.h>
 # include <unistd.h>
+
+# define PATH_MAX 4096
 
 typedef	enum e_type
 {
@@ -96,6 +98,8 @@ typedef struct t_node
 	t_rd			type;
 	t_data			*data;
 	t_redir			*red;
+	t_env			*env;
+	char			**env;
 	struct t_node	*left;
 	struct t_node	*right;
 }					t_node;
@@ -123,6 +127,15 @@ t_token				*advance_token(t_lexer *lexer, t_token *token);
 t_token				*ft_lstlast1(t_token *lst);
 void				ft_lstadd_back1(t_token **lst, t_token *new);
 
+// builtins
+int					ft_cd(t_node *node);
+int					ft_echo(t_node *tree);
+int					ft_env(t_node *tree);
+int					ft_exit(t_node *tree);
+int					ft_export(t_node *tree);
+int					ft_pwd(t_node *tree);
+int					ft_unset(t_node *tree);
+int					ft_builtins(char *str, t_node *tree);
 //env
 void				take_env(char **env);
 
@@ -131,7 +144,7 @@ t_lexer				*init_lexer(char *content);
 t_token				*init_token(int type, char *value, char c);
 
 // parsing
-void				helper(t_token *token);
+void				helper(t_token *token, char **env);
 void				ft_free(t_token **token, t_lexer **lexer);
 int				parss_command(t_token *token);
 

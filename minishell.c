@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/16 18:34:20 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/18 14:05:52 by monachit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	main(int ac, char **av, char **env)
 		// 	take_env(env);
 		lexer = init_lexer(str);
 		lexer_to_next_token(lexer, &token);
-		helper(token);
+		helper(token, env);
 		// while (token)
 		// {
 		// 	printf("Token type:%s\n", defin(token->type));
