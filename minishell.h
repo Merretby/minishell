@@ -6,7 +6,7 @@
 /*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/18 18:29:49 by monachit         ###   ########.fr       */
+/*   Updated: 2024/05/18 19:13:54 by monachit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ int					ft_exit(t_node *tree);
 int					ft_export(t_node *tree);
 int					ft_pwd(t_node *tree);
 int					ft_unset(t_node *tree);
-int					ft_builtins(char *str, t_node *tree);
+// int					ft_builtins(char *str, t_node *tree);
 //env
 void				take_env(char **env);
 

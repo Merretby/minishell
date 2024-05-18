@@ -6,7 +6,7 @@
 /*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/18 19:00:36 by monachit         ###   ########.fr       */
+/*   Updated: 2024/05/18 19:13:44 by monachit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ void ft_execution(t_node *moad)
             ft_env(moad);
         else if (ft_strncmp(moad->data->cmd->value, "exit", 4) == 0)
             ft_exit(moad);
-        else
-            ft_execve(moad);
     }
 
     ft_execution(moad->left);
