@@ -6,7 +6,7 @@
 /*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 11:38:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/18 14:38:46 by monachit         ###   ########.fr       */
+/*   Updated: 2024/05/18 18:46:08 by monachit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@ int     check_arg(char **str)
     int i;
     int j;
     
-    while (str[i])
+    i = 0;
+    while (str[i] != NULL)
     {
         j = 0;
+        //printf("kan hna\n");
         if (str[i][j] == '-')
         {
             j++;

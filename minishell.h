@@ -6,7 +6,7 @@
 /*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/18 14:33:22 by monachit         ###   ########.fr       */
+/*   Updated: 2024/05/18 18:29:49 by monachit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,10 @@ t_token				*advance_token(t_lexer *lexer, t_token *token);
 // linkedlist
 t_token				*ft_lstlast1(t_token *lst);
 void				ft_lstadd_back1(t_token **lst, t_token *new);
+
+
+//execution
+void    ft_execution(t_node *moad);
 
 // builtins
 int					ft_cd(t_node *node);
