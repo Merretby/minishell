@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/18 18:30:27 by monachit         ###   ########.fr       */
+/*   Updated: 2024/05/19 14:48:56 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void     helper(t_token *token, char **env)
 		tree = pipeline(&token);
 	tree->env1 = env;
 	ft_execution(tree);
-	//print_tree(tree);
+	print_tree(tree);
 }
 
 t_redir	*create_redirection(t_token *token)
