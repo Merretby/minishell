@@ -6,7 +6,7 @@
 /*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/18 19:13:54 by monachit         ###   ########.fr       */
+/*   Updated: 2024/05/19 18:20:03 by monachit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ void				ft_lstadd_back1(t_token **lst, t_token *new);
 void    ft_execution(t_node *moad);
 
 // builtins
-int					ft_cd(t_node *node);
+int					ft_cd(t_node *node, char **env);
 int					ft_echo(t_node *tree);
 int					ft_env(t_node *tree);
 int					ft_exit(t_node *tree);

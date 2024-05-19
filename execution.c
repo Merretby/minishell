@@ -6,7 +6,7 @@
 /*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/18 19:13:44 by monachit         ###   ########.fr       */
+/*   Updated: 2024/05/19 18:20:37 by monachit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void ft_execution(t_node *moad)
         else if (ft_strncmp(moad->data->cmd->value, "echo", 4) == 0)
             ft_echo(moad);
         else if (ft_strncmp(moad->data->cmd->value, "cd", 2) == 0)
-            ft_cd(moad);
+            ft_cd(moad,moad->env1);
         else if (ft_strncmp(moad->data->cmd->value, "export", 6) == 0)
             ft_export(moad);
         else if (ft_strncmp(moad->data->cmd->value, "unset", 5) == 0)
