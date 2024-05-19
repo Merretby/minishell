@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/19 14:48:56 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/19 14:52:48 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void   print_tree(t_node *tree)
 	}
 	else if (tree->type == CMD)
 	{
-		printf("CMD: %s\n", tree->data->cmd->value);
+		// printf("CMD: %s\n", tree->data->cmd->value);
 		for (int i = 0; tree->data->cmd->args[i]; i++)
 			printf("args: %s\n", tree->data->cmd->args[i]);
 	}
