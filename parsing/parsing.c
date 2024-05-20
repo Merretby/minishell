@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/19 14:52:48 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/20 17:14:56 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void   print_tree(t_node *tree)
 	}
 	else if (tree->type == CMD)
 	{
-		// printf("CMD: %s\n", tree->data->cmd->value);
+		printf("CMD: %s\n", tree->data->cmd->value);
 		for (int i = 0; tree->data->cmd->args[i]; i++)
 			printf("args: %s\n", tree->data->cmd->args[i]);
 	}
@@ -44,10 +44,13 @@ void     helper(t_token *token, char **env)
 	if (token == NULL)
 		return ;
 	if (parss_command(token) == 1)
+	{
+		heredoc(token);
 		tree = pipeline(&token);
-	tree->env1 = env;
-	ft_execution(tree);
-	print_tree(tree);
+		// tree->env1 = env;
+		// ft_execution(tree);
+		// print_tree(tree);
+	}
 }
 
 t_redir	*create_redirection(t_token *token)
@@ -103,7 +106,7 @@ t_node *command(t_token **token)
 		while ((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING\
 			|| (*token)->type == TOKEN_DOLLAR))
 		{
-			if ((*token)->prev->helper_flag == 1 || (*token)->prev->helper_flag == 0)
+			if ((*token)->prev->helper_flag == 1)
 				new->data->cmd->value  = ft_strjoin(new->data->cmd->value, (*token)->value);
 			else
 			{
