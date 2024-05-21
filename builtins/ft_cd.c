@@ -3,61 +3,77 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:44:32 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/18 14:36:56 by monachit         ###   ########.fr       */
+/*   Updated: 2024/05/21 17:24:47 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char    *fined_pwd(t_env    *env)
+char *fined_pwd(char **env)
 {
-    t_env *tmp;
+    int i;
+    int j;
+    char *oldPwd;
 
-    tmp = env;
-    while (tmp)
+    j = 0;
+    i = 0;
+    while (env[i])
     {
-        if (ft_strncmp(tmp->key, "PWD", 3) == 0)
-            return (tmp->value);
-        tmp = tmp->next;
+        if (ft_strncmp(env[i], "PWD", 3) == 0)
+        {
+            while(env[i][j] != '=')
+                j++;
+            oldPwd = ft_strdup(&env[i][j + 1]);
+            return (oldPwd);
+        }
+        i++;
     }
     return (NULL);
 }
 
-void    change_env(t_env **env, char *buffer, char *oldPwd)
+void    change_env(char **env, char *buffer, char *oldPwd)
 {
-    t_env *tmp;
+    int i;
+    char *newPwd;
+    char *oldPwd1;
 
-    tmp = *env;
-    while (tmp)
+    i = 0;
+    while (env[i])
     {
-        if (ft_strncmp(tmp->key, "PWD", 3) == 0)
+        if (ft_strncmp(env[i], "PWD", 3) == 0)
         {
-            free(tmp->value);
-            tmp->value = ft_strdup(buffer);
+            newPwd = ft_strjoin("PWD=", buffer);
+            env[i] = newPwd;
         }
-        if (ft_strncmp(tmp->key, "OLDPWD", 6) == 0)
+        if (ft_strncmp(env[i], "OLDPWD", 6) == 0)
         {
-            free(tmp->value);
-            tmp->value = ft_strdup(oldPwd);
+            oldPwd1 = ft_strjoin("OLDPWD=", oldPwd);
+            env[i] = oldPwd1;
         }
-        tmp = tmp->next;
+        i++;
     }
 }
-int     ft_cd(t_node *node)
+
+int     ft_cd(t_node *node, char **env)
 {
     char *oldPwd;
 
-    oldPwd = fined_pwd(node->env);
-    if (chdir(node->data->cmd->args[1]) == -1)
+    oldPwd = fined_pwd(env);
+    if (node->data->cmd->args[1] == NULL || ft_strncmp(node->data->cmd->args[1] , "~", 1) == 0)
+    {
+        printf("cd: HOME not set\n");
+        chdir(getenv("HOME"));
+    }
+    else if (chdir(node->data->cmd->args[1]) == -1)
     {
         printf("cd: %s: No such file or directory\n", node->data->cmd->args[1]);
         return (1);
     }
     char buffer[PATH_MAX];
     getcwd(buffer, PATH_MAX);
-    change_env(&node->env, buffer, oldPwd);
+    change_env(env, buffer, oldPwd);
     return (0);
 }

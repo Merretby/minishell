@@ -3,17 +3,142 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:20 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/18 14:40:18 by monachit         ###   ########.fr       */
+/*   Updated: 2024/05/21 17:18:44 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int ft_unset(t_node *node)
+#include "../minishell.h"
+
+/*
+typedef struct s_env
 {
-    (void )node;
-    return 0;
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}					t_env;
+*/
+
+
+t_env   *ft_lstnew2(char *value)
+{
+    t_env *new;
+
+    new = malloc(sizeof(t_env));
+    if (!new)
+        return (NULL);
+    new->value = value;
+    new->next = NULL;
+    return (new);
+}
+
+t_env	*ft_lstlast2(t_env *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
+}
+
+void	ft_lstadd_back2(t_env **lst, t_env *new)
+{
+	if (lst != NULL && new != NULL)
+	{
+		if (*lst == NULL)
+		{
+			*lst = new;
+			new->next = NULL;
+		}
+		else
+    		ft_lstlast2(*lst)->next = new;
+	}
+}
+
+t_env *initialize(t_env *env, char **env1)
+{
+    int i;
+
+    i = 1;
+    while (env1[i])
+    {
+        ft_lstadd_back2(&env, ft_lstnew2(env1[i]));
+        i++;
+    }
+    return env;
+}
+
+char *ft_findEnv(char *env)
+{
+    int i = 0;
+    char *key;
+
+    while (env[i] != '=')
+        i++;
+    key = malloc(sizeof(char) * i + 1);
+    i = 0;
+    while (env[i] != '=')
+    {
+        key[i] = env[i];
+        i++;
+    }
+    key[i] = '\0';
+    return (key);
+}
+
+t_env *ft_New_env(char *value, t_env *env)
+{
+    t_env *tmp;
+    t_env *tmp2;
+    tmp = env;
+    while (tmp)
+    {
+        if (tmp->next && strcmp(value, ft_findEnv(tmp->next->value)) == 0)
+        {
+            tmp2 = tmp->next;
+            tmp->next = tmp->next->next;
+            free(tmp2);
+            return (env);
+        }
+        tmp = tmp->next;
+    }
+    return (env);
+}
+
+char **ft_unset(t_node *node, char **env1)
+{
+    t_env *env;
+    int     i = 1;
+    int     j = 0;
+    
+    env = malloc(sizeof(t_env));
+    env->value = env1[0];
+    env->next = NULL;
+    env = initialize(env, env1);
+    while (node->data->cmd->args[i])
+    {
+        j  = 0;
+        while(env1[j])
+        {
+            if (strcmp(node->data->cmd->args[i], ft_findEnv(env1[j])) == 0)
+                env = ft_New_env(node->data->cmd->args[i], env);
+            j++;
+        }
+        i++;
+    }
+    t_env *tmp = env;
+    i = 0;
+    while (tmp) {
+        env1[i++] = tmp->value;
+        t_env *to_free = tmp;
+        tmp = tmp->next;
+        free(to_free);
+    }
+    env1[i] = NULL;
+
+    return env1;
 }

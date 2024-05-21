@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/21 14:49:03 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/21 17:22:04 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <time.h>
+# include <string.h>
 # include <unistd.h>
 
 # define PATH_MAX 4096
@@ -80,7 +81,6 @@ typedef union u_data
 
 typedef struct s_env
 {
-	char			*key;
 	char			*value;
 	struct s_env	*next;
 }					t_env;
@@ -126,22 +126,22 @@ t_token				*advance_token(t_lexer *lexer, t_token *token);
 // linkedlist
 t_token				*ft_lstlast1(t_token *lst);
 void				ft_lstadd_back1(t_token **lst, t_token *new);
+t_env   			*ft_lstnew2(char *value);
+void				ft_lstadd_back2(t_env **lst, t_env *new);
 
 
 //execution
 void    ft_execution(t_node *moad);
-void	heredoc(t_token *token);
 
 // builtins
-int					ft_cd(t_node *node);
+int					ft_cd(t_node *node, char **env);
 int					ft_echo(t_node *tree);
 int					ft_env(t_node *tree);
 int					ft_exit(t_node *tree);
-int					ft_export(t_node *tree);
+char 				**ft_export(t_node *tree, char **env1);
 int					ft_pwd(t_node *tree);
-int					ft_unset(t_node *tree);
+char				**ft_unset(t_node *node, char **env1);
 // int					ft_builtins(char *str, t_node *tree);
-
 //env
 void				take_env(char **env);
 
@@ -154,6 +154,8 @@ void				helper(t_token *token, char **env);
 void				ft_free(t_token **token, t_lexer **lexer);
 int					parss_command(t_token *token);
 
-char	*concatenation(t_token *token);
+//heredoc
+char				*concatenation(t_token *token);
+void				heredoc(t_token *token);
 
 #endif 

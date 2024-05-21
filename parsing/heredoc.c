@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:44:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/21 15:13:04 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/21 17:56:36 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ void	heredoc(t_token *token)
 	int		fd_f;
 
 	tmp = token;
-	fd_f = open("/tmp/heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	while (tmp)
 	{
 		if (tmp->type == TOKEN_HEREDOC)
 		{
+			fd_f = open("/tmp/heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
 			if (tmp->next->helper_flag == 1)
 				eof = concatenation(tmp);
 			else
