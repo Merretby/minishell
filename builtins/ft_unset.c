@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:20 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/20 17:44:59 by monachit         ###   ########.fr       */
+/*   Updated: 2024/05/20 20:57:06 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ t_env *ft_New_env(char *value, t_env *env)
     return (env);
 }
 
-int ft_unset(t_node *node, char **env1)
+char **ft_unset(t_node *node, char **env1)
 {
     t_env *env;
     int     i = 1;
@@ -128,8 +128,15 @@ int ft_unset(t_node *node, char **env1)
         }
         i++;
     }
-    
-    return (0);
-}
+    t_env *tmp = env;
+    i = 0;
+    while (tmp) {
+        env1[i++] = tmp->value;
+        t_env *to_free = tmp;
+        tmp = tmp->next;
+        free(to_free);
+    }
+    env1[i] = NULL;
 
-// [PWD=/..../, OLDPWD=/..../]
+    return env1;
+}

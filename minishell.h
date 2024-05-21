@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/20 17:41:13 by monachit         ###   ########.fr       */
+/*   Updated: 2024/05/20 20:51:41 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <time.h>
+# include <string.h>
 # include <unistd.h>
 
 # define PATH_MAX 4096
@@ -137,7 +138,7 @@ int					ft_env(t_node *tree);
 int					ft_exit(t_node *tree);
 int					ft_export(t_node *tree);
 int					ft_pwd(t_node *tree);
-int					ft_unset(t_node *node, char **env1);
+char				**ft_unset(t_node *node, char **env1);
 // int					ft_builtins(char *str, t_node *tree);
 //env
 void				take_env(char **env);
