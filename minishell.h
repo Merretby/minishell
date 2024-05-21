@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/20 20:51:41 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/05/21 14:01:42 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,8 @@ t_token				*advance_token(t_lexer *lexer, t_token *token);
 // linkedlist
 t_token				*ft_lstlast1(t_token *lst);
 void				ft_lstadd_back1(t_token **lst, t_token *new);
+t_env   			*ft_lstnew2(char *value);
+void				ft_lstadd_back2(t_env **lst, t_env *new);
 
 
 //execution
@@ -136,7 +138,7 @@ int					ft_cd(t_node *node, char **env);
 int					ft_echo(t_node *tree);
 int					ft_env(t_node *tree);
 int					ft_exit(t_node *tree);
-int					ft_export(t_node *tree);
+char 				**ft_export(t_node *tree, char **env1);
 int					ft_pwd(t_node *tree);
 char				**ft_unset(t_node *node, char **env1);
 // int					ft_builtins(char *str, t_node *tree);
