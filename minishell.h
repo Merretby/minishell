@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/20 17:14:48 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/21 14:49:03 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,6 @@ void				helper(t_token *token, char **env);
 void				ft_free(t_token **token, t_lexer **lexer);
 int					parss_command(t_token *token);
 
-void	concatenation(t_token *token);
+char	*concatenation(t_token *token);
 
 #endif 
