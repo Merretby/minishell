@@ -6,34 +6,70 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:44:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/17 21:05:42 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/21 17:56:36 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	heredoc(t_node *tree)
+char *concatenation(t_token *token)
 {
-	char *line;
-	char *dilmiter;
-	int fd[2];
+	t_token *tmp;
+	char 	*str;
 
-	printf("---------->%d\n" , tree->flag_heredoc);
-	if (tree->flag_heredoc == 1)
+	tmp = token;
+	while (tmp)
 	{
-		dilmiter = tree->right->data->cmd->value;
-		line = readline("> ");
-		while (line)
+		if (tmp->type == TOKEN_HEREDOC)
 		{
-			if (ft_strncmp(line, dilmiter, ft_strlen(dilmiter)) == 0 \
-			&& ft_strlen(line) == ft_strlen(dilmiter))
-				break ;
-			write(fd[1], line, ft_strlen(line));
-			write(fd[1], "\n", 1);
-			free(line);
-			line = readline("> ");
+			tmp = tmp->next;
+			while (tmp && tmp->helper_flag == 1)
+			{
+				str = ft_strjoin(tmp->value, tmp->next->value);
+				if (tmp->next && tmp->next->helper_flag == 1)
+				{
+					tmp = tmp->next;
+					str = ft_strjoin(str, tmp->next->value);
+				}
+				tmp->next->value = str;
+				if (tmp->next && tmp->next->helper_flag != 1)
+					return (tmp->next->value);
+				tmp = tmp->next;
+			}
 		}
-		// unlink("/tmp/.heredoc");
+		tmp = tmp->next;
 	}
-	return ;
+	return (NULL);
+}
+
+void	heredoc(t_token *token)
+{
+	char	*line;
+	char	*eof;
+	t_token	*tmp;
+	int		fd_f;
+
+	tmp = token;
+	while (tmp)
+	{
+		if (tmp->type == TOKEN_HEREDOC)
+		{
+			fd_f = open("/tmp/heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
+			if (tmp->next->helper_flag == 1)
+				eof = concatenation(tmp);
+			else
+				eof = tmp->next->value;
+			line = readline("> ");
+			while (line)
+			{
+				if (ft_strncmp(line, eof, ft_strlen(eof)) == 0 && \
+					(ft_strlen(line) == ft_strlen(eof)))
+					break ;
+				ft_putendl_fd(line, fd_f);
+				free (line);
+				line = readline("> ");
+			}
+		}
+		tmp = tmp->next;
+	}
 }
