@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/21 14:01:42 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/05/21 17:22:04 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,10 @@ t_token				*init_token(int type, char *value, char c);
 // parsing
 void				helper(t_token *token, char **env);
 void				ft_free(t_token **token, t_lexer **lexer);
-int				parss_command(t_token *token);
+int					parss_command(t_token *token);
+
+//heredoc
+char				*concatenation(t_token *token);
+void				heredoc(t_token *token);
 
 #endif 
