@@ -6,11 +6,23 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:10 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/21 17:18:12 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/22 13:25:26 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int check_repetition(char *value, t_env *env)
+{
+    t_env *tmp = env;
+    while (tmp)
+    {
+    if (value && ft_strncmp(value, tmp->value, ft_strlen(value)) == 0)
+        return 0;
+    tmp = tmp->next;
+    }
+    return 1;
+}
 
 char  **ft_export(t_node *node, char **env1)
 {
@@ -21,27 +33,29 @@ char  **ft_export(t_node *node, char **env1)
     if (!new)
         return (0);
     new->next = NULL;
-    new->value = ft_strjoin("declare -x ", env1[0]);
+    new->value = env1[0];
     i = 1;
     while (env1[i])
     {
-        value = ft_strjoin("declare -x ", env1[i]);
+        value = env1[i];
         ft_lstadd_back2(&new, ft_lstnew2(value));
         i++;
     }
     i = 1;
     if(node->data->cmd->args[1] == NULL)
     {
-        while(new)
+        t_env *tmp = new;
+        while(tmp)
         {
-            printf("%s\n", new->value);
-            new = new->next;
+            printf("declare -x %s\n", tmp->value);
+            tmp = tmp->next;
         }
+        free(new);
         return env1;
     }
-    while(node->data->cmd->args[i])
+    while(check_repetition(node->data->cmd->args[i], new) && node->data->cmd->args[i])
     {
-        value = ft_strjoin("declare -x ", node->data->cmd->args[i]);
+        value = node->data->cmd->args[i];
         ft_lstadd_back2(&new, ft_lstnew2(value));
         i++;
     }

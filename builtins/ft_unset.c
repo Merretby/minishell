@@ -6,14 +6,11 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:20 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/21 17:18:44 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/22 13:26:05 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-#include "../minishell.h"
-
 /*
 typedef struct s_env
 {

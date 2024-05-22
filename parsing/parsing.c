@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/21 17:58:58 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/22 13:29:40 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void     helper(t_token *token, char **env)
 		tree = pipeline(&token);
 		tree->env1 = env;
 		ft_execution(tree);
-		print_tree(tree);
+		// print_tree(tree);
 	}
 }
 
