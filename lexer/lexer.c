@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 20:43:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/21 20:44:26 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/22 18:06:47 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char	*get_the_string(t_lexer *lexer, char c)
 int	ft_check_alnum(char c)
 {
 	// 3la 9bal had lcase ls -al ... 5asa t3ti ls / -al
-	if (c == '$' || c == '|' || c == '>' || c == '<' || c == '"' || c == '\0'
+	if (c == '|' || c == '>' || c == '<' || c == '"' || c == '\0'
 		|| c == ' ' || (c >= 9 && c <= 13) || c == '\'')
 		return (0);
 	return (1);

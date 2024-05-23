@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/22 13:29:40 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/22 18:19:27 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ void   print_tree(t_node *tree)
 	{
 		// printf("CMD: %s\n", tree->data->cmd->value);
 		for (int i = 0; tree->data->cmd->args[i]; i++)
-			printf("args[%d]: %s\n", i, tree->data->cmd->args[i]);
+			printf("args[%d]: %s, helper: %d\n", i, tree->data->cmd->args[i], tree->data->cmd->s_f);
 	}
 	else if (tree->type == REDIR)
 	{
 		printf("REDIR: %s\n", tree->data->red->value);
-		// print_redir(tree->data->red);
+		print_redir(tree->data->red);
 	}
 	print_tree(tree->left);
 	print_tree(tree->right);
@@ -49,7 +49,8 @@ void     helper(t_token *token, char **env)
 		tree = pipeline(&token);
 		tree->env1 = env;
 		ft_execution(tree);
-		// print_tree(tree);
+		expand(tree);
+		print_tree(tree);
 	}
 }
 
@@ -107,11 +108,15 @@ t_node *command(t_token **token)
 			|| (*token)->type == TOKEN_DOLLAR))
 		{
 			if ((*token)->prev->helper_flag == 1)
+			{
 				new->data->cmd->value  = ft_strjoin(new->data->cmd->value, (*token)->value);
+				new->data->cmd->s_f = 1;
+			}
 			else
 			{
 				str = ft_strjoin(new->data->cmd->value, " ");
 				new->data->cmd->value = ft_strjoin(str, (*token)->value);
+				new->data->cmd->s_f = 0;
 				free (str);
 			}
 			*token = (*token)->next;

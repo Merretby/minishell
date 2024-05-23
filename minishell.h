@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/21 17:22:04 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/22 17:08:16 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_cmd
 	char			*value;
 	char			**args;
 	int				type;
+	int				s_f;
 	struct s_cmd	*next;
 }					t_cmd;
 
@@ -157,5 +158,8 @@ int					parss_command(t_token *token);
 //heredoc
 char				*concatenation(t_token *token);
 void				heredoc(t_token *token);
+
+//expand
+void				expand(t_node *tree);
 
 #endif 
