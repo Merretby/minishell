@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: monachit <monachit@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:10 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/22 17:01:41 by monachit         ###   ########.fr       */
+/*   Updated: 2024/05/25 15:29:38 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,11 @@ char  **ft_export(t_node *node, char **env1)
     new->next = NULL;
     new->value = ft_init_export(env1[0]);
     i = 1;
+    if (node->data->cmd->args[1] && node->data->cmd->args[1][0] == '=')
+    {
+        printf("minishell: export: `%s': not a valid identifier\n", node->data->cmd->args[1]);
+        return env1;
+    }
     while (env1[i])
     {
         value = env1[i];

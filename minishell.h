@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/21 17:22:04 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/25 13:51:08 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,12 +131,12 @@ void				ft_lstadd_back2(t_env **lst, t_env *new);
 
 
 //execution
-void    ft_execution(t_node *moad);
+void    ft_execution(t_node *tree, char **env1);
 
 // builtins
 int					ft_cd(t_node *node, char **env);
 int					ft_echo(t_node *tree);
-int					ft_env(t_node *tree);
+int					ft_env(char **env);
 int					ft_exit(t_node *tree);
 char 				**ft_export(t_node *tree, char **env1);
 int					ft_pwd(t_node *tree);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/22 13:29:40 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/25 13:47:56 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,16 @@ void   print_tree(t_node *tree)
 void     helper(t_token *token, char **env)
 {
 	t_node *tree = NULL;
-
+	char **str;
 	if (token == NULL)
 		return ;
 	if (parss_command(token) == 1)
 	{
+		str = env;
 		heredoc(token);
 		tree = pipeline(&token);
-		tree->env1 = env;
-		ft_execution(tree);
+		//tree->env1 = env;
+		ft_execution(tree, str);
 		// print_tree(tree);
 	}
 }

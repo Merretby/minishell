@@ -3,54 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 11:38:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/21 17:10:49 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/25 11:36:32 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int     check_arg(char **str)
+int     check_arg(char *str)
+{
+    if (str[0] != '-')
+        return (0);
+    int i;
+
+    i = 1;
+    while(str[i])
+    {
+        if (str[i] != 'n')
+            return (0);
+        i++;
+    }
+    return (1);
+}
+
+void    ft_print(char **s)
 {
     int i;
     int j;
     
-    i = 0;
-    while (str[i] != NULL)
-    {
-        j = 0;
-        //printf("kan hna\n");
-        if (str[i][j] == '-')
-        {
-            j++;
-            while (str[i][j] && str[i][j] == 'n')
-                j++;
-            if (!str[i][j])
-                return (j);
-        }
-        i++;
-    }
-    return (0);
-}
-
-void    ft_print(char **s, int i)
-{
-    int k;
-
-    k = 0;
+    i = 1;
     while (s[i])
     {
-        k = 0;
-        while(s[i][k])
+        if (!check_arg(s[i]))
+            break;
+        i++;
+    }
+    while(s[i])
+    {
+        j = 0;
+        while (s[i][j])
         {
-            write(1, &s[i][k], 1);
-            k++;
+            write(1, &s[i][j], 1);
+            j++;
         }
         if (s[i + 1])
             write(1, " ", 1);
-        i++;
+        i++;    
     }
 }
 void      ft_print2(char **str)
@@ -77,10 +77,18 @@ int     ft_echo(t_node *node)
 {
     int i;
     
-    i = check_arg(node->data->cmd->args);
-    if (i > 0)
-        ft_print(node->data->cmd->args, i);
+    if (!node->data->cmd->args[1])
+    {
+        write(1, "\n", 1);
+        return (0);
+    }
+    i = check_arg(node->data->cmd->args[1]);
+    if (i)
+        ft_print(node->data->cmd->args);
     else
+    {
+        printf("kan hna\n");
         ft_print2(node->data->cmd->args);
+    }
     return (0);
 }
