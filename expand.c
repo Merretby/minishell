@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:00:56 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/24 17:40:30 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/24 22:25:28 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,15 @@ char	*get_word(char *str)
 	char *tmp;
 
 	i = 0;
-	while (str[i] != '\0' && str[i] != ' ' && str[i] != '$')
+	while (str[i] && ((str[i] >= 'a' && str[i] <= 'z') || \
+	(str[i] >= 'A' && str[i] <= 'Z')))
 		i++;
 	tmp = (char *)malloc(sizeof(char) * (i + 1));
 	if (!tmp)
 		return (NULL);
 	i = 0;
-	while (str[i] != '\0' && str[i] != ' ' && str[i] != '$')
+	while (str[i] && ((str[i] >= 'a' && str[i] <= 'z') || \
+	(str[i] >= 'A' && str[i] <= 'Z')))
 	{
 		tmp[i] = str[i];
 		i++;
@@ -32,6 +34,7 @@ char	*get_word(char *str)
 	tmp[i] = '\0';
 	return (tmp);
 }
+
 char	*remove_word(char *str)
 {
 	int i;
@@ -40,7 +43,8 @@ char	*remove_word(char *str)
 
 	i = 0;
 	j = ft_strlen(str);
-	while (str[i] != '\0' && str[i] != ' ' && str[i] != '$')
+	while (str[i] && ((str[i] >= 'a' && str[i] <= 'z') || \
+	(str[i] >= 'A' && str[i] <= 'Z')))
 		i++;
 	tmp = (char *)malloc(sizeof(char) * (j - i + 1));
 	if (!tmp)
@@ -56,21 +60,27 @@ char	*remove_word(char *str)
 	return (tmp);
 }
 
-int find_doller(char *str)
+char *join_char(char *str, char c)
 {
+	char *tmp;
 	int i;
-	int j;
 
+	if (!str)
+		str = ft_strdup("");
 	i = 0;
-	j = 0;
+	tmp = (char *)malloc(sizeof(char) * (ft_strlen(str) + 2));
+	if (!tmp)
+		return (NULL);
 	while (str[i])
 	{
-		if (str[i] == '$')
-			j++;
+		tmp[i] = str[i];
 		i++;
 	}
-	return (j);
+	tmp[i] = c;
+	tmp[i + 1] = '\0';
+	return (tmp);
 }
+
 char	*ft_strjoin2(char *s1, char *s2)
 {
 	size_t	i;
@@ -94,45 +104,164 @@ char	*ft_strjoin2(char *s1, char *s2)
 	return (ptr);
 }
 
-void	expand(t_token *token, char **env)
+char *get_value(char *str, char **env)
 {
-	char *str;
-	char *tmp;
 	int i;
-	int doller;
+	char *tmp;
+
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], (str), ft_strlen(str)) == 0 \
+		&& env[i][ft_strlen(str)] == '=')
+		{
+			tmp = ft_strchr(env[i], '=') + 1;
+			return (tmp);
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+char	*real_expand(char *line, char **env)
+{
+	int i;
+	char *str;
+	// char *tmp;
 	char *tmp2;
 
 	i = 0;
 	tmp2 = NULL;
+	while (line[i])
+	{
+		if (line[i] == '$')
+		{
+			str = get_word(line + 1);
+			line = remove_word(line + 1);
+			printf("line: %s\n", line);
+			if (get_value(str, env) != NULL)
+				tmp2 = ft_strjoin2(tmp2, get_value(str, env));
+			if (line[0] != '$' && line[0] != '\\' && !ft_isdigit(line[0]))
+				tmp2 = join_char(tmp2, line[0]);
+			i = -1;
+		}
+		i++;
+	}
+	return (tmp2);
+}
+
+void	expand(t_token *token, char **env)
+{
+	int i;
+	int j;
+	char *str;
+	char *befor;
+	char *after;
+
+	i = 0;
+	j = 0;
 	while (token)
 	{
-		if (ft_strchr(token->value, '$') != NULL)
+		while (token->value[i])
 		{
-			doller = find_doller(token->value);
-			while (doller > 0)
+			if (token->value[i] == '$')
 			{
-				str = get_word(token->value + 1);
-				token->value = remove_word(token->value + 1);
-				printf("token %s\n", token->value);
-				while (env[i])
-				{
-					if (ft_strncmp(env[i], (str), ft_strlen(str)) == 0 \
-					&& env[i][ft_strlen(str)] == '=')
-					{
-						tmp = ft_strchr(env[i], '=') + 1;
-						tmp2 = ft_strjoin2(tmp2, tmp);
-						printf("tmp2:%s\n", tmp2);
-						break;
-					}
+				while (token->value[i] != '$' && token->value[i])
 					i++;
-				}
-				doller--;
+				befor = ft_substr(token->value, j, i);
+				j = i;
+				after = ft_substr(token->value, j, ft_strlen(token->value));
+				str = real_expand(after, env);
+				token->value = ft_strjoin2(befor, str);
+				break;
 			}
-			token->value = tmp2;
+			i++;
 		}	
 		token = token->next;
 	}
 }
+
+
+
+// int find_doller(char *str)
+// {
+// 	int i;
+// 	int j;
+
+// 	i = 0;
+// 	j = 0;
+// 	while (str[i])
+// 	{
+// 		if (str[i] == '$')
+// 			j++;
+// 		i++;
+// 	}
+// 	return (j);
+// }
+// char	*ft_strjoin2(char *s1, char *s2)
+// {
+// 	size_t	i;
+// 	size_t	j;
+// 	char	*ptr;
+
+// 	if (!s1)
+// 		s1 = ft_strdup("");
+// 	if (!s1 || !s2)
+// 		return (NULL);
+// 	j = 0;
+// 	i = -1;
+// 	ptr = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+// 	if (!ptr)
+// 		return (NULL);
+// 	while (s1 && s1[++i])
+// 		ptr[i] = s1[i];
+// 	while (s2 && s2[j])
+// 		ptr[i++] = s2[j++];
+// 	ptr[i] = '\0';
+// 	return (ptr);
+// }
+
+// void	expand(t_token *token, char **env)
+// {
+// 	char *str;
+// 	char *tmp;
+	
+// 	int i;
+// 	int doller;
+// 	char *tmp2;
+
+// 	i = 0;
+// 	tmp2 = NULL;
+// 	while (token)
+// 	{
+// 		if (ft_strchr(token->value, '$') != NULL)
+// 		{
+// 			doller = find_doller(token->value);
+// 			while (doller >= 0)
+// 			{
+// 				str = get_word(token->value + 1);
+// 				token->value = remove_word(token->value + 1);
+// 				printf("token %s\n", token->value);
+// 				i = 0;
+// 				while (env[i])
+// 				{
+// 					if (ft_strncmp(env[i], (str), ft_strlen(str)) == 0 \
+// 					&& env[i][ft_strlen(str)] == '=')
+// 					{
+// 						tmp = ft_strchr(env[i], '=') + 1;
+// 						tmp2 = ft_strjoin2(tmp2, tmp);
+// 						printf("tmp2:%s\n", tmp2);
+// 						break;
+// 					}
+// 					i++;
+// 				}
+// 				doller--;
+// 			}
+// 			token->value = tmp2;
+// 		}	
+// 		token = token->next;
+// 	}
+// }
 
 
 // void expand(t_node *tree)

@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/24 17:41:20 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/24 21:23:55 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,19 @@ void   print_tree(t_node *tree)
 	else if (tree->type == CMD)
 	{
 		// printf("CMD: %s\n", tree->data->cmd->value);
-		for (int i = 0; tree->data->cmd->args[i]; i++)
-			printf("args[%d]: %s\n", i, tree->data->cmd->args[i]);
+		if (tree->data->cmd->args != NULL)
+		{
+			for (int i = 0; tree->data->cmd->args[i]; i++)
+				printf("args[%d]: %s\n", i, tree->data->cmd->args[i]);
+		}
 	}
 	else if (tree->type == REDIR)
 	{
-		printf("REDIR: %s\n", tree->data->red->value);
-		print_redir(tree->data->red);
+		if (tree->data->red->value != NULL)
+		{
+			printf("REDIR: %s\n", tree->data->red->value);
+			print_redir(tree->data->red);
+		}
 	}
 	print_tree(tree->left);
 	print_tree(tree->right);
