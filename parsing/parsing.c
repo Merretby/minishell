@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/24 21:23:55 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/25 18:54:45 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,13 @@ void   print_tree(t_node *tree)
 	}
 	else if (tree->type == CMD)
 	{
-		// printf("CMD: %s\n", tree->data->cmd->value);
-		if (tree->data->cmd->args != NULL)
-		{
-			for (int i = 0; tree->data->cmd->args[i]; i++)
-				printf("args[%d]: %s\n", i, tree->data->cmd->args[i]);
-		}
+		if (tree->data->cmd->value != NULL)
+			printf("CMD: %s\n", tree->data->cmd->value);
+		// if (tree->data->cmd->args != NULL)
+		// {
+		// 	for (int i = 0; tree->data->cmd->args[i]; i++)
+		// 		printf("args[%d]: %s\n", i, tree->data->cmd->args[i]);
+		// }
 	}
 	else if (tree->type == REDIR)
 	{
@@ -46,16 +47,17 @@ void   print_tree(t_node *tree)
 void     helper(t_token *token, char **env)
 {
 	t_node *tree = NULL;
+	char **str;
 
 	if (token == NULL)
 		return ;
 	if (parss_command(token) == 1)
 	{
+		str = env;
 		heredoc(token);
-		expand(token, env);
+		expand(token, str);
 		tree = pipeline(&token);
-		tree->env1 = env;
-		ft_execution(tree);
+		ft_execution(tree, str);
 		print_tree(tree);
 	}
 }
@@ -139,7 +141,6 @@ t_node  *pipeline(t_token **token)
 	if (token == NULL)
 		return NULL;
 	left = rederiction(token);
-	// printf("rani dezt mn pipe\n");
 	while((*token) && (*token)->type == TOKEN_PIPE)
 	{
 		new = new_redir(*token);

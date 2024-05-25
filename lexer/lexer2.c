@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 13:52:04 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/22 18:07:09 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/25 14:02:57 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ static void	string(t_lexer **lexer, t_token **token)
 				init_token(TOKEN_STRING, get_the_string(*lexer, '"'),
 					(*lexer)->c)));
 	}
-	if (ft_isalnum((*lexer)->content[(*lexer)->i]))
+	if (ft_isalnum((*lexer)->content[(*lexer)->i]) || (*lexer)->c == '$')
 	{
 		tmp = ft_lstlast1(*token);
 		tmp->helper_flag = 1;

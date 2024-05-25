@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/24 17:39:59 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/25 16:41:35 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,12 +131,12 @@ void				ft_lstadd_back2(t_env **lst, t_env *new);
 
 
 //execution
-void    ft_execution(t_node *moad);
+void    ft_execution(t_node *tree, char **env1);
 
 // builtins
 int					ft_cd(t_node *node, char **env);
 int					ft_echo(t_node *tree);
-int					ft_env(t_node *tree);
+int					ft_env(char **env);
 int					ft_exit(t_node *tree);
 char 				**ft_export(t_node *tree, char **env1);
 int					ft_pwd(t_node *tree);

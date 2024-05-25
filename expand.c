@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:00:56 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/24 22:25:28 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/25 16:02:18 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,11 +123,24 @@ char *get_value(char *str, char **env)
 	return (NULL);
 }
 
+int check_doller(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '$')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 char	*real_expand(char *line, char **env)
 {
 	int i;
 	char *str;
-	// char *tmp;
 	char *tmp2;
 
 	i = 0;
@@ -138,15 +151,17 @@ char	*real_expand(char *line, char **env)
 		{
 			str = get_word(line + 1);
 			line = remove_word(line + 1);
-			printf("line: %s\n", line);
 			if (get_value(str, env) != NULL)
 				tmp2 = ft_strjoin2(tmp2, get_value(str, env));
-			if (line[0] != '$' && line[0] != '\\' && !ft_isdigit(line[0]))
-				tmp2 = join_char(tmp2, line[0]);
+			if (check_doller(line) == 1)
+				if (line[0] != '$' && line[0] != '\\' && !ft_isdigit(line[0]))
+					tmp2 = join_char(tmp2, line[0]);
 			i = -1;
 		}
 		i++;
 	}
+	if (line != NULL)
+		tmp2 = ft_strjoin2(tmp2, line);
 	return (tmp2);
 }
 
@@ -158,13 +173,13 @@ void	expand(t_token *token, char **env)
 	char *befor;
 	char *after;
 
-	i = 0;
 	j = 0;
 	while (token)
 	{
-		while (token->value[i])
+		i = 0;
+		while (token->value && token->value[i])
 		{
-			if (token->value[i] == '$')
+			if (token->value[i] == '$' && token->flag != 0)
 			{
 				while (token->value[i] != '$' && token->value[i])
 					i++;
