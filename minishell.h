@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/21 17:22:04 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/26 15:27:58 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,12 +131,13 @@ void				ft_lstadd_back2(t_env **lst, t_env *new);
 
 
 //execution
-void    ft_execution(t_node *moad);
+void    ft_execution(t_node *tree, char **env1);
+void	ft_execute(t_node *par,  char **env);
 
 // builtins
 int					ft_cd(t_node *node, char **env);
 int					ft_echo(t_node *tree);
-int					ft_env(t_node *tree);
+int					ft_env(char **env);
 int					ft_exit(t_node *tree);
 char 				**ft_export(t_node *tree, char **env1);
 int					ft_pwd(t_node *tree);
@@ -157,5 +158,8 @@ int					parss_command(t_token *token);
 //heredoc
 char				*concatenation(t_token *token);
 void				heredoc(t_token *token);
+
+//expand
+void				expand(t_token *token, char **env);
 
 #endif 

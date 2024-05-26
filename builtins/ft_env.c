@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 13:58:43 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/21 17:11:21 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/25 16:38:43 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ void	take_env(char **env)
 	}
 	//print_env(env_list);
 }
-int ft_env(t_node *node)
+int ft_env(char **env)
 {
-	take_env(node->env1);
+	take_env(env);
 	return (0);
 }
