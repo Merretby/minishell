@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 11:38:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/25 11:36:32 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/05/25 18:26:43 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int     ft_echo(t_node *node)
         ft_print(node->data->cmd->args);
     else
     {
-        printf("kan hna\n");
+        // printf("kan hna\n");
         ft_print2(node->data->cmd->args);
     }
     return (0);

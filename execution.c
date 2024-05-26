@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/25 16:32:29 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/05/26 14:55:09 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void ft_execution(t_node *tree, char **env1)
             ft_env(env1);
         else if (ft_strncmp(tree->data->cmd->value, "exit", 4) == 0)
             ft_exit(tree);
+        else
+            ft_execute(tree, env1);
     }
 
     ft_execution(tree->left, env1);
