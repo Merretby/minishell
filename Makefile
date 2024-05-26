@@ -5,7 +5,7 @@ CFILES = minishell.c lexer/token.c linkedlist.c lexer/lexer.c lexer/lexer2.c \
     parsing/parsing.c free.c init.c parsing/error.c parsing/heredoc.c\
     builtins/ft_echo.c builtins/ft_cd.c builtins/ft_pwd.c builtins/ft_export.c \
     builtins/ft_unset.c builtins/ft_env.c builtins/ft_exit.c execution.c \
-	expand.c
+	expand.c execution/execve.c
 RFLAGS = -lreadline
 
 OFILSE = $(CFILES:.c=.o)
