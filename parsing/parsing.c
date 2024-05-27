@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/26 15:30:57 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/27 16:16:46 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void     helper(t_token *token, char **env)
 		expand(token, str);
 		heredoc(token);
 		tree = pipeline(&token);
-		ft_execution(tree, str);
+		ft_execution(tree, str, 1);
 		// print_tree(tree);
 	}
 }
@@ -66,7 +66,7 @@ t_redir	*create_redirection(t_token *token)
 {
 	t_redir	*red;
 
-	red = malloc(sizeof(t_redir));
+	red = ft_calloc(1, sizeof(t_redir));
 	red->value = ft_strdup(token->value);
 	red->type = token->type;
 	return (red);
