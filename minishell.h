@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/26 17:01:40 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/28 21:08:25 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef	enum e_type
 	TOKEN_HEREDOC,      // <<
 	TOKEN_OUTFILE,
 	TOKEN_FILE,
+	TOKEN_EOF,
 } t_type;
 
 typedef enum e_rd
@@ -73,8 +74,16 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
+typedef struct s_pipe
+{
+	char 			*value;
+	int				type;
+	struct s_pipe	*next;
+}					t_pipe;
+
 typedef union u_data
 {
+	t_pipe			*pipe;
 	t_cmd			*cmd;
 	t_redir			*red;
 }					t_data;
@@ -156,8 +165,9 @@ void				ft_free(t_token **token, t_lexer **lexer);
 int					parss_command(t_token *token);
 
 //heredoc
-char				*concatenation(t_token *token);
-void				heredoc(t_token *token);
+char				*concatenation(t_token *token, int *flaag);
+void				heredoc(t_token *token, char **env);
+char	*real_expand(char *line, char **env);
 
 //expand
 void				expand(t_token *token, char **env);

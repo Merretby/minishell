@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 13:52:04 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/25 14:02:57 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:01:10 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,11 +211,19 @@ void	lexer_to_next_token(t_lexer *lexer, t_token **token)
 		{
 			ft_lstadd_back1(token, advance_token(lexer,
 					init_token(TOKEN_HEREDOC, "<<", lexer->c)));
+			
 			advance(lexer);
-			if (lexer->c == '\'' || lexer->c ==  '"')
+			if (lexer->c == ' ' || (lexer->c >= 9 && lexer->c <= 13))
+				skip_whitespace(lexer);
+			if (lexer->c == ft_isalnum(lexer->c))
 			{
-				tmp = ft_lstlast1(*token);
-				tmp->helper_flag = 1;
+				ft_lstadd_back1(token, advance_token(lexer,
+						init_token(TOKEN_EOF, get_the_word(lexer),lexer->c)));
+				if (lexer->c == '\'' || lexer->c ==  '"')
+				{
+					tmp = ft_lstlast1(*token);
+					tmp->helper_flag = 1;
+				}
 			}
 		}
 		else if (lexer->c == '<')
