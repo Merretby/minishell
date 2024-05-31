@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:10 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/25 17:54:19 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/05/31 15:23:16 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,24 @@ int check_repetition(t_env **env1, char *value)
     return 0;
 }
 
-char *ft_init_export(char *value)
-{
-    char *new_env;
-    char *tmp;
-    int i;
+// char *ft_init_export(char *value)
+// {
+//     char *new_env;
+//     char *tmp;
+//     int i;
 
-    i = 0;
-    while (value[i] && value[i] != '=')
-        i++;
-    new_env = ft_substr(value, 0, i + 1);
-    if (value[i + 1] != '\"' && value[i + 1] != '\'')
-        new_env = ft_strjoin(new_env, "\"");
-    tmp = ft_strjoin(new_env, value + i + 1);
-    free(new_env);
-    if (tmp[ft_strlen(tmp) - 1] != '\"' && tmp[ft_strlen(tmp) - 1] != '\'')
-        tmp = ft_strjoin(tmp, "\"");
-    return (tmp);
-}
+//     i = 0;
+//     while (value[i] && value[i] != '=')
+//         i++;
+//     new_env = ft_substr(value, 0, i + 1);
+//     if (value[i + 1] != '\"' && value[i + 1] != '\'')
+//         new_env = ft_strjoin(new_env, "\"");
+//     tmp = ft_strjoin(new_env, value + i + 1);
+//     free(new_env);
+//     if (tmp[ft_strlen(tmp) - 1] != '\"' && tmp[ft_strlen(tmp) - 1] != '\'')
+//         tmp = ft_strjoin(tmp, "\"");
+//     return (tmp);
+// }
 
 char *check_value(char *value)
 {
@@ -79,6 +79,29 @@ char *check_value(char *value)
     return value;
 }
 
+void ft_printexport(t_env *new)
+{
+    char    *tmp;
+    int i;
+
+    while (new)
+    {
+        i = 0;
+        while (new->value[i] && new->value[i] != '=')
+            i++;
+        if (new->value[i] == '\0')
+            printf("declare -x %s\n", new->value);
+        else
+        {
+            tmp = ft_substr(new->value, 0, i);
+            printf("declare -x %s=\"", tmp);
+            free(tmp);
+            tmp = ft_substr(new->value, i + 1, ft_strlen(new->value) - i - 1);
+            printf("%s\"\n", tmp);
+        }
+        new = new->next;
+    }
+}
 
 char  **ft_export(t_node *node, char **env1)
 {
@@ -89,7 +112,7 @@ char  **ft_export(t_node *node, char **env1)
     if (!new)
         return (0);
     new->next = NULL;
-    new->value = ft_init_export(env1[0]);
+    new->value = env1[0];
     i = 1;
     if (node->data->cmd->args[1] && node->data->cmd->args[1][0] == '=')
     {
@@ -99,18 +122,13 @@ char  **ft_export(t_node *node, char **env1)
     while (env1[i])
     {
         value = env1[i];
-        ft_lstadd_back2(&new, ft_lstnew2(ft_init_export(value)));
+        ft_lstadd_back2(&new, ft_lstnew2(value));
         i++;
     }
     i = 1;
     if(node->data->cmd->args[1] == NULL)
     {
-        t_env *tmp = new;
-        while(tmp)
-        {
-            printf("declare -x %s\n", tmp->value);
-            tmp = tmp->next;
-        }
+        ft_printexport(new);
         free(new);
         return env1;
     }
@@ -121,7 +139,6 @@ char  **ft_export(t_node *node, char **env1)
         else
         {
             value = node->data->cmd->args[i];
-            value = check_value(value);
             ft_lstadd_back2(&new, ft_lstnew2(value));
             i++;
         }

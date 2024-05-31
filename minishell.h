@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/26 14:54:58 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/05/30 18:42:55 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,18 @@ typedef struct s_cmd
 	char			**args;
 	int				type;
 	struct s_cmd	*next;
-}					t_cmd;
+}				t_cmd;
+
+typedef struct s_pipe
+{
+	char		*value;
+	int 		type;
+	struct s_pipe	*next;
+}					t_pipe;
 
 typedef union u_data
 {
+	t_pipe			*pipe;
 	t_cmd			*cmd;
 	t_redir			*red;
 }					t_data;
@@ -131,8 +139,8 @@ void				ft_lstadd_back2(t_env **lst, t_env *new);
 
 
 //execution
-void    ft_execution(t_node *tree, char **env1);
-void	ft_execute(t_node *par,  char **env);
+void    ft_execution(t_node *tree, char **env1, int fork_flag);
+void	ft_execute(t_node *par,  char **env, int fork_flag);
 
 // builtins
 int					ft_cd(t_node *node, char **env);
@@ -140,6 +148,7 @@ int					ft_echo(t_node *tree);
 int					ft_env(char **env);
 int					ft_exit(t_node *tree);
 char 				**ft_export(t_node *tree, char **env1);
+void				rdr_handle(t_node *node, char **env);
 int					ft_pwd(t_node *tree);
 char				**ft_unset(t_node *node, char **env1);
 // int					ft_builtins(char *str, t_node *tree);
@@ -156,7 +165,7 @@ void				ft_free(t_token **token, t_lexer **lexer);
 int					parss_command(t_token *token);
 
 //heredoc
-char				*concatenation(t_token *token);
-void				heredoc(t_token *token);
+char 				*concatenation(t_token *token, int *flaag);
+void				heredoc(t_token *token, char **env);
 
 #endif 

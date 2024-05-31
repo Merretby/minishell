@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/25 13:47:56 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/05/31 14:04:17 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@ void print_redir(t_redir*red);
 
 void   print_tree(t_node *tree)
 {
+	
 	if (tree == NULL)
 		return ;
+
 	if (tree->type == PIPE)
 	{
-		printf("PIPE: %s\n", tree->data->red->value);
+		printf("PIPE: %s\n", tree->data->pipe->value);
 	}
 	else if (tree->type == CMD)
 	{
@@ -31,10 +33,9 @@ void   print_tree(t_node *tree)
 	else if (tree->type == REDIR)
 	{
 		printf("REDIR: %s\n", tree->data->red->value);
-		// print_redir(tree->data->red);
+		
+		print_redir(tree->data->red);
 	}
-	print_tree(tree->left);
-	print_tree(tree->right);
 }
 
 void     helper(t_token *token, char **env)
@@ -46,10 +47,13 @@ void     helper(t_token *token, char **env)
 	if (parss_command(token) == 1)
 	{
 		str = env;
-		heredoc(token);
+		heredoc(token, env);
 		tree = pipeline(&token);
-		//tree->env1 = env;
-		ft_execution(tree, str);
+		tree->env1 = env;
+		
+		ft_execution(tree, str, 1);
+		// printf("sss %s\n", tree->left->data->cmd->value);
+		// printf("tree->left->type %d\n", tree->left->type);
 		// print_tree(tree);
 	}
 }
@@ -58,7 +62,7 @@ t_redir	*create_redirection(t_token *token)
 {
 	t_redir	*red;
 
-	red = malloc(sizeof(t_redir));
+	red = ft_calloc(1, sizeof(t_redir));
 	red->value = ft_strdup(token->value);
 	red->type = token->type;
 	return (red);
@@ -124,6 +128,18 @@ t_node *command(t_token **token)
 	return NULL;
 }
 
+t_node	*new_pipe(t_token *token)
+{
+	t_node	*node;
+
+	node = ft_calloc(1, sizeof(t_node));
+	node->data = ft_calloc(1, sizeof(t_data));
+	node->data->pipe = ft_calloc(1, sizeof(t_pipe));
+	node->data->pipe->value = ft_strdup(token->value);
+	node->data->pipe->type = token->type;
+	node->type = PIPE;
+	return (node);
+}
 
 t_node  *pipeline(t_token **token)
 {
@@ -136,7 +152,7 @@ t_node  *pipeline(t_token **token)
 	// printf("rani dezt mn pipe\n");
 	while((*token) && (*token)->type == TOKEN_PIPE)
 	{
-		new = new_redir(*token);
+		new = new_pipe(*token);
 		new->type = PIPE;
 		*token = (*token)->next;
 		new->left = left;
@@ -186,27 +202,35 @@ void print_redir(t_redir*red)
 t_node	*rederiction(t_token **token)
 {
 	t_node *left;
-	t_node *red;
+	t_node *node;
 	t_redir *tmp;
-
+	t_token *tmp_token;
 	
 	left = command(token);
-	if ((*token) && ((*token)->type == TOKEN_HEREDOC))
+	if (left == NULL)
 	{
-		red = new_redir((*token));
-		red->left = left;
-		*token = (*token)->next;
-		red->right = command(token);
-		left = red;
+		tmp_token = *token;
+		while (tmp_token && (tmp_token->type == TOKEN_REDIR_IN ||\
+		 tmp_token->type == TOKEN_REDIR_OUT ||\
+		 tmp_token->type == TOKEN_REDIR_APPEND ||\
+		 tmp_token->type == TOKEN_OUTFILE ||\
+		 tmp_token->type == TOKEN_FILE))
+		 {
+			tmp_token = tmp_token->next;
+		 }
+		 if (tmp_token && (tmp_token->type == TOKEN_ID || tmp_token->type == TOKEN_STRING))
+		 {
+			left = new_node(tmp_token);
+			left->data->cmd->value = ft_strdup(tmp_token->value);
+			left->data->cmd->args = ft_split(left->data->cmd->value, ' ');
+		 }
 	}
 	if ((*token) && ((*token)->type == TOKEN_REDIR_IN ||\
 	 (*token)->type == TOKEN_REDIR_OUT ||\
-	 (*token)->type == TOKEN_REDIR_APPEND ||\
-	 (*token)->type == TOKEN_OUTFILE ||\
-	 (*token)->type == TOKEN_FILE))
+	 (*token)->type == TOKEN_REDIR_APPEND))
 	{
-		red = new_redir(*token);
-		tmp = red->data->red;
+		node = new_redir(*token);
+		tmp = node->data->red;
 		(*token) = (*token)->next;
 		while ((*token) && ((*token)->type == TOKEN_REDIR_IN ||\
 		 (*token)->type == TOKEN_REDIR_OUT ||\
@@ -217,10 +241,11 @@ t_node	*rederiction(t_token **token)
 			tmp->next = create_redirection(*token);
 			tmp = tmp->next;
 			(*token) = (*token)->next;
+		 	if ((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING))
+				(*token) = (*token)->next;
 		 }
-		 red->left = left;
-		 red->right = pipeline(token);
-		 left = red;
+		 node->left = left;
+		 left = node;
 	}
 	return left;
 }

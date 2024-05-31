@@ -6,24 +6,34 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 14:44:23 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/26 15:14:18 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/05/28 19:17:08 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	case1(char *tmp, t_node *tree, char **env, char **path)
+void	case1(char *tmp, t_node *tree, char **env)
 {
 	if (execve(tmp, tree->data->cmd->args, env) == -1)
-		printf("minishell: command not found\n");
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(tree->data->cmd->args[0], 2);
+		ft_putstr_fd(" command not found\n", 2);
+		exit(1);
+	}
 }
 
-void	case2(t_node *tree, char **env, char **path)
+void	case2(t_node *tree, char **env)
 {
 	if (access(tree->data->cmd->args[0], F_OK | X_OK) == 0)
 		execve(tree->data->cmd->args[0], tree->data->cmd->args, env);
 	else
-		printf("minishell: command not found\n");
+	{
+		printf("hna\n");
+		write(2, "minishell: ", 11);
+		perror(tree->data->cmd->value);
+		exit(1);
+	}
 }
 
 char	*path_check(char **env)
@@ -37,21 +47,20 @@ char	*path_check(char **env)
 			break ;
 		i++;
 	}
-    
 	return (env[i]);
 }
 
-void ft_execute2(t_node *tree, char **env)
+void	ft_execute2(t_node *tree, char **env)
 {
-    char	*str;
+	char	*str;
 	char	**path;
-    char   *tmp;
+	char   *tmp;
 	int		i;
 
 	i = 0;
 	str = path_check(env);
 	path = ft_split(str + 5, ':');
-    
+	
 	while (path[i] && tree->data->cmd->args)
 	{
 		if (ft_strchr(tree->data->cmd->args[0], '/') == NULL) ///nfs/homes/moer-ret/bin  /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/games /ls
@@ -64,27 +73,31 @@ void ft_execute2(t_node *tree, char **env)
 			free(tmp);
 		}
 		else
-			case2(tree, env, path);
+		{
+			case2(tree, env);
+			break ;
+		}
 		i++;
 	}
 	if (ft_strchr(tree->data->cmd->args[0], '/') == NULL)
-		case1(tmp, tree, env, path);
+		case1(tmp, tree, env);
 }
 
-void	ft_execute(t_node *tree,  char **env)
-{   
-    // int fd[2];
-    int ip1;
+void	ft_execute(t_node *tree,  char **env, int fork_flag)
+{
+	int ip1;
 
-    // if (pipe(fd) == -1)
-    //     printf("error\n");
-    ip1 = fork();
-    if (ip1 == 0)
-    {
-        ft_execute2(tree, env);
-    }
-    else
-    {
-        waitpid(ip1, NULL, 0);
-    }
+	if (fork_flag == 0)
+	{
+		ft_execute2(tree, env);
+		return ;
+	}
+	else if (fork_flag == 1)
+	{
+		ip1 = fork();
+		if (ip1 == 0)
+			ft_execute2(tree, env);
+		else
+			waitpid(ip1, NULL, 0);
+	}
 }
