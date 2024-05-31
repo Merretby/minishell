@@ -6,13 +6,21 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/31 15:24:53 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:30:52 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void print_redir(t_redir*red);
+
+void print_redir(t_redir*red)
+{
+	while (red)
+	{
+		printf("redirection--> %s\n", red->value);
+		red = red->next;
+	}
+}
 
 void   print_tree(t_node *tree)
 {
@@ -133,7 +141,7 @@ void	take_args(t_token *token)
 		if (token->type == TOKEN_ID || token->type == TOKEN_STRING)
 		{
 			tmp = token;
-			token = token->next;
+			// token = token->next;
 			while (token && (token->type == TOKEN_ID || token->type == TOKEN_STRING))
 			{
 				add_to_args(tmp, token->value);
@@ -215,19 +223,6 @@ t_node *new_redir(t_token *token)
 	return (node);
 }
 
-t_node	*init_pipe(t_token *token)
-{
-	t_node *node;
-
-	node = ft_calloc(1, sizeof(t_node));
-	node->data = ft_calloc(1, sizeof(t_data));
-	node->data->pipe = ft_calloc(1, sizeof(t_pipe));
-	node->data->pipe->value = ft_strdup(token->value);
-	node->data->pipe->type = token->type;
-	node->type = PIPE;
-	return (node);
-}
-
 t_node *new_node(t_token *token)
 {
 	t_node	*node;
@@ -249,15 +244,47 @@ t_node *new_node(t_token *token)
 
 t_node *command(t_token **token)
 {
-	t_node *new;
+	t_token *tmp;
+	// t_node *new;
+	// char *str;
 	
+	tmp = (*token);
 	if((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING))
 	{
-		new = new_node(*token);
 		*token = (*token)->next;
-		return new;
+		while ((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING))
+			*token = (*token)->next;
+		return(new_node(tmp));
+		// while ((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING))
+		// {
+		// 	if ((*token)->prev->helper_flag == 1)
+		// 		new->data->cmd->value  = ft_strjoin(new->data->cmd->value, (*token)->value);
+		// 	else
+		// 	{
+		// 		str = ft_strjoin(new->data->cmd->value, " ");
+		// 		new->data->cmd->value = ft_strjoin(str, (*token)->value);
+		// 		free (str);
+		// 	}
+		// 	*token = (*token)->next;
+		// }
+		// if (new->data->cmd->value != NULL)
+		// 	new->data->cmd->args = ft_split(new->data->cmd->value, ' ');
+		// return new;
 	}
 	return NULL;
+}
+
+t_node	*new_pipe(t_token *token)
+{
+	t_node	*node;
+
+	node = ft_calloc(1, sizeof(t_node));
+	node->data = ft_calloc(1, sizeof(t_data));
+	node->data->pipe = ft_calloc(1, sizeof(t_pipe));
+	node->data->pipe->value = ft_strdup(token->value);
+	node->data->pipe->type = token->type;
+	node->type = PIPE;
+	return (node);
 }
 
 t_node  *pipeline(t_token **token)
@@ -268,9 +295,11 @@ t_node  *pipeline(t_token **token)
 	if (token == NULL)
 		return NULL;
 	left = rederiction(token);
+	// printf("rani dezt mn pipe\n");
 	while((*token) && (*token)->type == TOKEN_PIPE)
 	{
-		new = init_pipe(*token);
+		new = new_pipe(*token);
+		new->type = PIPE;
 		*token = (*token)->next;
 		new->left = left;
 		new->right = pipeline(token);
@@ -307,44 +336,53 @@ void ft_last_back_red(t_redir **lst, t_redir *new)
 	}
 }
 
-void print_redir(t_redir*red)
-{
-	while (red)
-	{
-		printf("redirection--> %s\n", red->value);
-		red = red->next;
-	}
-}
-
 t_node	*rederiction(t_token **token)
 {
 	t_node *left;
-	t_node *data;
+	t_node *node;
 	t_redir *tmp;
-
+	t_token *tmp_token;
 	
 	left = command(token);
+	if (left == NULL)
+	{
+		tmp_token = *token;
+		while (tmp_token && (tmp_token->type == TOKEN_REDIR_IN ||\
+		 tmp_token->type == TOKEN_REDIR_OUT ||\
+		 tmp_token->type == TOKEN_REDIR_APPEND ||\
+		 tmp_token->type == TOKEN_OUTFILE ||\
+		 tmp_token->type == TOKEN_FILE))
+		 {
+			tmp_token = tmp_token->next;
+		 }
+		 if (tmp_token && (tmp_token->type == TOKEN_ID || tmp_token->type == TOKEN_STRING))
+		 {
+			left = new_node(tmp_token);
+			left->data->cmd->value = ft_strdup(tmp_token->value);
+			left->data->cmd->args = ft_split(left->data->cmd->value, ' ');
+		 }
+	}
 	if ((*token) && ((*token)->type == TOKEN_REDIR_IN ||\
 	 (*token)->type == TOKEN_REDIR_OUT ||\
-	 (*token)->type == TOKEN_REDIR_APPEND ||\
-	 (*token)->type == TOKEN_OUTFILE ||\
-	 (*token)->type == TOKEN_FILE || (*token)->type == TOKEN_EOF))
+	 (*token)->type == TOKEN_REDIR_APPEND))
 	{
-		data = new_redir(*token);
-		tmp = data->data->red;
+		node = new_redir(*token);
+		tmp = node->data->red;
 		(*token) = (*token)->next;
 		while ((*token) && ((*token)->type == TOKEN_REDIR_IN ||\
 		 (*token)->type == TOKEN_REDIR_OUT ||\
 		 (*token)->type == TOKEN_REDIR_APPEND ||\
 		 (*token)->type == TOKEN_OUTFILE ||\
-		 (*token)->type == TOKEN_FILE || (*token)->type == TOKEN_EOF))
+		 (*token)->type == TOKEN_FILE))
 		 {
 			tmp->next = create_redirection(*token);
 			tmp = tmp->next;
 			(*token) = (*token)->next;
+		 	if ((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING))
+				(*token) = (*token)->next;
 		 }
-		 data->left = left;
-		 left = data;
+		 node->left = left;
+		 left = node;
 	}
 	return left;
 }
