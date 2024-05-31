@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:44:32 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/31 15:39:09 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:36:17 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,14 @@ int     ft_cd(t_node *node, char **env)
     char *oldPwd;
 
     oldPwd = fined_pwd(env);
-    if (node->data->cmd->args == NULL || ft_strncmp(node->data->cmd->args[0] , "~", 1) == 0)
+    if (node->data->cmd->args[1] == NULL || ft_strncmp(node->data->cmd->args[1] , "~", 1) == 0)
     {
         printf("cd: HOME not set\n");
         chdir(getenv("HOME"));
     }
-    else if (chdir(node->data->cmd->args[0]) == -1)
+    else if (chdir(node->data->cmd->args[1]) == -1)
     {
-        printf("cd: %s: No such file or directory\n", node->data->cmd->args[0]);
+        printf("cd: %s: No such file or directory\n", node->data->cmd->args[1]);
         return (1);
     }
     char buffer[PATH_MAX];

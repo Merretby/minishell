@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:54:32 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/31 16:01:53 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:36:53 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,26 @@ int ft_exit(t_node *node)
     int i;
 
     i = 0;
-    if (!node->data->cmd->args[i])
+    if (!node->data->cmd->args[i + 1])
     {
         printf("exit\n");
         exit(0);
     }
-    if (node->data->cmd->args[i] && !node->data->cmd->args[i + 1])
+    if (node->data->cmd->args[i + 1] && !node->data->cmd->args[i + 2])
     {
-        if (!ft_isdigitV2(node->data->cmd->args[i]))
+        if (!ft_isdigitV2(node->data->cmd->args[i + 1]))
         {
-            int nb = ft_atoi(node->data->cmd->args[i]);
+            int nb = ft_atoi(node->data->cmd->args[i + 1]);
 
             if (nb > 256)
                 nb = nb % 256;
             printf("exit\n");
-            printf("minishell: exit: %s: numeric argument required\n", node->data->cmd->args[i]);
+            printf("minishell: exit: %s: numeric argument required\n", node->data->cmd->args[i + 1]);
             exit(nb);
         }
         else
         {
-            int nb2 =  ft_atoi(node->data->cmd->args[i]);
+            int nb2 =  ft_atoi(node->data->cmd->args[i + 1]);
             if (nb2 > 256)
                 nb2 = nb2 % 256;
             printf("exit\n");

@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 20:43:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/31 14:06:32 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/31 20:36:50 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char	*get_the_string(t_lexer *lexer, char c)
 		if (lexer->c == '\0')
 		{
 			printf("minishell: not close with `%c'\n", c);
-			return (NULL);
+			return (0);
 		}
 	}
 	str[j] = '\0';

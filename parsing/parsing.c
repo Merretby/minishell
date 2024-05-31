@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/31 17:30:52 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/31 20:30:15 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,8 @@ void	take_args(t_token *token)
 				add_to_args(tmp, token->value);
 				tmp2 = token;
 				token = token->next;
+				while (token && (token->type != TOKEN_ID && token->type != TOKEN_STRING && token->type != TOKEN_PIPE))
+					token = token->next;
 				// delete_node(head,tmp2);
 			}
 		}
@@ -295,7 +297,6 @@ t_node  *pipeline(t_token **token)
 	if (token == NULL)
 		return NULL;
 	left = rederiction(token);
-	// printf("rani dezt mn pipe\n");
 	while((*token) && (*token)->type == TOKEN_PIPE)
 	{
 		new = new_pipe(*token);
