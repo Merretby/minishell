@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/31 15:29:34 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/05/31 15:35:07 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,12 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 		ip1 = 0;
 		ip2 = 0;
 		if (pipe(fd) == -1)
-			exit(1);-a
+			exit(1);
+		ip1 = fork();
+		if (ip1 == -1)
+			perror("error in fork ip1");
+		if (ip1 == 0)
+		{
 			child(env1, tree, fd);
 			exit(1);
 		}
@@ -89,7 +94,8 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 			ip2 = fork();
 			if (ip2 == -1)
 				perror("error in fork ip2\n");
-			if (ip2 == 0)-a
+			if (ip2 == 0)
+			{
 				child2(env1, tree, fd);
 				exit(1);
 			}
