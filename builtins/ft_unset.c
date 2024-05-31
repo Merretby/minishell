@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:20 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/22 13:26:05 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:52:59 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ t_env *ft_New_env(char *value, t_env *env)
 char **ft_unset(t_node *node, char **env1)
 {
     t_env *env;
-    int     i = 1;
+    int     i = 0;
     int     j = 0;
     
     env = malloc(sizeof(t_env));

@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/30 15:39:37 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:24:53 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,6 @@ void   print_tree(t_node *tree)
 	print_tree(tree->right);
 }
 
-void	del_preve_token(t_token **token)
-{
-	t_token *tmp;
-
-	if (token == NULL)
-		return ;
-	tmp = *token;
-	*token = (*token)->next;
-	free(tmp->value);
-	free(tmp);
-}
-
 void	concatenation_token(t_token *token)
 {
 	t_token *tmp;
@@ -71,7 +59,7 @@ void	concatenation_token(t_token *token)
 		if (token->helper_flag == 1)
 		{
 			next = token->next;
-			while (next && (next->type == TOKEN_ID || next->type == TOKEN_STRING || next->type == TOKEN_DOLLAR))
+			while (next && (next->type == TOKEN_ID || next->type == TOKEN_STRING))
 			{
 				concatenated = ft_strjoin(token->value, next->value);
 				free(token->value);
@@ -87,16 +75,106 @@ void	concatenation_token(t_token *token)
 		}
 		token = token->next;
 	}
+}
+
+void add_to_args(t_token *token,char *str)
+{
+	t_args *new;
+	t_args *tmp;
+
+	new = ft_calloc(1, sizeof(t_args));
+	new->args = ft_strdup(str);
+	new->next = NULL;
+	if (token->args == NULL)
+		token->args = new;
+	else
+	{
+		tmp = token->args;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
+
+}
+
+void delete_node(t_token *head, t_token *node)
+{
+	t_token *tmp;
+	
+	tmp = head;
+	if (tmp == node)
+	{
+		head = node->next;
+		free(node->value);
+		free(node);
+		node = NULL;
+	}
+	else
+	{
+	
+		node->prev->next = node->next;
+		if (node->next)
+			node->next->prev = node->prev;
+		free(node->value);
+		free(node);
+		node = NULL;
+	}
+}
+
+void	take_args(t_token *token)
+{
+	t_token *tmp;
+	t_token *head;
+	t_token *tmp2;
+
+	head = token;
+	while (token)
+	{
+		if (token->type == TOKEN_ID || token->type == TOKEN_STRING)
+		{
+			tmp = token;
+			token = token->next;
+			while (token && (token->type == TOKEN_ID || token->type == TOKEN_STRING))
+			{
+				add_to_args(tmp, token->value);
+				tmp2 = token;
+				token = token->next;
+				// delete_node(head,tmp2);
+			}
+		}
+		if (token)
+			token = token->next;
+	}
+}
+
+void	list_to_array(t_token *token)
+{
+	t_args *tmp;
+	t_args *tmp2;
+	int i;
+	
+	i = 0;
+	tmp2 = token->args;
+	while (tmp2)
+	{
+		i++;
+		tmp2 = tmp2->next;
+	}
+	token->arg = ft_calloc(i + 1, sizeof(char *));
+	i = 0;
+	tmp = token->args;
 	while (tmp)
 	{
-		printf("value: %s\n", tmp->value);
+		token->arg[i] = ft_strdup(tmp->args);
 		tmp = tmp->next;
+		i++;
 	}
+	token->arg[i] = NULL;
 }
 
 void     helper(t_token *token, char **env)
 {
-	// t_node *tree = NULL;
+	t_node *tree = NULL;
 	char **str;
 
 	if (token == NULL)
@@ -107,8 +185,9 @@ void     helper(t_token *token, char **env)
 		heredoc(token, str);
 		expand(token, str);
 		concatenation_token(token);
-		// tree = pipeline(&token);
-		// ft_execution(tree, str, 1);
+		take_args(token);
+		tree = pipeline(&token);
+		ft_execution(tree, str, 1);
 		// print_tree(tree);
 	}
 }
@@ -161,123 +240,25 @@ t_node *new_node(t_token *token)
 	else
 		node->data->cmd->value = NULL;
 	node->data->cmd->type = token->type;
-	node->data->cmd->args = NULL;
+	if (token->args)
+		list_to_array(token);
+	node->data->cmd->args = token->arg;
 	node->type = CMD;
 	return (node);
 }
 
-// void myfree(void * p) 
-// {
-//     size_t	*in;
-	
-// 	in = p;
-//     if (in) 
-// 	{
-//         --in; 
-// 		free(in);
-//     }
-// }
-
-// void *mymalloc(size_t n) 
-// {
-//     size_t *result;
-	 
-// 	result = malloc(n + sizeof(size_t));
-//     if (result) 
-// 	{
-// 		*result = n;
-// 		++result;
-// 		ft_memset(result,0,n);
-// 	}
-//     return result;
-// }
-
-// size_t getsize(void * p) 
-// {
-//     size_t * in = p;
-//     if (in) 
-// 	{
-// 		--in;
-// 		return *in;
-// 	}
-//     return -1;
-// }
-
-
-// void *reallocation(void *ptr,size_t size) 
-// {
-//     void *newptr;
-//     int msize;
-//     msize = getsize(ptr);
-//     printf("msize=%d\n", msize);
-//     if (size <= msize)
-//         return ptr;
-//     newptr = mymalloc(size);
-//     ft_memcpy(newptr, ptr, msize);
-//     myfree(ptr);
-//     return newptr;
-// }
-
-// t_node *command(t_token **token)
-// {
-// 	t_node *new;
-// 	char *str;
-	
-// 	if((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING\
-// 		|| (*token)->type == TOKEN_DOLLAR))
-// 	{
-// 		new = new_node(*token);
-// 		*token = (*token)->next;
-// 		while ((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING\
-// 			|| (*token)->type == TOKEN_DOLLAR))
-// 		{
-// 			if ((*token)->prev->helper_flag == 1)
-// 				new->data->cmd->value  = ft_strjoin(new->data->cmd->value, (*token)->value);
-// 			else
-// 			{
-// 				str = ft_strjoin(new->data->cmd->value, " ");
-// 				new->data->cmd->value = ft_strjoin(str, (*token)->value);
-// 				free (str);
-// 			}
-// 			*token = (*token)->next;
-// 		}
-// 		if (new->data->cmd->value != NULL)
-// 			new->data->cmd->args = ft_split(new->data->cmd->value, ' ');
-// 		return new;
-// 	}
-// 	return NULL;
-// }
-
 t_node *command(t_token **token)
 {
 	t_node *new;
-	char *str;
 	
-	if((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING\
-		|| (*token)->type == TOKEN_DOLLAR))
+	if((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING))
 	{
 		new = new_node(*token);
 		*token = (*token)->next;
-		while ((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING\
-			|| (*token)->type == TOKEN_DOLLAR))
-		{
-			if ((*token)->prev->helper_flag == 1)
-				new->data->cmd->value  = ft_strjoin(new->data->cmd->value, (*token)->value);
-			else
-			{
-				str = ft_strjoin(new->data->cmd->value, " ");
-				new->data->cmd->value = ft_strjoin(str, (*token)->value);
-				free (str);
-			}
-			*token = (*token)->next;
-		}
-		if (new->data->cmd->value != NULL)
-			new->data->cmd->args = ft_split(new->data->cmd->value, ' ');
 		return new;
 	}
 	return NULL;
 }
-
 
 t_node  *pipeline(t_token **token)
 {
@@ -343,14 +324,6 @@ t_node	*rederiction(t_token **token)
 
 	
 	left = command(token);
-	// if ((*token) && ((*token)->type == TOKEN_HEREDOC))
-	// {
-	// 	data = new_redir((*token));
-	// 	data->left = left;
-	// 	*token = (*token)->next;
-	// 	data->right = command(token);
-	// 	left = data;
-	// }
 	if ((*token) && ((*token)->type == TOKEN_REDIR_IN ||\
 	 (*token)->type == TOKEN_REDIR_OUT ||\
 	 (*token)->type == TOKEN_REDIR_APPEND ||\

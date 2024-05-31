@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/28 20:56:09 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:10:19 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,19 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 	
 	if (tree->type == CMD)
 	{
-		 if (ft_strcmp(tree->data->cmd->args[0], "pwd") == 0)
+		 if (ft_strcmp(tree->data->cmd->value, "pwd") == 0)
 			ft_pwd(tree);
-		else if (ft_strcmp(tree->data->cmd->args[0], "echo") == 0)
+		else if (ft_strcmp(tree->data->cmd->value, "echo") == 0)
 			ft_echo(tree);
-		else if (ft_strcmp(tree->data->cmd->args[0], "cd") == 0)
+		else if (ft_strcmp(tree->data->cmd->value, "cd") == 0)
 			ft_cd(tree,env1);
-		else if (ft_strcmp(tree->data->cmd->args[0], "export") == 0)
+		else if (ft_strcmp(tree->data->cmd->value, "export") == 0)
 		   env1 = ft_export(tree, env1);
-		else if (ft_strcmp(tree->data->cmd->args[0], "unset") == 0)
+		else if (ft_strcmp(tree->data->cmd->value, "unset") == 0)
 			env1 = ft_unset(tree, env1);
-		else if (ft_strcmp(tree->data->cmd->args[0], "env") == 0)
+		else if (ft_strcmp(tree->data->cmd->value, "env") == 0)
 			ft_env(env1);
-		else if (ft_strcmp(tree->data->cmd->args[0], "exit") == 0)
+		else if (ft_strcmp(tree->data->cmd->value, "exit") == 0)
 			ft_exit(tree);
 		else
 			ft_execute(tree, env1, fork_flag);

@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:00:56 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/28 21:04:21 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/31 13:20:20 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,8 +195,6 @@ void	expand(t_token *token, char **env)
 		token = token->next;
 	}
 }
-
-
 
 // int find_doller(char *str)
 // {

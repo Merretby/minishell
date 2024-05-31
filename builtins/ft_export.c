@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:10 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/25 16:42:31 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:43:35 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,9 @@ char  **ft_export(t_node *node, char **env1)
 	new->next = NULL;
 	new->value = ft_init_export(env1[0]);
 	i = 1;
-	if (node->data->cmd->args[1] && node->data->cmd->args[1][0] == '=')
+	if (node->data->cmd->args && node->data->cmd->args[0][0] == '=')
 	{
-		printf("minishell: export: `%s': not a valid identifier\n", node->data->cmd->args[1]);
+		printf("minishell: export: `%s': not a valid identifier\n", node->data->cmd->args[0]);
 		return env1;
 	}
 	while (env1[i])
@@ -102,8 +102,8 @@ char  **ft_export(t_node *node, char **env1)
 		ft_lstadd_back2(&new, ft_lstnew2(ft_init_export(value)));
 		i++;
 	}
-	i = 1;
-	if(node->data->cmd->args[1] == NULL)
+	i = 0;
+	if(node->data->cmd->args == NULL)
 	{
 		t_env *tmp = new;
 		while(tmp)

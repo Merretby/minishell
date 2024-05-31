@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 11:38:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/25 18:09:15 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:49:16 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void      ft_print2(char **str)
 	int i;
 	int j;
 
-	i = 1;
+	i = 0;
 	while (str[i])
 	{
 		j = 0;
@@ -77,12 +77,12 @@ int     ft_echo(t_node *node)
 {
 	int i;
 	
-	if (!node->data->cmd->args[1])
+	if (!node->data->cmd->args)
 	{
 		write(1, "\n", 1);
 		return (0);
 	}
-	i = check_arg(node->data->cmd->args[1]);
+	i = check_arg(node->data->cmd->args[0]);
 	if (i)
 		ft_print(node->data->cmd->args);
 	else

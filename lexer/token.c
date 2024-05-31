@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 14:38:13 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/20 17:04:41 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:05:38 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,7 @@ t_token	*init_token(int type, char *value, char c)
 	token->helper_flag = 0;
 	token->next = NULL;
 	token->prev = NULL;
+	token->args = NULL;
+	token->arg = NULL;
 	return (token);
 }

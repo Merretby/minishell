@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/28 21:08:25 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:05:01 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef	enum e_type
 	TOKEN_PIPE,         // |
 	TOKEN_REDIR_IN,     // <
 	TOKEN_REDIR_OUT,    // >
-	TOKEN_DOLLAR,       // $
+	// TOKEN_DOLLAR,       // $
 	TOKEN_REDIR_APPEND, // >>
 	TOKEN_HEREDOC,      // <<
 	TOKEN_OUTFILE,
@@ -48,10 +48,17 @@ typedef enum e_rd
 	PIPE = 2,
 } t_rd;
 
+typedef struct s_args
+{
+	char			*args;
+	struct s_args	*next;
+}	t_args;
 
 typedef struct s_token
 {
 	t_type           type;
+	t_args			*args;
+	char			**arg;
 	int				helper_flag;
 	int 			flag;
 	char			*value;

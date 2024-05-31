@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 20:43:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/22 18:06:47 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/31 14:06:32 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ char	*defin(int c)
 		return ("REDIR_IN");
 	case TOKEN_PIPE:
 		return ("PIPE");
-	case TOKEN_DOLLAR:
-		return ("DOLLAR");
 	case TOKEN_STRING:
 		return ("STRING");
 	case TOKEN_REDIR_APPEND:
