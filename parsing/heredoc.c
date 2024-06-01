@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:44:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/01 16:55:19 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/01 18:04:09 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,19 @@ char *expand_heredoc(char *line, char **env)
 	return (line);
 }
 
+char	*random_string(void)
+{
+	char			*str;
+	static int		i;
+
+	str = ft_strjoin("/tmp/heredoc", ft_itoa(i++));
+	return (str);
+}
+
 void	heredoc(t_token *token, char **env)
 {
 	int 	flaag;
+	char 	*str;
 	char	*line;
 	char	*eof;
 	t_token	*tmp;
@@ -90,12 +100,12 @@ void	heredoc(t_token *token, char **env)
 	{
 		if (tmp->type == TOKEN_HEREDOC)
 		{
-			fd_f = open("/tmp/heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
+			str = random_string();
+			fd_f = open(str, O_CREAT | O_RDWR | O_TRUNC, 0644);
 			if (tmp->next->helper_flag == 1)
 				eof = concatenation(tmp, &flaag);
 			else
 				eof = tmp->next->value;
-			printf("eof = %s\n", eof);
 			line = readline("> ");
 			while (line)
 			{
@@ -113,7 +123,7 @@ void	heredoc(t_token *token, char **env)
 			}
 			tmp->value = ft_strdup("<");
 			tmp->type = TOKEN_REDIR_IN;
-			tmp->next->value = ft_strdup("/tmp/heredoc");
+			tmp->next->value = ft_strdup(str);
 			tmp->next->type = TOKEN_FILE;
 		}
 		tmp = tmp->next;
