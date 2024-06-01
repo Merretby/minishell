@@ -6,11 +6,42 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/31 16:50:20 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/01 16:11:42 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int check_syntax(char *str)
+{
+	char c;
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			c = str[i];
+			break;
+		}
+		i++;
+	}
+	while (str[i])
+	{
+		i++;
+		if (str[i] == c)
+			return (1);
+		if (str[i] == '\0')
+		{
+			printf("minishell: syntax error '%c'\n", c);
+			return (0);
+		}
+	}
+	return (1);
+}
 
 int	main(int ac, char **av, char **env)
 {
@@ -20,29 +51,18 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	(void)env;
 	lexer = NULL;
 	token = NULL;
 	str = readline("minishell> ");
 	while (str)
 	{
-		// if (ft_strncmp(str, "env", 3) == 0)
-		// 	take_env(env);
-		lexer = init_lexer(str);
-		lexer_to_next_token(lexer, &token);
-		helper(token, env);
-		// while (token)
-		// {
-		// 	printf("Token type:%s token: %s, flag: %d\n", defin(token->type), token->value, token->helper_flag);
-		// 	token = token->next;
-		// }
-		// t_tree *tmp = create_tree(token);
-		// while (tmp)
-		// {
-		// 	printf("cmd: %s\n", tmp->cmd);
-		// 	tmp = tmp->right;
-		// }
-		ft_free(&token, &lexer);
+		if (check_syntax(str))
+		{
+			lexer = init_lexer(str);
+			lexer_to_next_token(lexer, &token);
+			helper(token, env);
+			ft_free(&token, &lexer);
+		}
 		add_history(str);
 		free(str);
 		str = readline("minishell> ");

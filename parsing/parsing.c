@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/31 20:30:15 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/31 23:05:22 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@ void	concatenation_token(t_token *token)
 	t_token *next;
 	char *concatenated;
 	
-	tmp = token;
 	if (token == NULL)
 		return ;
+	tmp = token;
 	while (token)
 	{
 		if (token->helper_flag == 1)
@@ -85,11 +85,13 @@ void	concatenation_token(t_token *token)
 	}
 }
 
-void add_to_args(t_token *token,char *str)
+void add_to_args(t_token *token, char *str)
 {
 	t_args *new;
 	t_args *tmp;
 
+	if (token == NULL)
+		return ;
 	new = ft_calloc(1, sizeof(t_args));
 	new->args = ft_strdup(str);
 	new->next = NULL;
@@ -135,19 +137,21 @@ void	take_args(t_token *token)
 	t_token *head;
 	t_token *tmp2;
 
+	if (token == NULL)
+		return ;
 	head = token;
 	while (token)
 	{
 		if (token->type == TOKEN_ID || token->type == TOKEN_STRING)
 		{
 			tmp = token;
-			// token = token->next;
 			while (token && (token->type == TOKEN_ID || token->type == TOKEN_STRING))
 			{
 				add_to_args(tmp, token->value);
 				tmp2 = token;
 				token = token->next;
-				while (token && (token->type != TOKEN_ID && token->type != TOKEN_STRING && token->type != TOKEN_PIPE))
+				while (token && (token->type != TOKEN_ID && token->type != TOKEN_STRING &&\
+				 token->type != TOKEN_PIPE))
 					token = token->next;
 				// delete_node(head,tmp2);
 			}
@@ -247,8 +251,6 @@ t_node *new_node(t_token *token)
 t_node *command(t_token **token)
 {
 	t_token *tmp;
-	// t_node *new;
-	// char *str;
 	
 	tmp = (*token);
 	if((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING))
@@ -257,21 +259,6 @@ t_node *command(t_token **token)
 		while ((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING))
 			*token = (*token)->next;
 		return(new_node(tmp));
-		// while ((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING))
-		// {
-		// 	if ((*token)->prev->helper_flag == 1)
-		// 		new->data->cmd->value  = ft_strjoin(new->data->cmd->value, (*token)->value);
-		// 	else
-		// 	{
-		// 		str = ft_strjoin(new->data->cmd->value, " ");
-		// 		new->data->cmd->value = ft_strjoin(str, (*token)->value);
-		// 		free (str);
-		// 	}
-		// 	*token = (*token)->next;
-		// }
-		// if (new->data->cmd->value != NULL)
-		// 	new->data->cmd->args = ft_split(new->data->cmd->value, ' ');
-		// return new;
 	}
 	return NULL;
 }
