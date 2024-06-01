@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:00:56 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/01 16:40:23 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/01 18:17:27 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,15 +181,18 @@ void	expand(t_token *token, char **env)
 		{
 			if (token->value[i] == '$' && token->flag != 0)
 			{
-				while (token->value[i] != '$' && token->value[i])
-					i++;
-				befor = ft_substr(token->value, j, i);
-				j = i;
-				after = ft_substr(token->value, j, ft_strlen(token->value));
-				str = real_expand(after, env);
-				free(token->value);
-				token->value = ft_strjoin2(befor, str);
-				break;
+				if (ft_isalnum(token->value[i + 1]))
+				{
+					while (token->value[i] != '$' && token->value[i])
+						i++;
+					befor = ft_substr(token->value, j, i);
+					j = i;
+					after = ft_substr(token->value, j, ft_strlen(token->value));
+					str = real_expand(after, env);
+					free(token->value);
+					token->value = ft_strjoin2(befor, str);
+					break;
+				}
 			}
 			i++;
 		}	
