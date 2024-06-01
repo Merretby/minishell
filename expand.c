@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:00:56 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/31 23:11:56 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/01 16:40:23 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,6 @@ void	expand(t_token *token, char **env)
 {
 	int i;
 	int j;
-	// t_token *tmp;
 	char *str;
 	char *befor;
 	char *after;

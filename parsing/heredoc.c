@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:44:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/31 16:17:06 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/01 16:55:19 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 char *concatenation(t_token *token, int *flaag)
 {
 	t_token *tmp;
+	t_token *next;
 	char 	*str;
 
 	tmp = token;
@@ -24,18 +25,22 @@ char *concatenation(t_token *token, int *flaag)
 		if (tmp->type == TOKEN_HEREDOC)
 		{
 			tmp = tmp->next;
-			while (tmp && tmp->helper_flag == 1)
+			if (tmp->helper_flag == 1)
 			{
-				str = ft_strjoin(tmp->value, tmp->next->value);
-				if (tmp->next && tmp->next->helper_flag == 1)
+				next = tmp->next;
+				while (next && (next->type == TOKEN_ID || next->type == TOKEN_STRING))
 				{
-					tmp = tmp->next;
-					str = ft_strjoin(str, tmp->next->value);
+					str = ft_strjoin(tmp->value, next->value);
+					free(tmp->value);
+					tmp->value = str;
+					tmp->helper_flag = tmp->next->helper_flag;
+					tmp->next = tmp->next->next;
+					free(next->value);
+					free(next);
+					next = tmp->next;
+					if (tmp->helper_flag == 0)
+						return (tmp->value);
 				}
-				tmp->next->value = str;
-				if (tmp->next && tmp->next->helper_flag != 1)
-					return (tmp->next->value);
-				tmp = tmp->next;
 			}
 		}
 		tmp = tmp->next;
@@ -90,7 +95,7 @@ void	heredoc(t_token *token, char **env)
 				eof = concatenation(tmp, &flaag);
 			else
 				eof = tmp->next->value;
-			printf("%s\n", eof);
+			printf("eof = %s\n", eof);
 			line = readline("> ");
 			while (line)
 			{

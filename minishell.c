@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/01 16:11:42 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/01 16:20:17 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,8 @@ int check_syntax(char *str)
 {
 	char c;
 	int i;
-	int j;
 
 	i = 0;
-	j = 0;
 	while (str[i])
 	{
 		if (str[i] == '\'' || str[i] == '"')
