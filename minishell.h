@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/02 17:17:27 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/02 18:10:55 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ t_lexer				*init_lexer(char *content);
 t_token				*init_token(int type, char *value, char c);
 
 // parsing
-void				helper(t_token *token, char **env);
+void				helper(t_token **token, char **env);
 void				ft_free(t_token **token, t_lexer **lexer);
 int					parss_command(t_token *token);
 

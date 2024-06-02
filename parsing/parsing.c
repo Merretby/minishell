@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/02 17:43:56 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/02 18:27:21 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,21 +186,21 @@ void	list_to_array(t_token *token)
 	token->arg[i] = NULL;
 }
 
-void     helper(t_token *token, char **env)
+void     helper(t_token **token, char **env)
 {
 	t_node *tree = NULL;
 	char **str;
 
-	if (token == NULL)
+	if (*token == NULL)
 		return ;
-	if (parss_command(token) == 1)
+	if (parss_command(*token) == 1)
 	{
 		str = env;
-		heredoc(token, str);
-		expand(&token, str);
-		concatenation_token(token);
-		take_args(token);
-		tree = pipeline(&token);
+		heredoc(*token, str);
+		expand(token, str);
+		concatenation_token(*token);
+		take_args(*token);
+		tree = pipeline(token);
 		ft_execution(tree, str, 1);
 		// print_tree(tree);
 	}

@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/02 17:20:49 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/02 18:10:50 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	main(int ac, char **av, char **env)
 		{
 			lexer = init_lexer(str);
 			lexer_to_next_token(lexer, &token);
-			helper(token, env);
+			helper(&token, env);
 			ft_free(&token, &lexer);
 		}
 		add_history(str);

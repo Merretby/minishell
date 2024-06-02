@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:00:56 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/02 17:47:27 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/02 18:28:32 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,14 +195,15 @@ void	expand(t_token **token, char **env)
 						tmp = loop_tmp;
 						loop_tmp = loop_tmp->next;
 						delete_node(token, tmp);
-						continue;
+						if (loop_tmp)
+							continue;
 					}
 					break;
 				}
 			}
 			i++;
 		}
-		if (loop_tmp)
+		if (loop_tmp && loop_tmp->value != NULL)
 			loop_tmp = loop_tmp->next;
 	}
 }
