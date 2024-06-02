@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/01 16:42:34 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/02 17:43:56 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void   print_tree(t_node *tree)
 		if (tree->data->cmd->args != NULL)
 		{
 			for (int i = 0; tree->data->cmd->args[i]; i++)
-				printf("args[%d]: %s\n", i, tree->data->cmd->args[i]);
+				printf("args[%d]: %s, flag: %d\n", i, tree->data->cmd->args[i], tree->data->cmd->ex_flag);
 		}
 	}
 	else if (tree->type == REDIR)
@@ -107,14 +107,14 @@ void add_to_args(t_token *token, char *str)
 
 }
 
-void delete_node(t_token *head, t_token *node)
+void delete_node(t_token **head, t_token *node)
 {
 	t_token *tmp;
 	
-	tmp = head;
+	tmp = (*head);
 	if (tmp == node)
 	{
-		head = node->next;
+		(*head) = node->next;
 		free(node->value);
 		free(node);
 		node = NULL;
@@ -172,7 +172,7 @@ void	list_to_array(t_token *token)
 	while (tmp2)
 	{
 		i++;
-		tmp2 = tmp2->next;
+		tmp2 = tmp2->next;	
 	}
 	token->arg = ft_calloc(i + 1, sizeof(char *));
 	i = 0;
@@ -197,7 +197,7 @@ void     helper(t_token *token, char **env)
 	{
 		str = env;
 		heredoc(token, str);
-		expand(token, str);
+		expand(&token, str);
 		concatenation_token(token);
 		take_args(token);
 		tree = pipeline(&token);
@@ -244,6 +244,7 @@ t_node *new_node(t_token *token)
 	if (token->args)
 		list_to_array(token);
 	node->data->cmd->args = token->arg;
+	node->data->cmd->ex_flag = token->flag;
 	node->type = CMD;
 	return (node);
 }

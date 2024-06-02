@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:00:56 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/01 18:17:27 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/02 17:47:27 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,13 @@ char	*get_word(char *str)
 	char *tmp;
 
 	i = 0;
-	while (str[i] && ((str[i] >= 'a' && str[i] <= 'z') || \
-	(str[i] >= 'A' && str[i] <= 'Z')))
+	while (str[i] && ft_isalnum(str[i]))
 		i++;
 	tmp = (char *)malloc(sizeof(char) * (i + 1));
 	if (!tmp)
 		return (NULL);
 	i = 0;
-	while (str[i] && ((str[i] >= 'a' && str[i] <= 'z') || \
-	(str[i] >= 'A' && str[i] <= 'Z')))
+	while (str[i] && ft_isalnum(str[i]))
 	{
 		tmp[i] = str[i];
 		i++;
@@ -43,8 +41,7 @@ char	*remove_word(char *str)
 
 	i = 0;
 	j = ft_strlen(str);
-	while (str[i] && ((str[i] >= 'a' && str[i] <= 'z') || \
-	(str[i] >= 'A' && str[i] <= 'Z')))
+	while (str[i] && ft_isalnum(str[i]))
 		i++;
 	tmp = (char *)malloc(sizeof(char) * (j - i + 1));
 	if (!tmp)
@@ -165,37 +162,47 @@ char	*real_expand(char *line, char **env)
 	return (tmp2);
 }
 
-void	expand(t_token *token, char **env)
+void	expand(t_token **token, char **env)
 {
 	int i;
 	int j;
+	t_token *tmp;
 	char *str;
 	char *befor;
 	char *after;
 
 	j = 0;
-	while (token)
+	t_token *loop_tmp = *token;
+	while (loop_tmp)
 	{
 		i = 0;
-		while (token->value && token->value[i])
+		while (loop_tmp->value && loop_tmp->value[i])
 		{
-			if (token->value[i] == '$' && token->flag != 0)
+			if (loop_tmp->value[i] == '$' && loop_tmp->flag != 0)
 			{
-				if (ft_isalnum(token->value[i + 1]))
+				if (ft_isalnum(loop_tmp->value[i + 1]))
 				{
-					while (token->value[i] != '$' && token->value[i])
+					while (loop_tmp->value[i] != '$' && loop_tmp->value[i])
 						i++;
-					befor = ft_substr(token->value, j, i);
+					befor = ft_substr(loop_tmp->value, j, i);
 					j = i;
-					after = ft_substr(token->value, j, ft_strlen(token->value));
+					after = ft_substr(loop_tmp->value, j, ft_strlen(loop_tmp->value));
 					str = real_expand(after, env);
-					free(token->value);
-					token->value = ft_strjoin2(befor, str);
+					free(loop_tmp->value);
+					loop_tmp->value = ft_strjoin2(befor, str);
+					 if (loop_tmp->value[0] == '\0')
+					{
+						tmp = loop_tmp;
+						loop_tmp = loop_tmp->next;
+						delete_node(token, tmp);
+						continue;
+					}
 					break;
 				}
 			}
 			i++;
-		}	
-		token = token->next;
+		}
+		if (loop_tmp)
+			loop_tmp = loop_tmp->next;
 	}
 }
