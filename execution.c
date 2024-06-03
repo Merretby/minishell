@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/03 15:05:06 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/03 17:51:36 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 					close(copy_fd2);
 					close(copy_fd);
 					printf("minishell: %s: No such file or directory\n", redir->value);
-					exit(1);
+					return;
 				}
 				dup2(fd, STDIN_FILENO);
 				close(fd);

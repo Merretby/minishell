@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 14:21:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/02 15:38:38 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/03 19:03:46 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ char	*path_check(char **env)
 	int	i;
 
 	i = 0;
+	if (env == NULL)
+		return (NULL);
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], "PATH=", 5) == 0)
@@ -57,9 +59,11 @@ void	ft_execute2(t_node *tree, char **env)
 	int		i;
 
 	i = 0;
+
 	str = path_check(env);
+	if (str == NULL)
+		exit(1);
 	path = ft_split(str + 5, ':');
-	
 	while (path[i] && tree->data->cmd->args)
 	{
 		if (ft_strchr(tree->data->cmd->args[0], '/') == NULL)
