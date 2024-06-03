@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:10 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/31 17:38:38 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:04:36 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,26 @@ int check_repetition(t_env **env1, char *value)
 {
     t_env *tmp = *env1;
     char *tmp2;
-    while (tmp)
+    int i;
+
+    while (tmp)  // export a=1 a=2
     {
-        tmp2 = ft_substr(value, 0, ft_strchr(value, '=') - value);
-        if (!ft_strncmp(tmp->value, tmp2, ft_strlen(tmp2)))
+        i = 0;
+        while (tmp->value[i] && tmp->value[i] != '=')
+            i++;
+        tmp2 = ft_substr(tmp->value, 0, i);
+        if (ft_strcmp(tmp2, ft_substr(value, 0, i)) == 0)
         {
-            free(tmp->value);
-            tmp->value = ft_strdup(value);
-            free(tmp2);
+            // free(tmp->value);
+            i = 0;
+            while (value[i] && value[i] != '=')
+                i++;
+            if (value[i]) 
+                tmp->value = ft_strdup(value);
+            // free(tmp2);
             return 1;
         }
-        free(tmp2);
+        //free(tmp2);
         tmp = tmp->next;
     }
     return 0;
@@ -55,7 +64,7 @@ char *check_value(char *value)
 {
     char *tmp;
     char *tmp2;
-    size_t i;
+    int i;
 
     i = 0;
     while (value[i] && value[i] != '=')
@@ -108,6 +117,7 @@ char  **ft_export(t_node *node, char **env1)
     t_env *new;
     char *value;
     int i;
+    
     new = malloc(sizeof(t_env));
     if (!new)
         return (0);
@@ -145,7 +155,8 @@ char  **ft_export(t_node *node, char **env1)
     }
     t_env *tmp = new;
     i = 0;
-    while (tmp) {
+    while (tmp)
+    {
         env1[i++] = tmp->value;
         t_env *to_free = tmp;
         tmp = tmp->next;

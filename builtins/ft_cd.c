@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:44:32 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/31 17:36:17 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:04:08 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int     ft_cd(t_node *node, char **env)
     oldPwd = fined_pwd(env);
     if (node->data->cmd->args[1] == NULL || ft_strncmp(node->data->cmd->args[1] , "~", 1) == 0)
     {
-        printf("cd: HOME not set\n");
+        // printf("cd: HOME not set\n");
         chdir(getenv("HOME"));
     }
     else if (chdir(node->data->cmd->args[1]) == -1)

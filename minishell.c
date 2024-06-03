@@ -3,14 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/02 18:10:50 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:05:39 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	signal_handler(int signum)
+{
+	if (signum == SIGINT)
+		printf("\n");
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay(); 
+}
+
+void	check_signal(void)
+{
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, signal_handler);
+}
 
 int check_syntax(char *str)
 {

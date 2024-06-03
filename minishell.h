@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/02 18:10:55 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:06:47 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdio.h>
+# include <signal.h>
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <time.h>
@@ -160,6 +161,7 @@ int					ft_exit(t_node *tree);
 char 				**ft_export(t_node *tree, char **env1);
 int					ft_pwd(t_node *tree);
 char				**ft_unset(t_node *node, char **env1);
+int 				ft_strcmp(const char *s1, const char *s2);
 // int					ft_builtins(char *str, t_node *tree);
 //env
 void				take_env(char **env);
