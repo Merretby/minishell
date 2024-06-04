@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/04 18:39:51 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/04 20:00:38 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ void add_to_args(t_token *token, char *str)
 
 	if (token == NULL)
 		return ;
-	new = ft_calloc(1, sizeof(t_args));
-	new->args = ft_strdup(str);
+	new = malloc (sizeof(t_args));
+	new->args = str;
 	new->next = NULL;
 	if (token->args == NULL)
 		token->args = new;
@@ -104,7 +104,6 @@ void add_to_args(t_token *token, char *str)
 			tmp = tmp->next;
 		tmp->next = new;
 	}
-
 }
 
 void delete_node(t_token **head, t_token *node)
@@ -153,7 +152,6 @@ void	take_args(t_token *token)
 				while (token && (token->type != TOKEN_ID && token->type != TOKEN_STRING &&\
 				 token->type != TOKEN_PIPE))
 					token = token->next;
-				// delete_node(head,tmp2);
 			}
 		}
 		if (token)
@@ -179,14 +177,50 @@ void	list_to_array(t_token *token)
 	tmp = token->args;
 	while (tmp)
 	{
-		token->arg[i] = ft_strdup(tmp->args);
+		token->arg[i] = tmp->args;
 		tmp = tmp->next;
 		i++;
 	}
 	token->arg[i] = NULL;
 }
 
-
+void	free_tree(t_node *tree)
+{
+	int i = 0;
+	
+	if (tree == NULL)
+		return ;
+	if (tree->type == CMD)
+	{
+		if (tree->data->cmd->value)
+			free(tree->data->cmd->value);
+		if (tree->data->cmd->args)
+		{
+			while(tree->data->cmd->args[i++])
+				free(tree->data->cmd->args[i]);
+			free(tree->data->cmd->args);
+		}
+		free(tree->data->cmd);
+	}
+	else if (tree->type == REDIR)
+	{
+		if (tree->data->red->value)
+			free(tree->data->red->value);
+		if (tree->data->red)
+			free(tree->data->red);
+	}
+	else if (tree->type == PIPE)
+	{
+		if (tree->data->pipe->value)
+			free(tree->data->pipe->value);
+		if (tree->data->pipe)
+			free(tree->data->pipe);
+	}
+	free_tree(tree->left);
+	free_tree(tree->right);
+	free(tree->data);
+	free(tree);
+}
 
 void     helper(t_token **token, char **env)
 {
