@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:44:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/01 18:04:09 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/04 20:15:37 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ char *expand_heredoc(char *line, char **env)
 	char *before;
 	char *after;
 
-	j = 0;
 	i = 0;
 	while(line[i])
 	{
@@ -64,11 +63,14 @@ char *expand_heredoc(char *line, char **env)
 		{
 			while (line[i] && line[i] != '$')
 				i++;
-			before = ft_substr(line, j, i);
+			before = ft_substr(line, 0, i);
 			j = i;
 			after = ft_substr(line, j, ft_strlen(line));
 			tmp = real_expand(after, env);
 			line = ft_strjoin(before, tmp);
+			free(tmp);
+			free(before);
+			free(after);
 			break;
 		}
 		i++;
@@ -121,10 +123,11 @@ void	heredoc(t_token *token, char **env)
 				free (line);
 				line = readline("> ");
 			}
-			tmp->value = ft_strdup("<");
+			tmp->value = "<";
 			tmp->type = TOKEN_REDIR_IN;
-			tmp->next->value = ft_strdup(str);
+			tmp->next->value = str;
 			tmp->next->type = TOKEN_FILE;
+			free(eof);
 		}
 		tmp = tmp->next;
 	}
