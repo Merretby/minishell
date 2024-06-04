@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/02 18:27:21 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/04 18:39:51 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,8 @@ void	list_to_array(t_token *token)
 	token->arg[i] = NULL;
 }
 
+
+
 void     helper(t_token **token, char **env)
 {
 	t_node *tree = NULL;
@@ -202,6 +204,7 @@ void     helper(t_token **token, char **env)
 		take_args(*token);
 		tree = pipeline(token);
 		ft_execution(tree, str, 1);
+		free_tree(tree);
 		// print_tree(tree);
 	}
 }

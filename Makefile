@@ -28,3 +28,9 @@ fclean: clean
 	make fclean -C libft
 
 re: fclean all
+
+push :
+	@make fclean
+	@git add .
+	@git commit -m "MiniShell"
+	@git push -f
