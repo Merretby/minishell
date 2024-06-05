@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/05 15:09:17 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/05 16:13:13 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,14 +290,23 @@ t_node *new_node(t_token *token)
 t_node *command(t_token **token)
 {
 	t_token *tmp;
+	t_token *tmp2;
+	t_node *node;
 	
 	tmp = (*token);
 	if((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING))
 	{
+		tmp2 = (*token);
 		*token = (*token)->next;
+		node = new_node(tmp2);
+		free (tmp2);
 		while ((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING))
+		{
+			tmp2 = (*token);
 			*token = (*token)->next;
-		return(new_node(tmp));
+			free (tmp2);
+		}
+		return(node);
 	}
 	return NULL;
 }
@@ -317,6 +326,7 @@ t_node	*new_pipe(t_token *token)
 
 t_node  *pipeline(t_token **token)
 {
+	t_token *tmp;
 	t_node *left;
 	t_node *new;
 
@@ -327,7 +337,9 @@ t_node  *pipeline(t_token **token)
 	{
 		new = new_pipe(*token);
 		new->type = PIPE;
+		tmp = (*token);
 		*token = (*token)->next;
+		free(tmp);
 		new->left = left;
 		new->right = pipeline(token);
 		left = new;
@@ -365,6 +377,7 @@ void ft_last_back_red(t_redir **lst, t_redir *new)
 
 t_node	*rederiction(t_token **token)
 {
+	t_token *tmp2;
 	t_node *left;
 	t_node *node;
 	t_redir *tmp;
@@ -395,7 +408,9 @@ t_node	*rederiction(t_token **token)
 	{
 		node = new_redir(*token);
 		tmp = node->data->red;
+		tmp2 = (*token);
 		(*token) = (*token)->next;
+		free(tmp2);
 		while ((*token) && ((*token)->type == TOKEN_REDIR_IN ||\
 		 (*token)->type == TOKEN_REDIR_OUT ||\
 		 (*token)->type == TOKEN_REDIR_APPEND ||\
@@ -404,9 +419,15 @@ t_node	*rederiction(t_token **token)
 		 {
 			tmp->next = create_redirection(*token);
 			tmp = tmp->next;
+			tmp2 = (*token);
 			(*token) = (*token)->next;
+			free(tmp2);
 		 	if ((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING))
+			{
+				tmp2 = (*token);
 				(*token) = (*token)->next;
+				free(tmp2);
+			}
 		 }
 		 node->left = left;
 		 left = node;
