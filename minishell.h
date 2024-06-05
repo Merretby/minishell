@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/03 16:10:30 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/05 15:12:36 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,8 @@ char	*real_expand(char *line, char **env);
 //expand
 void				expand(t_token **token, char **env);
 
+//free
 void delete_node(t_token **head, t_token *node);
+void	free_2d(char **str);
 
 #endif 

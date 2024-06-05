@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:46:16 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/03 16:22:12 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/05 15:12:11 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,17 @@ void	ft_free(t_token **token, t_lexer **lexer)
 	}
 	*token = NULL;
 	free(*lexer);
+}
+
+void	free_2d(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
 }

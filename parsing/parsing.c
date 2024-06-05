@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/04 20:00:38 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/05 15:09:17 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,7 @@ void	free_tree(t_node *tree)
 			while(tree->data->cmd->args[i++])
 				free(tree->data->cmd->args[i]);
 			free(tree->data->cmd->args);
+			tree->data->cmd->args = NULL;
 		}
 		free(tree->data->cmd);
 	}
