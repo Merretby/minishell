@@ -6,12 +6,11 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:20 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/31 17:38:01 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/05 18:38:05 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 t_env   *ft_lstnew2(char *value)
 {
@@ -66,11 +65,11 @@ char *ft_findEnv(char *env)
     int i = 0;
     char *key;
 
-    while (env[i] != '=')
+    while (env[i] && env[i] != '=')
         i++;
     key = malloc(sizeof(char) * i + 1);
     i = 0;
-    while (env[i] != '=')
+    while (env[i] && env[i] != '=')
     {
         key[i] = env[i];
         i++;

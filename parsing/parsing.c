@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/05 16:13:13 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/05 18:36:15 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,7 @@ void	list_to_array(t_token *token)
 
 void	free_tree(t_node *tree)
 {
-	int i = 0;
+	// int i = 0;
 	
 	if (tree == NULL)
 		return ;
@@ -196,8 +196,8 @@ void	free_tree(t_node *tree)
 			free(tree->data->cmd->value);
 		if (tree->data->cmd->args)
 		{
-			while(tree->data->cmd->args[i++])
-				free(tree->data->cmd->args[i]);
+			// while(tree->data->cmd->args[i++])
+			// 	free(tree->data->cmd->args[i]);
 			free(tree->data->cmd->args);
 			tree->data->cmd->args = NULL;
 		}
@@ -239,7 +239,7 @@ void     helper(t_token **token, char **env)
 		take_args(*token);
 		tree = pipeline(token);
 		ft_execution(tree, str, 1);
-		free_tree(tree);
+		// free_tree(tree);
 		// print_tree(tree);
 	}
 }
