@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/30 18:42:55 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/05 13:11:10 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,17 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdio.h>
+# include <signal.h>
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <time.h>
 # include <string.h>
 # include <unistd.h>
+# include "g_variable.h"
 
 # define PATH_MAX 4096
+
+int g_exit_code;
 
 typedef	enum e_type
 {
@@ -33,11 +37,13 @@ typedef	enum e_type
 	TOKEN_PIPE,         // |
 	TOKEN_REDIR_IN,     // <
 	TOKEN_REDIR_OUT,    // >
-	TOKEN_DOLLAR,       // $
+	// TOKEN_DOLLAR,       // $
 	TOKEN_REDIR_APPEND, // >>
 	TOKEN_HEREDOC,      // <<
+	TOKEN_ERROR,
 	TOKEN_OUTFILE,
 	TOKEN_FILE,
+	TOKEN_EOF,
 } t_type;
 
 typedef enum e_rd
@@ -47,10 +53,17 @@ typedef enum e_rd
 	PIPE = 2,
 } t_rd;
 
+typedef struct s_args
+{
+	char			*args;
+	struct s_args	*next;
+}	t_args;
 
 typedef struct s_token
 {
 	t_type           type;
+	t_args			*args;
+	char			**arg;
 	int				helper_flag;
 	int 			flag;
 	char			*value;
@@ -69,14 +82,15 @@ typedef struct s_cmd
 {
 	char			*value;
 	char			**args;
+	int				ex_flag;
 	int				type;
 	struct s_cmd	*next;
-}				t_cmd;
+}					t_cmd;
 
 typedef struct s_pipe
 {
-	char		*value;
-	int 		type;
+	char 			*value;
+	int				type;
 	struct s_pipe	*next;
 }					t_pipe;
 
@@ -139,7 +153,7 @@ void				ft_lstadd_back2(t_env **lst, t_env *new);
 
 
 //execution
-void    ft_execution(t_node *tree, char **env1, int fork_flag);
+void ft_execution(t_node *tree, char **env1, int fork_flag);
 void	ft_execute(t_node *par,  char **env, int fork_flag);
 
 // builtins
@@ -148,9 +162,9 @@ int					ft_echo(t_node *tree);
 int					ft_env(char **env);
 int					ft_exit(t_node *tree);
 char 				**ft_export(t_node *tree, char **env1);
-void				rdr_handle(t_node *node, char **env);
 int					ft_pwd(t_node *tree);
 char				**ft_unset(t_node *node, char **env1);
+int 				ft_strcmp(const char *s1, const char *s2);
 // int					ft_builtins(char *str, t_node *tree);
 //env
 void				take_env(char **env);
@@ -160,12 +174,18 @@ t_lexer				*init_lexer(char *content);
 t_token				*init_token(int type, char *value, char c);
 
 // parsing
-void				helper(t_token *token, char **env);
+void				helper(t_token **token, char **env);
 void				ft_free(t_token **token, t_lexer **lexer);
 int					parss_command(t_token *token);
 
 //heredoc
-char 				*concatenation(t_token *token, int *flaag);
+char				*concatenation(t_token *token, int *flaag);
 void				heredoc(t_token *token, char **env);
+char	*real_expand(char *line, char **env);
+
+//expand
+void				expand(t_token **token, char **env);
+
+void delete_node(t_token **head, t_token *node);
 
 #endif 

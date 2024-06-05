@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_execve.c                                        :+:      :+:    :+:   */
+/*   execve.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/26 14:44:23 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/28 19:17:08 by mnachit          ###   ########.fr       */
+/*   Created: 2024/05/26 14:21:17 by moer-ret          #+#    #+#             */
+/*   Updated: 2024/06/02 15:38:38 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	case2(t_node *tree, char **env)
 		execve(tree->data->cmd->args[0], tree->data->cmd->args, env);
 	else
 	{
-		printf("hna\n");
 		write(2, "minishell: ", 11);
 		perror(tree->data->cmd->value);
 		exit(1);
@@ -63,7 +62,7 @@ void	ft_execute2(t_node *tree, char **env)
 	
 	while (path[i] && tree->data->cmd->args)
 	{
-		if (ft_strchr(tree->data->cmd->args[0], '/') == NULL) ///nfs/homes/moer-ret/bin  /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/games /ls
+		if (ft_strchr(tree->data->cmd->args[0], '/') == NULL)
 		{
 			str = ft_strjoin("/", tree->data->cmd->args[0]);
 			tmp = ft_strjoin(path[i], str);

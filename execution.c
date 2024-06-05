@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/31 15:35:07 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/03 15:05:06 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 		wait(NULL);
 		return;
 	}
-    if (tree->type ==  REDIR)
+	  if (tree->type ==  REDIR)
     {
         t_redir *redir;
         int fd;
@@ -125,8 +125,12 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 				fd = open(redir->value, O_RDONLY);
 				if (fd == -1)
 				{
+					dup2(copy_fd, STDIN_FILENO);	
+					dup2(copy_fd2, STDOUT_FILENO);
+					close(copy_fd2);
+					close(copy_fd);
 					printf("minishell: %s: No such file or directory\n", redir->value);
-					return;
+					exit(1);
 				}
 				dup2(fd, STDIN_FILENO);
 				close(fd);
@@ -136,6 +140,10 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 				fd2 = open(redir->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 				if (fd2 == -1)
 				{
+					dup2(copy_fd, STDIN_FILENO);	
+					dup2(copy_fd2, STDOUT_FILENO);
+					close(copy_fd2);
+					close(copy_fd);					
 					printf("minishell: %s: No such file or directory\n", redir->value);
 					return;
 				}
@@ -148,6 +156,10 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 				fd2 = open(redir->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
 				if (fd2 == -1)
 				{
+					dup2(copy_fd, STDIN_FILENO);	
+					dup2(copy_fd2, STDOUT_FILENO);
+					close(copy_fd2);
+					close(copy_fd);
 					printf("minishell: %s: No such file or directory\n", redir->value);
 					return;
 				}
@@ -163,17 +175,3 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 		close(copy_fd);
 	}
 }
-//nuildtins
-// < in dup
-//after exec
-//int original_stdin = dup(STDIN_FILENO;
-//dup2(original_stdin, STDIN_FILENO);
-
-// not builtins
-//fork
-// redirection_handling();            < in cat
-
-//fd  = open (file, O_RDONLY | O_CREAT | O_TRUNC, 0644);
-//dup2(fd, 0);
-
-

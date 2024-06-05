@@ -1,25 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   g_variable.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/30 18:14:29 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/22 19:10:37 by moer-ret         ###   ########.fr       */
+/*   Created: 2024/06/05 13:09:37 by mnachit           #+#    #+#             */
+/*   Updated: 2024/06/05 13:10:38 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef G_VARIABLE_H
+# define G_VARIABLE_H
 
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
+extern int g_exit_code;
 
-	i = 0;
-	if (!s)
-		return (0);
-	while (s[i])
-		i++;
-	return (i);
-}
+
+
+#endif

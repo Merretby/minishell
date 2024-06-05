@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 20:43:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/21 20:44:26 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/31 22:44:24 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ char	*defin(int c)
 		return ("REDIR_IN");
 	case TOKEN_PIPE:
 		return ("PIPE");
-	case TOKEN_DOLLAR:
-		return ("DOLLAR");
 	case TOKEN_STRING:
 		return ("STRING");
 	case TOKEN_REDIR_APPEND:
@@ -82,11 +80,6 @@ char	*get_the_string(t_lexer *lexer, char c)
 	{
 		str[j++] = lexer->c;
 		advance(lexer);
-		if (lexer->c == '\0')
-		{
-			printf("minishell: not close with `%c'\n", c);
-			return (NULL);
-		}
 	}
 	str[j] = '\0';
 	return (str);
@@ -95,8 +88,8 @@ char	*get_the_string(t_lexer *lexer, char c)
 int	ft_check_alnum(char c)
 {
 	// 3la 9bal had lcase ls -al ... 5asa t3ti ls / -al
-	if (c == '$' || c == '|' || c == '>' || c == '<' || c == '"' || c == '\0'
-		|| c == ' ' || (c >= 9 && c <= 13) || c == '\'')
+	if (c == '|' || c == '>' || c == '<' || c == '"' || c == '\0'
+		|| c == ' ' || (c >= 9 && c <= 13) || c == '\'' || c == ';' || c == '&')
 		return (0);
 	return (1);
 }

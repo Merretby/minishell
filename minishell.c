@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/05/31 15:07:35 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/05 13:12:49 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,36 @@ void	check_signal(void)
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
 }
+
+int check_syntax(char *str)
+{
+	char c;
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			c = str[i];
+			break;
+		}
+		i++;
+	}
+	while (str[i])
+	{
+		i++;
+		if (str[i] == c)
+			return (1);
+		if (str[i] == '\0')
+		{
+			printf("minishell: syntax error '%c'\n", c);
+			return (0);
+		}
+	}
+	return (1);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	char	*str;
@@ -36,30 +66,20 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	lexer = NULL;
 	token = NULL;
-	//check_signal();
-	str = readline("\033[1;32mminishell@1337~$ \033[0m");
+	str = readline("\033[0;32mminishell~$42 \033[0m");
 	while (str)
 	{
-		// if (ft_strncmp(str, "env", 3) == 0)
-		// 	take_env(env);
-		lexer = init_lexer(str);
-		lexer_to_next_token(lexer, &token);
-		helper(token, env);
-		// while (token)
-		// {
-		// 	printf("Token type:%s token: %s, flag: %d\n", defin(token->type), token->value, token->helper_flag);
-		// 	token = token->next;
-		// }
-		// t_tree *tmp = create_tree(token);
-		// while (tmp)
-		// {
-		// 	printf("cmd: %s\n", tmp->cmd);
-		// 	tmp = tmp->right;
-		// }
-		ft_free(&token, &lexer);
+		if (check_syntax(str))
+		{
+			lexer = init_lexer(str);
+			lexer_to_next_token(lexer, &token);
+			helper(&token, env);
+			ft_free(&token, &lexer);
+		}
 		add_history(str);
 		free(str);
-		str = readline("\033[1;32mminishell@1337~$ \033[0m");
+		str = readline("\033[0;32mminishell~$42 \033[0m");
 	}
-	printf("exit\n");
+	return (0);1
+	
 }
