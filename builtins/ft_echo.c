@@ -43,13 +43,22 @@ void    ft_print(char **s)
     while(s[i])
     {
         j = 0;
-        while (s[i][j])
+        if (ft_strcmp(s[i], "$?") == 0)
         {
-            write(1, &s[i][j], 1);
-            j++;
+            ft_putstr_fd(ft_itoa(g_exit_code), 1);
+            if (s[i + 1])
+                write(1, " ", 1);
         }
+        else
+        {
+            while (s[i][j])
+            {
+                write(1, &s[i][j], 1);
+                j++;
+            }
         if (s[i + 1])
             write(1, " ", 1);
+        }
         i++;    
     }
 }
@@ -62,16 +71,25 @@ void      ft_print2(char **str)
     while (str[i])
     {
         j = 0;
-        while (str[i][j])
+        if (ft_strcmp(str[i], "$?") == 0)
         {
-            write(1, &str[i][j], 1);
-            j++;
+            ft_putstr_fd(ft_itoa(g_exit_code), 1);
+            if (str[i + 1])
+                write(1, " ", 1);
         }
-        if (str[i + 1])
-            write(1, " ", 1);
+        else
+        {
+            while (str[i][j])
+            {
+                write(1, &str[i][j], 1);
+                j++;
+            }
+            if (str[i + 1])
+                write(1, " ", 1);
+        }
         i++;
+        write(1, "\n", 1);
     }
-    write(1, "\n", 1);
 }
 int     ft_echo(t_node *node)
 {

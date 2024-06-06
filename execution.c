@@ -45,10 +45,10 @@ int ft_check(t_node *tree)
     return (0);
 }
 
-void ft_execution(t_node *tree, char **env1, int fork_flag)
+int ft_execution(t_node *tree, char **env1, int fork_flag)
 {
 	if (!tree)
-		return;
+		return 0;
     t_node *tmp;
 
     tmp = tree;
@@ -69,11 +69,12 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 		else if (ft_strcmp(tree->data->cmd->args[0], "exit") == 0)
 			ft_exit(tree);
 		else
-			ft_execute(tree, env1, fork_flag);
+			g_exit_code = ft_execute(tree, env1, fork_flag);
 	}
 	if (tree->type == PIPE)
 	{
 		int fd[2];
+		int status;
 		int ip1;
 		int ip2;
 
@@ -102,9 +103,13 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 		}
 		close(fd[0]);
 		close(fd[1]);
-		wait(NULL);
-		wait(NULL);
-		return;
+		wait(&status);
+		wait(&status);
+		if (WIFEXITED(status))
+			g_exit_code = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			g_exit_code = WTERMSIG(status) + 128;
+		return g_exit_code;
 	}
 	  if (tree->type ==  REDIR)
     {
@@ -145,7 +150,7 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 					close(copy_fd2);
 					close(copy_fd);					
 					printf("minishell: %s: No such file or directory\n", redir->value);
-					return;
+					return 0;
 				}
 				dup2(fd2, STDOUT_FILENO);
 				close(fd2);
@@ -161,7 +166,7 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 					close(copy_fd2);
 					close(copy_fd);
 					printf("minishell: %s: No such file or directory\n", redir->value);
-					return;
+					return 0;
 				}
 				dup2(fd2, STDOUT_FILENO);
 				close(fd2);
@@ -174,4 +179,5 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 		close(copy_fd2);
 		close(copy_fd);
 	}
+	return (0);
 }

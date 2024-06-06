@@ -19,7 +19,7 @@ void	case1(char *tmp, t_node *tree, char **env)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(tree->data->cmd->args[0], 2);
 		ft_putstr_fd(" command not found\n", 2);
-		exit(1);
+		exit(127);
 	}
 }
 
@@ -31,7 +31,7 @@ void	case2(t_node *tree, char **env)
 	{
 		write(2, "minishell: ", 11);
 		perror(tree->data->cmd->value);
-		exit(1);
+		exit(127);
 	}
 }
 
@@ -82,14 +82,15 @@ void	ft_execute2(t_node *tree, char **env)
 		case1(tmp, tree, env);
 }
 
-void	ft_execute(t_node *tree,  char **env, int fork_flag)
+int	 ft_execute(t_node *tree,  char **env, int fork_flag)
 {
 	int ip1;
+	int	status;
 
 	if (fork_flag == 0)
 	{
 		ft_execute2(tree, env);
-		return ;
+		return 0;
 	}
 	else if (fork_flag == 1)
 	{
@@ -97,6 +98,13 @@ void	ft_execute(t_node *tree,  char **env, int fork_flag)
 		if (ip1 == 0)
 			ft_execute2(tree, env);
 		else
-			waitpid(ip1, NULL, 0);
+		{
+			wait(&status);
+			if (WIFEXITED(status))
+				g_exit_code = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				g_exit_code = WTERMSIG(status) + 128;
+		}
 	}
+	return (g_exit_code);
 }

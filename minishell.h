@@ -24,11 +24,10 @@
 # include <time.h>
 # include <string.h>
 # include <unistd.h>
-# include "g_variable.h"
 
 # define PATH_MAX 4096
 
-int g_exit_code;
+extern int g_exit_code;
 
 typedef	enum e_type
 {
@@ -153,8 +152,8 @@ void				ft_lstadd_back2(t_env **lst, t_env *new);
 
 
 //execution
-void ft_execution(t_node *tree, char **env1, int fork_flag);
-void	ft_execute(t_node *par,  char **env, int fork_flag);
+int ft_execution(t_node *tree, char **env1, int fork_flag);
+int	 ft_execute(t_node *tree,  char **env, int fork_flag);
 
 // builtins
 int					ft_cd(t_node *node, char **env);
@@ -181,7 +180,7 @@ int					parss_command(t_token *token);
 //heredoc
 char				*concatenation(t_token *token, int *flaag);
 void				heredoc(t_token *token, char **env);
-char	*real_expand(char *line, char **env);
+char				*real_expand(char *line, char **env);
 
 //expand
 void				expand(t_token **token, char **env);

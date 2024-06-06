@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+int g_exit_code;
+`
 void	signal_handler(int signum)
 {
 	if (signum == SIGINT)
@@ -66,6 +68,7 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	lexer = NULL;
 	token = NULL;
+	check_signal();
 	str = readline("\033[0;32mminishell~$42 \033[0m");
 	while (str)
 	{
@@ -79,7 +82,7 @@ int	main(int ac, char **av, char **env)
 		add_history(str);
 		free(str);
 		str = readline("\033[0;32mminishell~$42 \033[0m");
+		// printf("%d\n", g_exit_code);
 	}
-	return (0);1
-	
+	return (0);
 }

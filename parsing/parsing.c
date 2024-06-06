@@ -201,7 +201,7 @@ void     helper(t_token **token, char **env)
 		concatenation_token(*token);
 		take_args(*token);
 		tree = pipeline(token);
-		ft_execution(tree, str, 1);
+		g_exit_code = ft_execution(tree, str, 1);
 		// print_tree(tree);
 	}
 }
