@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/05 18:36:15 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/07 11:52:34 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,19 @@ void	list_to_array(t_token *token)
 	token->arg[i] = NULL;
 }
 
+void	free_redir(t_redir *red)
+{
+	t_redir *tmp;
+	
+	while (red)
+	{
+		tmp = red;
+		red = red->next;
+		free(tmp->value);
+		free(tmp);
+	}
+}
+
 void	free_tree(t_node *tree)
 {
 	// int i = 0;
@@ -205,10 +218,9 @@ void	free_tree(t_node *tree)
 	}
 	else if (tree->type == REDIR)
 	{
-		if (tree->data->red->value)
-			free(tree->data->red->value);
 		if (tree->data->red)
-			free(tree->data->red);
+			free_redir(tree->data->red);
+		tree->data->red = NULL;
 	}
 	else if (tree->type == PIPE)
 	{
@@ -226,21 +238,28 @@ void	free_tree(t_node *tree)
 void     helper(t_token **token, char **env)
 {
 	t_node *tree = NULL;
+	// t_token *tmp;
 	char **str;
 
+	str = env;
+	// tmp = *token;
 	if (*token == NULL)
 		return ;
+	heredoc(*token, str);
 	if (parss_command(*token) == 1)
 	{
-		str = env;
-		heredoc(*token, str);
 		expand(token, str);
+		// while(tmp)
+		// {
+		// 	printf("type: %s, value: %s flag  %d\n", defin(tmp->type), tmp->value, tmp->flag);
+		// 	tmp = tmp->next;
+		// }
 		concatenation_token(*token);
 		take_args(*token);
 		tree = pipeline(token);
 		ft_execution(tree, str, 1);
-		// free_tree(tree);
-		// print_tree(tree);
+		free_tree(tree);
+		print_tree(tree);
 	}
 }
 

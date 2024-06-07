@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/05 15:12:36 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/06 14:14:52 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void				advance(t_lexer *lexer);
 char				*defin(int c);
 
 // token
-void				lexer_to_next_token(t_lexer *lexer, t_token **token);
+void				lexer_to_next_token(t_lexer **lexer, t_token **token);
 t_token				*advance_token(t_lexer *lexer, t_token *token);
 
 // linkedlist

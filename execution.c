@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/05 17:00:36 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/06 17:09:07 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 		wait(NULL);
 		return;
 	}
-	  if (tree->type ==  REDIR)
+    if (tree->type ==  REDIR)
     {
         t_redir *redir;
         int fd;
@@ -122,7 +122,7 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 			if(redir->type == TOKEN_FILE)
 			{
 				
-				fd = open(redir->value, O_RDONLY);
+				fd = open(redir->value, O_RDONLY, 0644);
 				if (fd == -1)
 				{
 					dup2(copy_fd, STDIN_FILENO);	

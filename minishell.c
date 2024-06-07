@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/05 16:02:04 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/07 11:46:13 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
+	(void)env;
 	lexer = NULL;
 	token = NULL;
 	str = readline("minishell> ");
@@ -72,8 +73,9 @@ int	main(int ac, char **av, char **env)
 		if (check_syntax(str))
 		{
 			lexer = init_lexer(str);
-			lexer_to_next_token(lexer, &token);
+			lexer_to_next_token(&lexer, &token);
 			helper(&token, env);
+			free(lexer);
 			ft_free(&token, &lexer);
 		}
 		add_history(str);

@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:00:56 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/05 16:47:49 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/07 12:44:34 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ char *join_char(char *str, char c)
 	}
 	tmp[i] = c;
 	tmp[i + 1] = '\0';
+	free(str);
 	return (tmp);
 }
 
@@ -164,6 +165,44 @@ char	*real_expand(char *line, char **env)
 	return (tmp2);
 }
 
+char	*remove_space(char *str)
+{
+	int i;
+	int j;
+	char *tmp;
+
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] == ' ')
+			j++;
+		i++;
+	}
+	tmp = (char *)malloc(sizeof(char) * (i - j + 2));
+	if (!tmp)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ')
+		{
+			tmp[j] = str[i];
+			j++;
+		}
+		if (str[i] == ' ' && str[i + 1] != ' ')
+		{
+			tmp[j] = str[i];
+			j++;
+		}
+		i++;
+	}
+	tmp[j] = '\0';
+	free(str);
+	return (tmp);
+}
+
 void	expand(t_token **token, char **env)
 {
 	int i;
@@ -192,6 +231,8 @@ void	expand(t_token **token, char **env)
 					str = real_expand(after, env);
 					free(loop_tmp->value);
 					loop_tmp->value = ft_strjoin2(befor, str);
+					if (loop_tmp->flag != 1)
+						loop_tmp->value = remove_space(loop_tmp->value);
 					free(str);
 					free(befor);
 					free(after);
@@ -211,4 +252,10 @@ void	expand(t_token **token, char **env)
 		if (loop_tmp && loop_tmp->value != NULL)
 			loop_tmp = loop_tmp->next;
 	}
+	// t_token *tmp1 = *token;
+	// while (tmp1)
+	// {
+	// 	printf("type: %s, value: %s flag  %d\n", defin(tmp1->type), tmp1->value, tmp1->flag);
+	// 	tmp1 = tmp1->next;
+	// }
 }
