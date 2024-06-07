@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:00:56 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/07 12:44:34 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/07 16:15:20 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,16 +203,31 @@ char	*remove_space(char *str)
 	return (tmp);
 }
 
+void insert_after(t_token *node, char *value) 
+{
+    t_token *new_node;
+	new_node = calloc(1 ,sizeof(t_token));
+    new_node->value = ft_strdup(value);
+    new_node->next = node->next;
+	new_node->type = TOKEN_ID;
+	new_node->flag = -1;
+	new_node->helper_flag = -1;
+    node->next = new_node;
+}
+
 void	expand(t_token **token, char **env)
 {
 	int i;
 	int j;
+	char **argument;
 	t_token *tmp;
+	t_token *helper;
 	char *str;
 	char *befor;
 	char *after;
 
 	j = 0;
+	int k = 1;
 	t_token *loop_tmp = *token;
 	while (loop_tmp)
 	{
@@ -232,7 +247,22 @@ void	expand(t_token **token, char **env)
 					free(loop_tmp->value);
 					loop_tmp->value = ft_strjoin2(befor, str);
 					if (loop_tmp->flag != 1)
+					{
 						loop_tmp->value = remove_space(loop_tmp->value);
+						if (ft_strchr(loop_tmp->value, ' ') != NULL)
+						{
+							helper = loop_tmp;
+						    argument = ft_split(loop_tmp->value, ' ');
+						    while (argument[k])
+						    {
+						        insert_after(loop_tmp, argument[k]);
+						        loop_tmp = loop_tmp->next;
+						        k++;
+						    }
+							free(helper->value);
+						    helper->value = argument[0];
+						}
+					}
 					free(str);
 					free(befor);
 					free(after);
@@ -252,10 +282,4 @@ void	expand(t_token **token, char **env)
 		if (loop_tmp && loop_tmp->value != NULL)
 			loop_tmp = loop_tmp->next;
 	}
-	// t_token *tmp1 = *token;
-	// while (tmp1)
-	// {
-	// 	printf("type: %s, value: %s flag  %d\n", defin(tmp1->type), tmp1->value, tmp1->flag);
-	// 	tmp1 = tmp1->next;
-	// }
 }

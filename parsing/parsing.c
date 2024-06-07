@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/07 11:52:34 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/07 16:14:15 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,11 +249,6 @@ void     helper(t_token **token, char **env)
 	if (parss_command(*token) == 1)
 	{
 		expand(token, str);
-		// while(tmp)
-		// {
-		// 	printf("type: %s, value: %s flag  %d\n", defin(tmp->type), tmp->value, tmp->flag);
-		// 	tmp = tmp->next;
-		// }
 		concatenation_token(*token);
 		take_args(*token);
 		tree = pipeline(token);
