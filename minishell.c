@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/07 11:46:13 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/07 18:05:30 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,11 @@ int	main(int ac, char **av, char **env)
 		{
 			lexer = init_lexer(str);
 			lexer_to_next_token(&lexer, &token);
+			// while (token)
+			// {
+			// 	printf("type : %s value : %s\n", defin(token->type), token->value);
+			// 	token = token->next;
+			// }
 			helper(&token, env);
 			free(lexer);
 			ft_free(&token, &lexer);

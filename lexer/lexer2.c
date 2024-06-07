@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 13:52:04 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/07 11:43:05 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/07 17:03:40 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ static void	lexer_to_next_token2(t_lexer **lexer, t_token **token)
 	t_token	*tmp;
 
 	tmp = *token;
-	if ((*lexer)->c == '&' || (*lexer)->c == ';')
+	if ((*lexer)->c == '&' || (*lexer)->c == ';' || (*lexer)->c == '(' || (*lexer)->c == ')')
 	{
 		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_ERROR,
 					(*lexer)->content, (*lexer)->c)));
