@@ -14,7 +14,7 @@
 
 int     check_arg(char *str)
 {
-    if (str[0] != '-')
+    if ((str[0] != '-' && str[0] != 'n') || (str[0] == '-' && str[1] != 'n'))
         return (0);
     int i;
 
@@ -62,13 +62,13 @@ void      ft_print2(char **str)
     while (str[i])
     {
         j = 0;
-        while (str[i][j])
-        {
-            write(1, &str[i][j], 1);
-            j++;
-        }
-        if (str[i + 1])
-            write(1, " ", 1);
+            while (str[i][j])
+            {
+                write(1, &str[i][j], 1);
+                j++;
+            }
+            if (str[i + 1])
+                write(1, " ", 1);
         i++;
     }
     write(1, "\n", 1);

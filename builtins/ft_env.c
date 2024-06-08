@@ -59,7 +59,8 @@ void	take_env(char **env)
 	i = 0;
 	while (env[i])
 	{
-		printf("%s\n", env[i]);
+		if (ft_strchr(env[i], '='))
+			printf("%s\n", env[i]);
 		//add_env(&env_list, env[i]);
 		i++;
 	}

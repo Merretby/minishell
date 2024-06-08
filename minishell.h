@@ -27,6 +27,8 @@
 
 # define PATH_MAX 4096
 
+extern int g_exit_code;
+
 typedef	enum e_type
 {
 	TOKEN_ID,          // a-zA-Z0-9
@@ -42,6 +44,11 @@ typedef	enum e_type
 	TOKEN_FILE,
 	TOKEN_EOF,
 } t_type;
+
+typedef struct handle_signal
+{
+	int				signal;
+}	t_handle_signal;
 
 typedef enum e_rd
 {
@@ -151,7 +158,7 @@ void				ft_lstadd_back2(t_env **lst, t_env *new);
 
 //execution
 void ft_execution(t_node *tree, char **env1, int fork_flag);
-void	ft_execute(t_node *par,  char **env, int fork_flag);
+int	 ft_execute(t_node *tree,  char **env, int fork_flag);
 
 // builtins
 int					ft_cd(t_node *node, char **env);

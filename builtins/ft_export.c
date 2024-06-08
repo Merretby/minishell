@@ -12,7 +12,6 @@
 
 #include "../minishell.h"
 
-
 int check_repetition(t_env **env1, char *value)
 {
     t_env *tmp = *env1;
@@ -46,7 +45,7 @@ char *check_value(char *value)
 {
     char *tmp;
     char *tmp2;
-    size_t i;
+    int i;
 
     i = 0;
     while (value[i] && value[i] != '=')

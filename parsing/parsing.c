@@ -256,6 +256,8 @@ void     helper(t_token **token, char **env)
 		free_tree(tree);
 		print_tree(tree);
 	}
+	else 
+		g_exit_code = 2;
 }
 
 t_redir	*create_redirection(t_token *token)

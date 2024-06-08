@@ -69,7 +69,7 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 		else if (ft_strcmp(tree->data->cmd->args[0], "exit") == 0)
 			ft_exit(tree);
 		else
-			ft_execute(tree, env1, fork_flag);
+			g_exit_code = ft_execute(tree, env1, fork_flag);
 	}
 	if (tree->type == PIPE)
 	{

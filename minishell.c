@@ -12,14 +12,19 @@
 
 #include "minishell.h"
 
+int g_exit_code;
+
 void	signal_handler(int signum)
 {
 	if (signum == SIGINT)
 		printf("\n");
     rl_on_new_line();
     rl_replace_line("", 0);
-    rl_redisplay(); 
+    rl_redisplay();
+	g_exit_code = 130;
+	return ;
 }
+
 
 void	check_signal(void)
 {
@@ -67,9 +72,11 @@ int	main(int ac, char **av, char **env)
 	(void)env;
 	lexer = NULL;
 	token = NULL;
-	str = readline("minishell> ");
+	check_signal();
+	str = readline("\033[0;32mminishell~$42 \033[0m");
 	while (str)
 	{
+		g_exit_code = 0;
 		if (check_syntax(str))
 		{
 			lexer = init_lexer(str);
@@ -85,6 +92,7 @@ int	main(int ac, char **av, char **env)
 		}
 		add_history(str);
 		free(str);
-		str = readline("minishell> ");
+		str = readline("\033[0;32mminishell~$42 \033[0m");
 	}
+	return (0);
 }

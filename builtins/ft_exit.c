@@ -33,34 +33,33 @@ int ft_exit(t_node *node)
     if (!node->data->cmd->args[i + 1])
     {
         printf("exit\n");
-        exit(0);
+        exit(g_exit_code);
     }
-    if (node->data->cmd->args[i + 1] && !node->data->cmd->args[i + 2])
+    if (node->data->cmd->args[i + 1])
     {
         if (!ft_isdigitV2(node->data->cmd->args[i + 1]))
         {
-            int nb = ft_atoi(node->data->cmd->args[i + 1]);
-
-            if (nb > 256)
-                nb = nb % 256;
-            printf("exit\n");
             printf("minishell: exit: %s: numeric argument required\n", node->data->cmd->args[i + 1]);
-            exit(nb);
+            printf("exit\n");
+            g_exit_code = 0;
+            exit(0);
         }
         else
         {
+            if (node->data->cmd->args[i + 2])
+            {
+                printf("minishell: exit: too many arguments\n");
+                return (1);
+            }
             int nb2 =  ft_atoi(node->data->cmd->args[i + 1]);
+            if (nb2 <= -1)
+                nb2 = 256 + nb2;
             if (nb2 > 256)
                 nb2 = nb2 % 256;
             printf("exit\n");
+            g_exit_code = nb2;
             exit(nb2);
         }
-    }
-    else
-    {
-        printf("exit\n");
-        printf("minishell: exit: too many arguments\n");
-        return (1);
     }
     i++;
     return (0);
