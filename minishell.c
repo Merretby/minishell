@@ -74,9 +74,9 @@ int	main(int ac, char **av, char **env)
 	token = NULL;
 	check_signal();
 	str = readline("\033[0;32mminishell~$42 \033[0m");
+	g_exit_code = 0;
 	while (str)
 	{
-		g_exit_code = 0;
 		if (check_syntax(str))
 		{
 			lexer = init_lexer(str);
