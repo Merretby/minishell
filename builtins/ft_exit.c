@@ -33,8 +33,7 @@ int ft_exit(t_node *node)
     if (!node->data->cmd->args[i + 1])
     {
         printf("exit\n");
-        g_exit_code = 0;
-        exit(0);
+        exit(g_exit_code);
     }
     if (node->data->cmd->args[i + 1])
     {

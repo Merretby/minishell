@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/02 18:27:21 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/08 14:20:33 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,9 +201,11 @@ void     helper(t_token **token, char **env)
 		concatenation_token(*token);
 		take_args(*token);
 		tree = pipeline(token);
-		g_exit_code = ft_execution(tree, str, 1);
+		ft_execution(tree, str, 1);
 		// print_tree(tree);
 	}
+	else
+		g_exit_code = 2;
 }
 
 t_redir	*create_redirection(t_token *token)
@@ -347,8 +349,8 @@ t_node	*rederiction(t_token **token)
 		 if (tmp_token && (tmp_token->type == TOKEN_ID || tmp_token->type == TOKEN_STRING))
 		 {
 			left = new_node(tmp_token);
-			left->data->cmd->value = ft_strdup(tmp_token->value);
-			left->data->cmd->args = ft_split(left->data->cmd->value, ' ');
+			// left->data->cmd->value = ft_strdup(tmp_token->value);
+			// left->data->cmd->args = ft_split(left->data->cmd->value, ' ');
 		 }
 	}
 	if ((*token) && ((*token)->type == TOKEN_REDIR_IN ||\

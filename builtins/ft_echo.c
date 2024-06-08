@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 11:38:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/31 17:36:34 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/08 14:41:51 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int     check_arg(char *str)
 {
-    if (str[0] != '-')
+    if ((str[0] != '-' && str[0] != 'n') || (str[0] == '-' && str[1] != 'n'))
         return (0);
     int i;
 
@@ -43,22 +43,13 @@ void    ft_print(char **s)
     while(s[i])
     {
         j = 0;
-        if (ft_strcmp(s[i], "$?") == 0)
+        while (s[i][j])
         {
-            ft_putstr_fd(ft_itoa(g_exit_code), 1);
-            if (s[i + 1])
-                write(1, " ", 1);
+            write(1, &s[i][j], 1);
+            j++;
         }
-        else
-        {
-            while (s[i][j])
-            {
-                write(1, &s[i][j], 1);
-                j++;
-            }
         if (s[i + 1])
             write(1, " ", 1);
-        }
         i++;    
     }
 }
@@ -71,14 +62,6 @@ void      ft_print2(char **str)
     while (str[i])
     {
         j = 0;
-        if (ft_strcmp(str[i], "$?") == 0)
-        {
-            ft_putstr_fd(ft_itoa(g_exit_code), 1);
-            if (str[i + 1])
-                write(1, " ", 1);
-        }
-        else
-        {
             while (str[i][j])
             {
                 write(1, &str[i][j], 1);
@@ -86,10 +69,9 @@ void      ft_print2(char **str)
             }
             if (str[i + 1])
                 write(1, " ", 1);
-        }
         i++;
-        write(1, "\n", 1);
     }
+    write(1, "\n", 1);
 }
 int     ft_echo(t_node *node)
 {

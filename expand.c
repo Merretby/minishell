@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:00:56 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/02 18:28:32 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:27:28 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char	*ft_strjoin2(char *s1, char *s2)
 	char	*ptr;
 
 	if (!s1)
-		s1 = ft_strdup("");
+		s1 = "";
 	if (!s1 || !s2)
 		return (NULL);
 	j = 0;
@@ -153,12 +153,14 @@ char	*real_expand(char *line, char **env)
 			if (check_doller(line) == 1)
 				if (line[0] != '$' && line[0] != '\\' && !ft_isdigit(line[0]))
 					tmp2 = join_char(tmp2, line[0]);
+			free(str);
 			i = -1;
 		}
 		i++;
 	}
 	if (line != NULL)
 		tmp2 = ft_strjoin2(tmp2, line);
+	free(line);
 	return (tmp2);
 }
 
@@ -190,6 +192,9 @@ void	expand(t_token **token, char **env)
 					str = real_expand(after, env);
 					free(loop_tmp->value);
 					loop_tmp->value = ft_strjoin2(befor, str);
+					free(str);
+					free(befor);
+					free(after);
 					 if (loop_tmp->value[0] == '\0')
 					{
 						tmp = loop_tmp;

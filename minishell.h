@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/05 13:11:10 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/07 16:28:32 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,11 @@ typedef struct s_args
 	char			*args;
 	struct s_args	*next;
 }	t_args;
+
+typedef struct handle_signal
+{
+	int				signal;
+}	t_handle_signal;
 
 typedef struct s_token
 {
@@ -152,8 +157,10 @@ void				ft_lstadd_back2(t_env **lst, t_env *new);
 
 
 //execution
-int ft_execution(t_node *tree, char **env1, int fork_flag);
+void ft_execution(t_node *tree, char **env1, int fork_flag);
 int	 ft_execute(t_node *tree,  char **env, int fork_flag);
+void check_signal2();
+void	signal_handler(int signum);
 
 // builtins
 int					ft_cd(t_node *node, char **env);

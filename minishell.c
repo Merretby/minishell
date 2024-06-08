@@ -6,21 +6,23 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/05 13:12:49 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/08 14:29:56 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int g_exit_code;
-`
+
 void	signal_handler(int signum)
 {
 	if (signum == SIGINT)
 		printf("\n");
     rl_on_new_line();
     rl_replace_line("", 0);
-    rl_redisplay(); 
+    rl_redisplay();
+	g_exit_code = 130;
+	return ;
 }
 
 void	check_signal(void)
@@ -72,17 +74,18 @@ int	main(int ac, char **av, char **env)
 	str = readline("\033[0;32mminishell~$42 \033[0m");
 	while (str)
 	{
+		g_exit_code = 0;
 		if (check_syntax(str))
 		{
 			lexer = init_lexer(str);
 			lexer_to_next_token(lexer, &token);
 			helper(&token, env);
 			ft_free(&token, &lexer);
+			// printf("%d\n", g_exit_code);
 		}
 		add_history(str);
 		free(str);
 		str = readline("\033[0;32mminishell~$42 \033[0m");
-		// printf("%d\n", g_exit_code);
 	}
 	return (0);
 }

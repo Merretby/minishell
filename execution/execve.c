@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execve.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 14:21:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/02 15:38:38 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/07 15:19:23 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	case1(char *tmp, t_node *tree, char **env)
 
 void	case2(t_node *tree, char **env)
 {
+
 	if (access(tree->data->cmd->args[0], F_OK | X_OK) == 0)
 		execve(tree->data->cmd->args[0], tree->data->cmd->args, env);
 	else
@@ -59,7 +60,6 @@ void	ft_execute2(t_node *tree, char **env)
 	i = 0;
 	str = path_check(env);
 	path = ft_split(str + 5, ':');
-	
 	while (path[i] && tree->data->cmd->args)
 	{
 		if (ft_strchr(tree->data->cmd->args[0], '/') == NULL)
@@ -82,6 +82,8 @@ void	ft_execute2(t_node *tree, char **env)
 		case1(tmp, tree, env);
 }
 
+
+
 int	 ft_execute(t_node *tree,  char **env, int fork_flag)
 {
 	int ip1;
@@ -96,7 +98,11 @@ int	 ft_execute(t_node *tree,  char **env, int fork_flag)
 	{
 		ip1 = fork();
 		if (ip1 == 0)
+		{
+			signal(SIGQUIT, SIG_DFL);
+			signal(SIGINT, SIG_DFL);
 			ft_execute2(tree, env);
+		}
 		else
 		{
 			wait(&status);
