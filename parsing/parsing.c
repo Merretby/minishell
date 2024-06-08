@@ -412,8 +412,8 @@ t_node	*rederiction(t_token **token)
 		 if (tmp_token && (tmp_token->type == TOKEN_ID || tmp_token->type == TOKEN_STRING))
 		 {
 			left = new_node(tmp_token);
-			left->data->cmd->value = ft_strdup(tmp_token->value);
-			left->data->cmd->args = ft_split(left->data->cmd->value, ' ');
+			// left->data->cmd->value = ft_strdup(tmp_token->value);
+			// left->data->cmd->args = ft_split(left->data->cmd->value, ' ');
 		 }
 	}
 	if ((*token) && ((*token)->type == TOKEN_REDIR_IN ||\
