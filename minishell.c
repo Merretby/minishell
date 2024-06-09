@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/08 14:29:56 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/09 17:39:31 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ int g_exit_code;
 void	signal_handler(int signum)
 {
 	if (signum == SIGINT)
-		printf("\n");
+		ft_putstr_fd("\n", STDIN_FILENO);
     rl_on_new_line();
     rl_replace_line("", 0);
-    rl_redisplay();
+	rl_redisplay();
 	g_exit_code = 130;
 	return ;
 }
@@ -72,9 +72,9 @@ int	main(int ac, char **av, char **env)
 	token = NULL;
 	check_signal();
 	str = readline("\033[0;32mminishell~$42 \033[0m");
+	g_exit_code = 0;
 	while (str)
 	{
-		g_exit_code = 0;
 		if (check_syntax(str))
 		{
 			lexer = init_lexer(str);
@@ -83,7 +83,8 @@ int	main(int ac, char **av, char **env)
 			ft_free(&token, &lexer);
 			// printf("%d\n", g_exit_code);
 		}
-		add_history(str);
+		if (str[0] != '\0')
+			add_history(str);
 		free(str);
 		str = readline("\033[0;32mminishell~$42 \033[0m");
 	}

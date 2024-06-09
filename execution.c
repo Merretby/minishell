@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/07 15:20:43 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/09 17:37:39 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,54 @@ int ft_check(t_node *tree)
     return (0);
 }
 
+int	cherch_exit_status(char **args)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (args[i])
+	{
+		j = 0;
+		while (args[i][j])
+		{
+			if (args[i][j] == '$' && args[i][j + 1] == '?')
+				return (1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
+void	expand_exit_status(char **args)
+{
+	int i;
+	int j;
+	char *tmp;
+	char *tmp2;
+
+	i = 0;
+	while (args[i])
+	{
+		j = 0;
+		while (args[i][j])
+		{
+			if (args[i][j] == '$' && args[i][j + 1] == '?')
+			{
+				tmp = ft_substr(args[i], 0, j);
+				tmp2 = ft_itoa(g_exit_code);
+				args[i] = ft_strjoin(tmp, tmp2);
+				free(tmp);
+				free(tmp2);
+			}
+			j++;
+		}
+		i++;
+	}
+	g_exit_code = 0;
+}
+
 void ft_execution(t_node *tree, char **env1, int fork_flag)
 {
 	if (!tree)
@@ -54,7 +102,9 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
     tmp = tree;
 	if (tree->type == CMD)
 	{
-		if (ft_strcmp(tree->data->cmd->args[0], "pwd") == 0)
+		if (cherch_exit_status(tree->data->cmd->args))
+			expand_exit_status(tree->data->cmd->args);
+		else if (ft_strcmp(tree->data->cmd->args[0], "pwd") == 0)
 			ft_pwd(tree);
 		else if (ft_strcmp(tree->data->cmd->args[0], "echo") == 0)
 			ft_echo(tree);

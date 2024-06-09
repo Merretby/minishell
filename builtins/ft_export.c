@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:10 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/08 14:54:28 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/09 17:41:57 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int check_repetition(t_env **env1, char *value)
     char *tmp2;
     int i;
 
-    while (tmp)  // export a=1 a=2
+    while (tmp && tmp->value)  // export a=1 a=2
     {
         i = 0;
         while (tmp->value[i] && tmp->value[i] != '=')
@@ -45,7 +45,7 @@ char *check_value(char *value)
 {
     char *tmp;
     char *tmp2;
-    int i;
+    size_t i;
 
     i = 0;
     while (value[i] && value[i] != '=')
@@ -74,7 +74,7 @@ void ft_printexport(t_env *new)
     char    *tmp;
     int i;
 
-    while (new)
+    while (new && new->value)
     {
         i = 0;
         while (new->value[i] && new->value[i] != '=')
@@ -98,7 +98,7 @@ int check_repetition2(t_env **new, char *value , int k)
     char *tmp2;
     int i;
 
-    while (tmp)
+    while (tmp && tmp->value)
     {
         i = 0;
         while (tmp->value[i] && tmp->value[i] != '=')
@@ -147,8 +147,8 @@ char  **ft_export(t_node *node, char **env1)
 {
     t_env *new;
     char *value;
-    int i;
-    
+    size_t i;
+
     new = malloc(sizeof(t_env));
     if (!new)
         return (0);
@@ -169,19 +169,24 @@ char  **ft_export(t_node *node, char **env1)
     i = 1;
     if(node->data->cmd->args[1] == NULL)
     {
-        ft_printexport(new);
-        free(new);
+        if (new && new->value)
+        {
+            ft_printexport(new);
+            free(new);
+        }
         return env1;
     }
     while(node->data->cmd->args[i])
     {
-        if (check_add(&new, node->data->cmd->args[i]))
+        if (new && new->value && check_add(&new, node->data->cmd->args[i]))
             i++;
-        else if (check_repetition(&new, node->data->cmd->args[i]))
+        else if (new && new->value && check_repetition(&new, node->data->cmd->args[i]))
             i++;
         else
         {
             value = node->data->cmd->args[i];
+            if (!new->value)
+                new->value = value;
             ft_lstadd_back2(&new, ft_lstnew2(value));
             i++;
         }

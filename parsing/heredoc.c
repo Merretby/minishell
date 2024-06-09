@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:44:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/08 11:11:05 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/09 17:29:23 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,16 +86,22 @@ char	*random_string(void)
 }
 
 
-void signal_handler4(int signum)
+
+int *retur_nvalue(void)
 {
-	if (signum == SIGINT)
-	{
-		g_exit_code = 130;
-		printf("\n");
-		    rl_on_new_line();
-   		 rl_replace_line("", 0);
-    rl_redisplay();
-	}
+	static int retur_n = -1;
+	
+	return (&retur_n);
+}
+
+void signal_handler5(int signum)
+{
+	(void)signum;
+	ft_putstr_fd("\n", STDOUT_FILENO);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	*retur_nvalue() = dup(0);
+	close(0);
 }
 
 void	heredoc(t_token *token, char **env)
@@ -106,15 +112,12 @@ void	heredoc(t_token *token, char **env)
 	char	*eof;
 	t_token	*tmp;
 	int		fd_f;
-	
-	signal(SIGINT, SIG_DFL);
-	signal(SIGINT, signal_handler4);
+
 	flaag = 0;
 	tmp = token;
+	signal(SIGINT, signal_handler5);
 	while (tmp)
 	{
-		if (g_exit_code == 130)
-			return ;
 		if (tmp->type == TOKEN_HEREDOC)
 		{
 			str = random_string();
@@ -126,11 +129,6 @@ void	heredoc(t_token *token, char **env)
 			line = readline("> ");
 			while (line)
 			{
-				if (g_exit_code == 130)
-				{
-					printf("THE END\n");
-					return ;
-				}
 				if (ft_strncmp(line, eof, ft_strlen(eof)) == 0 && \
 					(ft_strlen(line) == ft_strlen(eof)))
 					break ;
@@ -148,6 +146,12 @@ void	heredoc(t_token *token, char **env)
 			tmp->next->value = ft_strdup(str);
 			tmp->next->type = TOKEN_FILE;
 		}
+			if (*retur_nvalue() != -1)
+			{
+				dup2(*retur_nvalue(), 0);
+				close(*retur_nvalue());
+				signal(SIGINT, signal_handler);
+			}
 		tmp = tmp->next;
 	}
 }
