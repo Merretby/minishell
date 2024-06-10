@@ -254,7 +254,7 @@ void     helper(t_token **token, char **env)
 		tree = pipeline(token);
 		ft_execution(tree, str, 1);
 		free_tree(tree);
-		print_tree(tree);
+		// print_tree(tree);
 	}
 	else 
 		g_exit_code = 2;
@@ -412,11 +412,7 @@ t_node	*rederiction(t_token **token)
 			tmp_token = tmp_token->next;
 		 }
 		 if (tmp_token && (tmp_token->type == TOKEN_ID || tmp_token->type == TOKEN_STRING))
-		 {
 			left = new_node(tmp_token);
-			// left->data->cmd->value = ft_strdup(tmp_token->value);
-			// left->data->cmd->args = ft_split(left->data->cmd->value, ' ');
-		 }
 	}
 	if ((*token) && ((*token)->type == TOKEN_REDIR_IN ||\
 	 (*token)->type == TOKEN_REDIR_OUT ||\
