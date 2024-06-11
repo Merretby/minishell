@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:10 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/09 17:41:57 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/09 18:20:41 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,23 @@ int check_add(t_env **new, char *str)
     return 0;
 }
 
+void    ft_inisialize_env(char **env1)
+{
+    char s[PATH_MAX];
+
+    getcwd(s, sizeof(s));
+    env1[0] = "OLDPWD";
+    env1[1] = ft_strjoin("PWD=", s);
+    env1[2] = "SHLVL=1";
+    env1[3] = "_=/usr/bin/env";
+    env1[4] = NULL;
+    // declare -x OLDPWD
+    // declare -x PWD="/nfs1/homes/mnachit/Desktop"
+    // declare -x SHLVL=1
+
+
+}
+
 char  **ft_export(t_node *node, char **env1)
 {
     t_env *new;
@@ -153,6 +170,11 @@ char  **ft_export(t_node *node, char **env1)
     if (!new)
         return (0);
     new->next = NULL;
+    if (!env1[0])
+    {
+        ft_inisialize_env(env1);
+        printf("Env[0] = %s\n", env1[0]);
+    }
     new->value = env1[0];
     i = 1;
     if (node->data->cmd->args[1] && node->data->cmd->args[1][0] == '=')
