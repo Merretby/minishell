@@ -86,6 +86,7 @@ int	main(int ac, char **av, char **env)
 		if (str[0] != '\0')
 			add_history(str);
 		free(str);
+		check_signal();
 		str = readline("\033[0;32mminishell~$42 \033[0m");
 	}
 	return (0);

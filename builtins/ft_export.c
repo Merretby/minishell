@@ -12,34 +12,36 @@
 
 #include "../minishell.h"
 
+
 int check_repetition(t_env **env1, char *value)
 {
-    t_env *tmp = *env1;
-    char *tmp2;
-    int i;
+	t_env *tmp = *env1;
+	char *tmp2;
+	int i;
 
-    while (tmp && tmp->value)  // export a=1 a=2
-    {
-        i = 0;
-        while (tmp->value[i] && tmp->value[i] != '=')
-            i++;
-        tmp2 = ft_substr(tmp->value, 0, i);
-        if (ft_strcmp(tmp2, ft_substr(value, 0, i)) == 0)
-        {
-            // free(tmp->value);
-            i = 0;
-            while (value[i] && value[i] != '=')
-                i++;
-            if (value[i]) 
-                tmp->value = ft_strdup(value);
-            // free(tmp2);
-            return 1;
-        }
-        //free(tmp2);
-        tmp = tmp->next;
-    }
-    return 0;
+	while (tmp && tmp->value)  // export a=1 a=2
+	{
+		i = 0;
+		while (tmp->value[i] && tmp->value[i] != '=')
+			i++;
+		tmp2 = ft_substr(tmp->value, 0, i);
+		if (ft_strcmp(tmp2, ft_substr(value, 0, i)) == 0)
+		{
+			// free(tmp->value);
+			i = 0;
+			while (value[i] && value[i] != '=')
+				i++;
+			if (value[i]) 
+				tmp->value = ft_strdup(value);
+			// free(tmp2);
+			return 1;
+		}
+		//free(tmp2);
+		tmp = tmp->next;
+	}
+	return 0;
 }
+
 
 char *check_value(char *value)
 {
@@ -79,8 +81,8 @@ void ft_printexport(t_env *new)
         i = 0;
         while (new->value[i] && new->value[i] != '=')
             i++;
-        if (new->value[i] == '\0')
-            printf("declare -x %s\n", new->value);
+        if (new->value && new->value[i] == '\0')
+                printf("declare -x %s\n", new->value);
         else
         {
             tmp = ft_substr(new->value, 0, i);
@@ -160,7 +162,7 @@ void    ft_inisialize_env(char **env1)
 
 }
 
-char  **ft_export(t_node *node, char **env1)
+char **ft_export(t_node *node, char **env1)
 {
     t_env *new;
     char *value;
@@ -168,53 +170,52 @@ char  **ft_export(t_node *node, char **env1)
 
     new = malloc(sizeof(t_env));
     if (!new)
-        return (0);
+        return env1;  // Changed to return env1 instead of 0
     new->next = NULL;
-    if (!env1[0])
-    {
-        ft_inisialize_env(env1);
-        printf("Env[0] = %s\n", env1[0]);
-    }
-    new->value = env1[0];
-    i = 1;
+    new->value = NULL;  // Initialize to NULL
+
     if (node->data->cmd->args[1] && node->data->cmd->args[1][0] == '=')
     {
         printf("minishell: export: `%s': not a valid identifier\n", node->data->cmd->args[1]);
+        free(new);  // Free allocated memory before returning
         return env1;
     }
-    while (env1[i])
+
+    i = 0;
+    while (env1 && env1[i])
     {
         value = env1[i];
         ft_lstadd_back2(&new, ft_lstnew2(value));
         i++;
     }
-    i = 1;
+
     if(node->data->cmd->args[1] == NULL)
     {
-        if (new && new->value)
+        if (new && new->next)  // Check if there are actually values in the list
         {
-            ft_printexport(new);
-            free(new);
+            ft_printexport(new->next);  // Skip the first dummy node
         }
+        free(new);  // Free the dummy node
         return env1;
     }
+
+    i = 1;
     while(node->data->cmd->args[i])
     {
-        if (new && new->value && check_add(&new, node->data->cmd->args[i]))
-            i++;
-        else if (new && new->value && check_repetition(&new, node->data->cmd->args[i]))
-            i++;
+        if (check_add(&new, node->data->cmd->args[i]))
+            ;
+        else if (check_repetition(&new, node->data->cmd->args[i]))
+            ;
         else
         {
             value = node->data->cmd->args[i];
-            if (!new->value)
-                new->value = value;
             ft_lstadd_back2(&new, ft_lstnew2(value));
-            i++;
         }
+        i++;
     }
-    t_env *tmp = new;
+
     i = 0;
+    t_env *tmp = new->next;  // Skip the first dummy node
     while (tmp)
     {
         env1[i++] = tmp->value;
@@ -224,5 +225,6 @@ char  **ft_export(t_node *node, char **env1)
     }
     env1[i] = NULL;
 
+    free(new);  // Free the dummy node
     return env1;
 }
