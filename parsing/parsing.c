@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/07 16:14:15 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/24 08:39:15 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void add_to_args(t_token *token, char *str)
 
 	if (token == NULL)
 		return ;
-	new = malloc (sizeof(t_args));
+	new = ft_calloc (1, sizeof(t_args));
 	new->args = str;
 	new->next = NULL;
 	if (token->args == NULL)

@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 14:21:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/07 11:43:32 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/24 11:50:30 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	case1(char *tmp, t_node *tree, char **env)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(tree->data->cmd->args[0], 2);
 		ft_putstr_fd(" command not found\n", 2);
+		g_exit_code = 127;
 		exit(127);
 	}
 }
@@ -31,6 +32,7 @@ void	case2(t_node *tree, char **env)
 	{
 		write(2, "minishell: ", 11);
 		perror(tree->data->cmd->value);
+		g_exit_code = 127;
 		exit(127);
 	}
 }
@@ -94,7 +96,7 @@ int	 ft_execute(t_node *tree,  char **env, int fork_flag)
 	if (fork_flag == 0)
 	{
 		ft_execute2(tree, env);
-		return 0;
+		return g_exit_code;
 	}
 	else if (fork_flag == 1)
 	{

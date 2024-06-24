@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/06 17:09:07 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/24 12:02:29 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,14 @@ void	expand_exit_status(char **args)
 	g_exit_code = 0;
 }
 
+void ft_wait(int status)
+{
+	if (WIFEXITED(status))
+		g_exit_code = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		g_exit_code = WTERMSIG(status) + 128;
+}
+
 void ft_execution(t_node *tree, char **env1, int fork_flag)
 {
 	if (!tree)
@@ -123,6 +131,7 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 	}
 	if (tree->type == PIPE)
 	{
+		int status;
 		int fd[2];
 		int ip1;
 		int ip2;
@@ -137,7 +146,7 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 		if (ip1 == 0)
 		{
 			child(env1, tree, fd);
-			exit(1);
+			exit(0);
 		}
 		if (ip1 != 0)
 		{
@@ -147,14 +156,16 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 			if (ip2 == 0)
 			{
 				child2(env1, tree, fd);
-				exit(1);
+				exit(0);
 			}
 		}
 		close(fd[0]);
 		close(fd[1]);
-		wait(NULL);
-		wait(NULL);
-		return;
+		wait(&status);
+		ft_wait(status);
+		wait(&status);
+		ft_wait(status);
+		return ;
 	}
     if (tree->type ==  REDIR)
     {

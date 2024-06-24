@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/07 18:05:30 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/24 10:28:18 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,13 @@ int check_syntax(char *str)
 	return (1);
 }
 
+void	main2(t_token **token, t_lexer **lexer, char **env)
+{
+	helper(token, env);
+	free(*lexer);
+	ft_free(token, lexer);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	char	*str;
@@ -69,7 +76,6 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	(void)env;
 	lexer = NULL;
 	token = NULL;
 	check_signal();
@@ -81,18 +87,12 @@ int	main(int ac, char **av, char **env)
 		{
 			lexer = init_lexer(str);
 			lexer_to_next_token(&lexer, &token);
-			// while (token)
-			// {
-			// 	printf("type : %s value : %s\n", defin(token->type), token->value);
-			// 	token = token->next;
-			// }
-			helper(&token, env);
-			free(lexer);
-			ft_free(&token, &lexer);
+			main2(&token, &lexer, env);
 		}
-		add_history(str);
+		if (str[0] != '\0')
+			add_history(str);
 		free(str);
+		check_signal();
 		str = readline("\033[0;32mminishell~$42 \033[0m");
 	}
-	return (0);
 }
