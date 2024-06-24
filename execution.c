@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/24 12:02:29 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/24 16:13:03 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void ft_wait(int status)
 	if (WIFEXITED(status))
 		g_exit_code = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
-		g_exit_code = WTERMSIG(status) + 128;
+		g_exit_code = WTERMSIG(status) + 114;
 }
 
 void ft_execution(t_node *tree, char **env1, int fork_flag)
