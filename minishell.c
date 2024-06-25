@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/24 10:28:18 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/25 10:44:48 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,9 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	lexer = NULL;
 	token = NULL;
+	g_exit_code = 0;
 	check_signal();
 	str = readline("\033[0;32mminishell~$42 \033[0m");
-	g_exit_code = 0;
 	while (str)
 	{
 		if (check_syntax(str))

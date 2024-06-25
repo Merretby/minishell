@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:44:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/04 20:15:37 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/25 10:40:56 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ void	heredoc(t_token *token, char **env)
 		{
 			dup2(*retur_nvalue(), 0);
 			close(*retur_nvalue());
+			g_exit_code = 130;
 			signal(SIGINT, signal_handler5);
 		}
 		tmp = tmp->next;

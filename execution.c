@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/25 10:37:01 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/25 16:27:07 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 		if (ip1 == 0)
 		{
 			child(env1, tree, fd);
-			exit(0);
+			exit(127);
 		}
 		if (ip1 != 0)
 		{
@@ -156,13 +156,12 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 			if (ip2 == 0)
 			{
 				child2(env1, tree, fd);
-				exit(0);
+				exit(127);
 			}
+			close(fd[0]);
+			close(fd[1]);
 		}
-		close(fd[0]);
-		close(fd[1]);
 		waitpid(ip1, &status, 0);
-		ft_wait(status);
 		waitpid(ip2, &status, 0);
 		ft_wait(status);
 		return ;
