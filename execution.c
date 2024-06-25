@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/24 16:13:03 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/25 10:37:01 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,9 +161,9 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 		}
 		close(fd[0]);
 		close(fd[1]);
-		wait(&status);
+		waitpid(ip1, &status, 0);
 		ft_wait(status);
-		wait(&status);
+		waitpid(ip2, &status, 0);
 		ft_wait(status);
 		return ;
 	}
