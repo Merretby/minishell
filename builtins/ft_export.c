@@ -19,7 +19,7 @@ int check_repetition(t_env **env1, char *value)
 	char *tmp2;
 	int i;
 
-	while (tmp && tmp->value)  // export a=1 a=2
+    while (tmp && tmp->value)  // export a=1 a=2
 	{
 		i = 0;
 		while (tmp->value[i] && tmp->value[i] != '=')
@@ -145,86 +145,59 @@ int check_add(t_env **new, char *str)
     return 0;
 }
 
-void    ft_inisialize_env(char **env1)
+
+char  **ft_export(t_node *node, char **env1)
 {
-    char s[PATH_MAX];
+	t_env *new;
+	char *value;
+	size_t i;
 
-    getcwd(s, sizeof(s));
-    env1[0] = "OLDPWD";
-    env1[1] = ft_strjoin("PWD=", s);
-    env1[2] = "SHLVL=1";
-    env1[3] = "_=/usr/bin/env";
-    env1[4] = NULL;
-    // declare -x OLDPWD
-    // declare -x PWD="/nfs1/homes/mnachit/Desktop"
-    // declare -x SHLVL=1
-
-
-}
-
-char **ft_export(t_node *node, char **env1)
-{
-    t_env *new;
-    char *value;
-    size_t i;
-
-    new = malloc(sizeof(t_env));
-    if (!new)
-        return env1;  // Changed to return env1 instead of 0
-    new->next = NULL;
-    new->value = NULL;  // Initialize to NULL
-
-    if (node->data->cmd->args[1] && node->data->cmd->args[1][0] == '=')
-    {
-        printf("minishell: export: `%s': not a valid identifier\n", node->data->cmd->args[1]);
-        free(new);  // Free allocated memory before returning
-        return env1;
-    }
-
+	new = malloc(sizeof(t_env));
+	if (!new)
+		return (0);
+	new->next = NULL;
+	new->value = NULL;
+	i = 0;
+	if (node->data->cmd->args[1] && node->data->cmd->args[1][0] == '=')
+	{
+		printf("minishell: export: `%s': not a valid identifier\n", node->data->cmd->args[1]);
+		return env1;
+	}
+	while (env1[i])
+	{
+		value = env1[i];
+		ft_lstadd_back2(&new, ft_lstnew2(value));
+		i++;
+	}
+	i = 1;
+	if(node->data->cmd->args[1] == NULL)
+	{
+		ft_printexport(new->next);
+		free(new);
+		return env1;
+	}
+	while(node->data->cmd->args[i])
+	{
+		if (check_add(&new->next, node->data->cmd->args[i]))
+			i++;
+		else if (check_repetition(&new->next, node->data->cmd->args[i]))
+			i++;
+		else
+		{
+			value = node->data->cmd->args[i];
+			ft_lstadd_back2(&new, ft_lstnew2(value));
+			i++;
+		}
+	}
+    t_env *tmp = new->next;
     i = 0;
-    while (env1 && env1[i])
-    {
-        value = env1[i];
-        ft_lstadd_back2(&new, ft_lstnew2(value));
-        i++;
-    }
-
-    if(node->data->cmd->args[1] == NULL)
-    {
-        if (new && new->next)  // Check if there are actually values in the list
-        {
-            ft_printexport(new->next);  // Skip the first dummy node
-        }
-        free(new);  // Free the dummy node
-        return env1;
-    }
-
-    i = 1;
-    while(node->data->cmd->args[i])
-    {
-        if (check_add(&new, node->data->cmd->args[i]))
-            ;
-        else if (check_repetition(&new, node->data->cmd->args[i]))
-            ;
-        else
-        {
-            value = node->data->cmd->args[i];
-            ft_lstadd_back2(&new, ft_lstnew2(value));
-        }
-        i++;
-    }
-
-    i = 0;
-    t_env *tmp = new->next;  // Skip the first dummy node
     while (tmp)
     {
         env1[i++] = tmp->value;
         t_env *to_free = tmp;
-        tmp = tmp->next;
-        free(to_free);
+        printf("declare -x ");
     }
     env1[i] = NULL;
-
-    free(new);  // Free the dummy node
-    return env1;
+    free(new);
+	return env1;
 }
