@@ -97,9 +97,6 @@ int *retur_nvalue(void)
 void signal_handler5(int signum)
 {
 	(void)signum;
-	ft_putstr_fd("\n", STDOUT_FILENO);
-	rl_on_new_line();
-	rl_replace_line("", 0);
 	*retur_nvalue() = dup(0);
 	close(0);
 }
@@ -146,12 +143,11 @@ void	heredoc(t_token *token, char **env)
 			tmp->next->value = ft_strdup(str);
 			tmp->next->type = TOKEN_FILE;
 		}
-			if (*retur_nvalue() != -1)
-			{
-				dup2(*retur_nvalue(), 0);
-				close(*retur_nvalue());
-				signal(SIGINT, signal_handler);
-			}
+		if (*retur_nvalue() != -1)
+		{
+			dup2(*retur_nvalue(), 0);
+			close(*retur_nvalue());
+		}
 		tmp = tmp->next;
 	}
 }

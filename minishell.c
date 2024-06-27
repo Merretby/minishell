@@ -16,7 +16,7 @@ int g_exit_code;
 
 void	signal_handler(int signum)
 {
-	if (signum == SIGINT)
+	if (signum == SIGINT && *retur_nvalue() == -1)
 		ft_putstr_fd("\n", STDIN_FILENO);
     rl_on_new_line();
     rl_replace_line("", 0);

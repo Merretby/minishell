@@ -154,7 +154,7 @@ t_token				*ft_lstlast1(t_token *lst);
 void				ft_lstadd_back1(t_token **lst, t_token *new);
 t_env   			*ft_lstnew2(char *value);
 void				ft_lstadd_back2(t_env **lst, t_env *new);
-
+int *retur_nvalue(void);
 
 //execution
 void ft_execution(t_node *tree, char **env1, int fork_flag);

@@ -86,11 +86,9 @@ t_env *ft_New_env(char *value, t_env *env)
     tmp = env;
     while (tmp)
     {
-        if (tmp->next && strcmp(value, ft_findEnv(tmp->next->value)) == 0)
+        if (tmp->next && tmp->value && strcmp(value, ft_findEnv(tmp->next->value)) == 0)
         {
-            tmp2 = tmp->next;
-            tmp->next = tmp->next->next;
-            free(tmp2);
+            tmp->value = NULL;
             return (env);
         }
         tmp = tmp->next;
