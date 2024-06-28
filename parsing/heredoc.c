@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:44:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/25 10:40:56 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 14:00:38 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,6 @@ int *retur_nvalue(void)
 void signal_handler5(int signum)
 {
 	(void)signum;
-	ft_putstr_fd("\n", STDOUT_FILENO);
-	rl_on_new_line();
-	rl_replace_line("", 0);
 	*retur_nvalue() = dup(0);
 	close(0);
 }
@@ -117,9 +114,9 @@ void	heredoc(t_token *token, char **env)
 
 	flaag = 0;
 	tmp = token;
-	signal(SIGINT, signal_handler5);
 	while (tmp)
 	{
+		signal(SIGINT, signal_heredoc);
 		if (tmp->type == TOKEN_HEREDOC)
 		{
 			str = random_string();
@@ -153,8 +150,7 @@ void	heredoc(t_token *token, char **env)
 		{
 			dup2(*retur_nvalue(), 0);
 			close(*retur_nvalue());
-			g_exit_code = 130;
-			signal(SIGINT, signal_handler5);
+			signal(SIGINT, signal_handler);
 		}
 		tmp = tmp->next;
 	}

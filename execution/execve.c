@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 14:21:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/25 10:48:50 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 14:02:16 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	case1(char *tmp, t_node *tree, char **env)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(tree->data->cmd->args[0], 2);
 		ft_putstr_fd(" command not found\n", 2);
-		// g_exit_code = 127;
 		exit(127);
 	}
 }
@@ -32,7 +31,6 @@ void	case2(t_node *tree, char **env)
 	{
 		write(2, "minishell: ", 11);
 		perror(tree->data->cmd->value);
-		// g_exit_code = 127;
 		exit(127);
 	}
 }
@@ -93,8 +91,12 @@ int	 ft_execute(t_node *tree,  char **env, int fork_flag)
 	int ip1;
 	int	status;
 
+	signal(SIGINT, signal_handler_child);
+	signal(SIGQUIT, signal_handler_child);
 	if (fork_flag == 0)
 	{
+		signal(SIGINT, signal_handler_2);
+		signal(SIGQUIT, signal_handler_2);
 		ft_execute2(tree, env);
 		return g_exit_code;
 	}
@@ -103,8 +105,8 @@ int	 ft_execute(t_node *tree,  char **env, int fork_flag)
 		ip1 = fork();
 		if (ip1 == 0)
 		{
-			// signal(SIGQUIT, SIG_DFL);
-			// signal(SIGINT, SIG_DFL);
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
 			ft_execute2(tree, env);
 		}
 		else
@@ -116,5 +118,6 @@ int	 ft_execute(t_node *tree,  char **env, int fork_flag)
 				g_exit_code = WTERMSIG(status) + 128;
 		}
 	}
+	signal(SIGINT, signal_handler);
 	return (g_exit_code);
 }

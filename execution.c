@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/25 16:44:03 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 13:59:05 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ int ft_execution(t_node *tree, char **env1, int fork_flag)
 		ip1 = fork();
 		if (ip1 == -1)
 			perror("error in fork ip1");
+		signal(SIGINT, signal_handler_2);
 		if (ip1 == 0)
 		{
 			child(env1, tree, fd);
@@ -159,12 +160,13 @@ int ft_execution(t_node *tree, char **env1, int fork_flag)
 				child2(env1, tree, fd);
 				exit(g_exit_code);
 			}
-			close(fd[0]);
-			close(fd[1]);
 		}
+		close(fd[0]);
+		close(fd[1]);
 		waitpid(ip1, &status, 0);
 		waitpid(ip2, &status, 0);
 		ft_wait(status);
+		signal(SIGINT, signal_handler);
 		return (g_exit_code);
 	}
     if (tree->type ==  REDIR)
@@ -191,6 +193,7 @@ int ft_execution(t_node *tree, char **env1, int fork_flag)
 					close(copy_fd2);
 					close(copy_fd);
 					printf("minishell: %s: No such file or directory\n", redir->value);
+					g_exit_code = 1;
 					return (g_exit_code);
 				}
 				dup2(fd, STDIN_FILENO);
@@ -206,6 +209,7 @@ int ft_execution(t_node *tree, char **env1, int fork_flag)
 					close(copy_fd2);
 					close(copy_fd);					
 					printf("minishell: %s: No such file or directory\n", redir->value);
+					g_exit_code = 1;
 					return (g_exit_code);
 				}
 				dup2(fd2, STDOUT_FILENO);
@@ -222,6 +226,7 @@ int ft_execution(t_node *tree, char **env1, int fork_flag)
 					close(copy_fd2);
 					close(copy_fd);
 					printf("minishell: %s: No such file or directory\n", redir->value);
+					g_exit_code = 1;
 					return (g_exit_code);
 				}
 				dup2(fd2, STDOUT_FILENO);

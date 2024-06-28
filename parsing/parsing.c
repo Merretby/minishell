@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/25 16:37:26 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/27 21:41:27 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,18 @@ void	free_redir(t_redir *red)
 		free(tmp->value);
 		free(tmp);
 	}
+}
+
+void	free_args(char **args)
+{
+	int i = 0;
+	
+	while (args[i])
+	{
+		free(args[i]);
+		i++;
+	}
+	free(args);
 }
 
 void	free_tree(t_node *tree)

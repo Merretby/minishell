@@ -6,31 +6,13 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/25 10:44:48 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 14:04:13 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int g_exit_code;
-
-void	signal_handler(int signum)
-{
-	if (signum == SIGINT)
-		printf("\n");
-    rl_on_new_line();
-    rl_replace_line("", 0);
-    rl_redisplay();
-	g_exit_code = 130;
-	return ;
-}
-
-
-void	check_signal(void)
-{
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, signal_handler);
-}
 
 int check_syntax(char *str)
 {
@@ -79,7 +61,7 @@ int	main(int ac, char **av, char **env)
 	lexer = NULL;
 	token = NULL;
 	g_exit_code = 0;
-	check_signal();
+	signal(SIGINT, signal_handler);
 	str = readline("\033[0;32mminishell~$42 \033[0m");
 	while (str)
 	{
@@ -92,7 +74,7 @@ int	main(int ac, char **av, char **env)
 		if (str[0] != '\0')
 			add_history(str);
 		free(str);
-		check_signal();
 		str = readline("\033[0;32mminishell~$42 \033[0m");
+		signal(SIGINT, signal_handler);
 	}
 }

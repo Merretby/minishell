@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:20 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/05 18:38:05 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 14:02:55 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,11 @@ char *ft_findEnv(char *env)
     int i = 0;
     char *key;
 
-    while (env[i] && env[i] != '=')
+    while (env[i] != '=')
         i++;
     key = malloc(sizeof(char) * i + 1);
     i = 0;
-    while (env[i] && env[i] != '=')
+    while (env[i] != '=')
     {
         key[i] = env[i];
         i++;
@@ -81,15 +81,13 @@ char *ft_findEnv(char *env)
 t_env *ft_New_env(char *value, t_env *env)
 {
     t_env *tmp;
-    t_env *tmp2;
+    // t_env *tmp2;
     tmp = env;
     while (tmp)
     {
-        if (tmp->next && strcmp(value, ft_findEnv(tmp->next->value)) == 0)
+        if (tmp->next && tmp->value && strcmp(value, ft_findEnv(tmp->next->value)) == 0)
         {
-            tmp2 = tmp->next;
-            tmp->next = tmp->next->next;
-            free(tmp2);
+            tmp->value = NULL;
             return (env);
         }
         tmp = tmp->next;

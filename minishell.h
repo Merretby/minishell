@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/25 16:43:34 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 13:50:30 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,11 +154,17 @@ t_token				*ft_lstlast1(t_token *lst);
 void				ft_lstadd_back1(t_token **lst, t_token *new);
 t_env   			*ft_lstnew2(char *value);
 void				ft_lstadd_back2(t_env **lst, t_env *new);
+int *retur_nvalue(void);
 
 
 //execution
 int ft_execution(t_node *tree, char **env1, int fork_flag);
 int	 ft_execute(t_node *tree,  char **env, int fork_flag);
+void check_signal2();
+void	signal_handler(int signum);
+void	signal_handler_2(int signum);
+void   signal_handler_child(int signum);
+void signal_heredoc(int signum);
 
 // builtins
 int					ft_cd(t_node *node, char **env);
