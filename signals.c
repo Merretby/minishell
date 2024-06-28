@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 18:56:15 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/28 13:46:13 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 15:35:02 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	signal_handler(int signum)
 {
-    (void)signum;
-	ft_putstr_fd("\n", STDIN_FILENO);
+    if (signum == SIGINT)
+	    ft_putstr_fd("\n", STDIN_FILENO);
     rl_on_new_line();
     rl_replace_line("", 0);
 	rl_redisplay();
@@ -43,4 +43,12 @@ void signal_heredoc(int signum)
 	rl_replace_line("", 0);
     *retur_nvalue() = dup(0);
     close(0);
+}
+
+void signal_handler_4(int signum)
+{
+    (void)signum;
+    rl_on_new_line();
+    rl_replace_line("", 0);
+	rl_redisplay();   
 }

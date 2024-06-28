@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/28 14:04:13 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 15:36:57 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	main(int ac, char **av, char **env)
 	token = NULL;
 	g_exit_code = 0;
 	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, signal_handler);
 	str = readline("\033[0;32mminishell~$42 \033[0m");
 	while (str)
 	{
@@ -76,5 +77,6 @@ int	main(int ac, char **av, char **env)
 		free(str);
 		str = readline("\033[0;32mminishell~$42 \033[0m");
 		signal(SIGINT, signal_handler);
+		signal(SIGQUIT, signal_handler);
 	}
 }

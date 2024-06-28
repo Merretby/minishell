@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 08:37:18 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/07 18:23:28 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 15:46:19 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	parss_command(t_token *token)
 
 	tmp = token;
 
+	signal(SIGINT, signal_handler);
 	if (tmp && tmp->type == TOKEN_PIPE)
 	{
 		ft_putendl_fd("minishell: syntax error near unexpected token '|'", 2);
