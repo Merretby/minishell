@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/28 17:51:30 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 23:45:20 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,14 @@ int check_syntax(char *str)
 void	main2(t_token **token, t_lexer **lexer, char **env)
 {
 	(void)lexer;
+	t_token	*tmp;
+
+	tmp = *token;
+	while (tmp)
+	{
+		printf("type: %s   value: %s\n", defin(tmp->type), tmp->value);
+		tmp = tmp->next;
+	}
 	helper(token, env);
 	// free(*lexer);
 	// ft_free(token, lexer);
@@ -118,8 +126,9 @@ int	main(int ac, char **av, char **env)
 			add_history(str);
 		free(str);
 		ft_lstclear_free(&g_v->adress);
+		lexer = NULL;
+		token = NULL;
 		str = readline("\033[0;32mminishell~$42 \033[0m");
-		// ft_lstadd_back_free(&g_v->adress, ft_lstnew_free(str));
 		signal(SIGINT, signal_handler);
 		signal(SIGQUIT, signal_handler);
 	}

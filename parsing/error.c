@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 08:37:18 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/28 15:46:19 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 23:46:03 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,12 @@ int	parss_command(t_token *token)
 		}
 		if (tmp->type == TOKEN_HEREDOC && tmp->next->type == TOKEN_HEREDOC)
 		{
-			ft_putendl_fd("minishell: syntax error near unexpected token `>>'", 2);
+			ft_putendl_fd("minishell: syntax error near unexpected token `<<'", 2);
 			return (0);
 		}
-		if (tmp->type == TOKEN_REDIR_APPEND && token->next->type == TOKEN_REDIR_APPEND)
+		if (tmp->type == TOKEN_REDIR_APPEND && tmp->next->type == TOKEN_REDIR_APPEND)
 		{
-			ft_putendl_fd("minishell: syntax error near unexpected token `<<'", 2);
+			ft_putendl_fd("minishell: syntax error near unexpected token `>>'", 2);
 			return (0);
 		}
 		if (tmp->next && (tmp->type == TOKEN_REDIR_IN \
