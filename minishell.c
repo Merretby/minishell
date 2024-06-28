@@ -6,30 +6,13 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/09 18:26:33 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/28 10:22:06 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int g_exit_code;
-
-void	signal_handler(int signum)
-{
-	if (signum == SIGINT && *retur_nvalue() == -1)
-		ft_putstr_fd("\n", STDIN_FILENO);
-    rl_on_new_line();
-    rl_replace_line("", 0);
-	rl_redisplay();
-	g_exit_code = 130;
-	return ;
-}
-
-void	check_signal(void)
-{
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, signal_handler);
-}
 
 int check_syntax(char *str)
 {
@@ -70,7 +53,7 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	lexer = NULL;
 	token = NULL;
-	check_signal();
+	signal(SIGINT, signal_handler);
 	str = readline("\033[0;32mminishell~$42 \033[0m");
 	g_exit_code = 0;
 	while (str)
@@ -86,8 +69,8 @@ int	main(int ac, char **av, char **env)
 		if (str[0] != '\0')
 			add_history(str);
 		free(str);
-		check_signal();
 		str = readline("\033[0;32mminishell~$42 \033[0m");
+		signal(SIGINT, signal_handler);
 	}
 	return (0);
 }

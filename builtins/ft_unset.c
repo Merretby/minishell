@@ -82,7 +82,7 @@ char *ft_findEnv(char *env)
 t_env *ft_New_env(char *value, t_env *env)
 {
     t_env *tmp;
-    t_env *tmp2;
+    // t_env *tmp2;
     tmp = env;
     while (tmp)
     {

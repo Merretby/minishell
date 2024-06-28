@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/09 17:37:39 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/28 12:08:48 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 		ip1 = fork();
 		if (ip1 == -1)
 			perror("error in fork ip1");
+		signal(SIGINT, signal_handler_2);
 		if (ip1 == 0)
 		{
 			child(env1, tree, fd);
@@ -154,6 +155,7 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 		close(fd[1]);
 		wait(NULL);
 		wait(NULL);
+		signal(SIGINT, signal_handler);
 		return;
 	}
 	  if (tree->type ==  REDIR)

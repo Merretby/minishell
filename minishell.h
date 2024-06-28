@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/07 16:28:32 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/27 19:01:58 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,9 @@ void ft_execution(t_node *tree, char **env1, int fork_flag);
 int	 ft_execute(t_node *tree,  char **env, int fork_flag);
 void check_signal2();
 void	signal_handler(int signum);
+void	signal_handler_2(int signum);
+void   signal_handler_child(int signum);
+void signal_heredoc(int signum);
 
 // builtins
 int					ft_cd(t_node *node, char **env);
