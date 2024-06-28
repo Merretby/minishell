@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/28 10:22:06 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/28 12:55:03 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	main(int ac, char **av, char **env)
 	lexer = NULL;
 	token = NULL;
 	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, signal_handler);
 	str = readline("\033[0;32mminishell~$42 \033[0m");
 	g_exit_code = 0;
 	while (str)
@@ -71,6 +72,7 @@ int	main(int ac, char **av, char **env)
 		free(str);
 		str = readline("\033[0;32mminishell~$42 \033[0m");
 		signal(SIGINT, signal_handler);
+		signal(SIGQUIT, signal_handler);
 	}
 	return (0);
 }

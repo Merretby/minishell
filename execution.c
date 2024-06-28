@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/28 12:08:48 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/28 15:20:40 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 	{
 		if (cherch_exit_status(tree->data->cmd->args))
 			expand_exit_status(tree->data->cmd->args);
-		else if (ft_strcmp(tree->data->cmd->args[0], "pwd") == 0)
+		if (ft_strcmp(tree->data->cmd->args[0], "pwd") == 0)
 			ft_pwd(tree);
 		else if (ft_strcmp(tree->data->cmd->args[0], "echo") == 0)
 			ft_echo(tree);

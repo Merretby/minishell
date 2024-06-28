@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/08 14:20:33 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/28 15:04:58 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,8 @@ void     helper(t_token **token, char **env)
 	if (parss_command(*token) == 1)
 	{
 		str = env;
-		heredoc(*token, str);
+		if (heredoc(*token, str) == 1)
+			retu
 		expand(token, str);
 		concatenation_token(*token);
 		take_args(*token);

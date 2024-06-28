@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/27 19:01:58 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/28 14:51:32 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ void				ft_lstadd_back1(t_token **lst, t_token *new);
 t_env   			*ft_lstnew2(char *value);
 void				ft_lstadd_back2(t_env **lst, t_env *new);
 int *retur_nvalue(void);
+void signal_handler_4(int signum);
 
 //execution
 void ft_execution(t_node *tree, char **env1, int fork_flag);
