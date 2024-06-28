@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:00:56 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/07 16:15:20 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 17:41:57 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ char	*get_word(char *str)
 	while (str[i] && ft_isalnum(str[i]))
 		i++;
 	tmp = (char *)malloc(sizeof(char) * (i + 1));
+	ft_lstadd_back_free(&g_v->adress, init_free(tmp));
 	if (!tmp)
 		return (NULL);
 	i = 0;
@@ -44,6 +45,8 @@ char	*remove_word(char *str)
 	while (str[i] && ft_isalnum(str[i]))
 		i++;
 	tmp = (char *)malloc(sizeof(char) * (j - i + 1));
+		ft_lstadd_back_free(&g_v->adress, init_free(tmp));
+
 	if (!tmp)
 		return (NULL);
 	j = 0;
@@ -63,9 +66,10 @@ char *join_char(char *str, char c)
 	int i;
 
 	if (!str)
-		str = ft_strdup("");
+		str = ft_strdup1("");
 	i = 0;
 	tmp = (char *)malloc(sizeof(char) * (ft_strlen(str) + 2));
+	ft_lstadd_back_free(&g_v->adress, init_free(tmp));
 	if (!tmp)
 		return (NULL);
 	while (str[i])
@@ -92,6 +96,7 @@ char	*ft_strjoin2(char *s1, char *s2)
 	j = 0;
 	i = -1;
 	ptr = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	ft_lstadd_back_free(&g_v->adress, init_free(ptr));
 	if (!ptr)
 		return (NULL);
 	while (s1 && s1[++i])
@@ -180,6 +185,7 @@ char	*remove_space(char *str)
 		i++;
 	}
 	tmp = (char *)malloc(sizeof(char) * (i - j + 2));
+	ft_lstadd_back_free(&g_v->adress, init_free(tmp));
 	if (!tmp)
 		return (NULL);
 	i = 0;

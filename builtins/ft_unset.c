@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:20 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/28 14:02:55 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 16:50:02 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ t_env   *ft_lstnew2(char *value)
     t_env *new;
 
     new = malloc(sizeof(t_env));
+    ft_lstadd_back_free(&g_v->adress, init_free(new));
     if (!new)
         return (NULL);
     new->value = value;
@@ -68,6 +69,7 @@ char *ft_findEnv(char *env)
     while (env[i] != '=')
         i++;
     key = malloc(sizeof(char) * i + 1);
+    ft_lstadd_back_free(&g_v->adress, init_free(key));
     i = 0;
     while (env[i] != '=')
     {

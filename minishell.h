@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/28 16:36:40 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 17:51:58 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,9 @@ void	signal_handler(int signum);
 void	signal_handler_2(int signum);
 void   signal_handler_child(int signum);
 void signal_heredoc(int signum);
+void	*ft_calloc1(size_t nmemb, size_t size);
+t_free	*init_free(void *content);
+char	*ft_strdup1(const char *src);
 
 // builtins
 int					ft_cd(t_node *node, char **env);

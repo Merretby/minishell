@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:44:32 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/28 16:39:34 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 17:49:15 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char *fined_pwd(char **env)
         {
             while(env[i][j] != '=')
                 j++;
-            oldPwd = ft_strdup(&env[i][j + 1]);
+            oldPwd = ft_strdup1(&env[i][j + 1]);
             return (oldPwd);
         }
         i++;

@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 13:52:04 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/07 17:03:40 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 16:50:59 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ t_lexer	*init_lexer(char *content)
 	t_lexer	*lexer;
 
 	lexer = malloc(sizeof(t_lexer));
+	ft_lstadd_back_free(&g_v->adress, init_free(lexer));
 	if (!lexer)
 		return (NULL);
 	lexer->content = content;

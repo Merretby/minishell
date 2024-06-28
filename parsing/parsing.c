@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/28 16:42:32 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 17:49:54 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ void add_to_args(t_token *token, char *str)
 
 	if (token == NULL)
 		return ;
-	new = ft_calloc (1, sizeof(t_args));
+	new = ft_calloc1 (1, sizeof(t_args));
+	ft_lstadd_back_free(&g_v->adress, init_free(new));
 	new->args = str;
 	new->next = NULL;
 	if (token->args == NULL)
@@ -172,7 +173,8 @@ void	list_to_array(t_token *token)
 		i++;
 		tmp2 = tmp2->next;	
 	}
-	token->arg = ft_calloc(i + 1, sizeof(char *));
+	token->arg = ft_calloc1(i + 1, sizeof(char *));
+	ft_lstadd_back_free(&g_v->adress, init_free(token->arg));
 	i = 0;
 	tmp = token->args;
 	while (tmp)
@@ -265,7 +267,7 @@ void     helper(t_token **token, char **env)
 		take_args(*token);
 		tree = pipeline(token);
 		g_v->g_exit_code = ft_execution(tree, str, 1);
-		free_tree(tree);
+		// free_tree(tree);
 		// print_tree(tree);
 	}
 	else 
@@ -276,8 +278,9 @@ t_redir	*create_redirection(t_token *token)
 {
 	t_redir	*red;
 
-	red = ft_calloc(1, sizeof(t_redir));
-	red->value = ft_strdup(token->value);
+	red = ft_calloc1(1, sizeof(t_redir));
+	ft_lstadd_back_free(&g_v->adress, init_free(red));
+	red->value = ft_strdup1(token->value);
 	red->type = token->type;
 	return (red);
 }
@@ -286,10 +289,13 @@ t_node *new_redir(t_token *token)
 {
 	t_node	*node;
 
-	node = ft_calloc(1 ,sizeof(t_node));
-	node->data = ft_calloc(1 ,sizeof(t_data));
-	node->data->red = ft_calloc(1, sizeof(t_redir));
-	node->data->red->value = ft_strdup(token->value);
+	node = ft_calloc1(1 ,sizeof(t_node));
+	ft_lstadd_back_free(&g_v->adress, init_free(node));
+	node->data = ft_calloc1(1 ,sizeof(t_data));
+	ft_lstadd_back_free(&g_v->adress, init_free(node->data));
+	node->data->red = ft_calloc1(1, sizeof(t_redir));
+	ft_lstadd_back_free(&g_v->adress, init_free(node->data->red));
+	node->data->red->value = ft_strdup1(token->value);
 	node->data->red->type = token->type;
 	node->type = REDIR;
 	return (node);
@@ -299,11 +305,14 @@ t_node *new_node(t_token *token)
 {
 	t_node	*node;
 
-	node = ft_calloc(1, sizeof(t_node));
-	node->data = ft_calloc(1, sizeof(t_data));
-	node->data->cmd = ft_calloc(1, sizeof(t_cmd));
+	node = ft_calloc1(1, sizeof(t_node));
+	ft_lstadd_back_free(&g_v->adress, init_free(node));
+	node->data = ft_calloc1(1, sizeof(t_data));
+	ft_lstadd_back_free(&g_v->adress, init_free(node->data));
+	node->data->cmd = ft_calloc1(1, sizeof(t_cmd));
+	ft_lstadd_back_free(&g_v->adress, init_free(node->data->cmd));
 	if (token->value)
-		node->data->cmd->value = ft_strdup(token->value);
+		node->data->cmd->value = ft_strdup1(token->value);
 	else
 		node->data->cmd->value = NULL;
 	node->data->cmd->type = token->type;
@@ -327,12 +336,12 @@ t_node *command(t_token **token)
 		tmp2 = (*token);
 		*token = (*token)->next;
 		node = new_node(tmp2);
-		free (tmp2);
+		// free (tmp2);
 		while ((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING))
 		{
-			tmp2 = (*token);
+			// tmp2 = (*token);
 			*token = (*token)->next;
-			free (tmp2);
+			// free (tmp2);
 		}
 		return(node);
 	}
@@ -343,10 +352,13 @@ t_node	*new_pipe(t_token *token)
 {
 	t_node	*node;
 
-	node = ft_calloc(1, sizeof(t_node));
-	node->data = ft_calloc(1, sizeof(t_data));
-	node->data->pipe = ft_calloc(1, sizeof(t_pipe));
-	node->data->pipe->value = ft_strdup(token->value);
+	node = ft_calloc1(1, sizeof(t_node));
+	ft_lstadd_back_free(&g_v->adress, init_free(node));
+	node->data = ft_calloc1(1, sizeof(t_data));
+	ft_lstadd_back_free(&g_v->adress, init_free(node->data));
+	node->data->pipe = ft_calloc1(1, sizeof(t_pipe));
+	ft_lstadd_back_free(&g_v->adress, init_free(node->data->pipe));
+	node->data->pipe->value = ft_strdup1(token->value);
 	node->data->pipe->type = token->type;
 	node->type = PIPE;
 	return (node);
@@ -354,7 +366,7 @@ t_node	*new_pipe(t_token *token)
 
 t_node  *pipeline(t_token **token)
 {
-	t_token *tmp;
+	// t_token *tmp;
 	t_node *left;
 	t_node *new;
 
@@ -365,9 +377,9 @@ t_node  *pipeline(t_token **token)
 	{
 		new = new_pipe(*token);
 		new->type = PIPE;
-		tmp = (*token);
+		// tmp = (*token);
 		*token = (*token)->next;
-		free(tmp);
+		// free(tmp);
 		new->left = left;
 		new->right = pipeline(token);
 		left = new;
@@ -405,7 +417,7 @@ void ft_last_back_red(t_redir **lst, t_redir *new)
 
 t_node	*rederiction(t_token **token)
 {
-	t_token *tmp2;
+	// t_token *tmp2;
 	t_node *left;
 	t_node *node;
 	t_redir *tmp;
@@ -432,9 +444,9 @@ t_node	*rederiction(t_token **token)
 	{
 		node = new_redir(*token);
 		tmp = node->data->red;
-		tmp2 = (*token);
+		// tmp2 = (*token);
 		(*token) = (*token)->next;
-		free(tmp2);
+		// free(tmp2);
 		while ((*token) && ((*token)->type == TOKEN_REDIR_IN ||\
 		 (*token)->type == TOKEN_REDIR_OUT ||\
 		 (*token)->type == TOKEN_REDIR_APPEND ||\
@@ -443,14 +455,14 @@ t_node	*rederiction(t_token **token)
 		 {
 			tmp->next = create_redirection(*token);
 			tmp = tmp->next;
-			tmp2 = (*token);
+			// tmp2 = (*token);
 			(*token) = (*token)->next;
-			free(tmp2);
+			// free(tmp2);
 		 	if ((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING))
 			{
-				tmp2 = (*token);
+				// tmp2 = (*token);
 				(*token) = (*token)->next;
-				free(tmp2);
+				// free(tmp2);
 			}
 		 }
 		 node->left = left;

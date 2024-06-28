@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:10 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/25 15:36:59 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 17:49:21 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int check_repetition(t_env **env1, char *value)
 			while (value[i] && value[i] != '=')
 				i++;
 			if (value[i]) 
-				tmp->value = ft_strdup(value);
+				tmp->value = ft_strdup1(value);
 			// free(tmp2);
 			return 1;
 		}
@@ -151,6 +151,7 @@ char  **ft_export(t_node *node, char **env1)
 	size_t i;
 
 	new = malloc(sizeof(t_env));
+    ft_lstadd_back_free(&g_v->adress, init_free(new));
 	if (!new)
 		return (0);
 	new->next = NULL;

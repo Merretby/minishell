@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 20:43:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/31 22:44:24 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 16:50:47 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ char	*get_the_string(t_lexer *lexer, char c)
 		tmp.c = tmp.content[tmp.i++];
 	}
 	str = malloc(sizeof(char) * (j + 1));
+	ft_lstadd_back_free(&g_v->adress, init_free(str));
 	advance(lexer);
 	j = 0;
 	while (lexer->c != c && lexer->c != '\0')
@@ -109,6 +110,7 @@ char	*get_the_word(t_lexer *lexer)
 		tmp.c = tmp.content[tmp.i];
 	}
 	str = malloc(sizeof(char) * (j + 1));
+	ft_lstadd_back_free(&g_v->adress, init_free(str));
 	j = 0;
 	while (ft_check_alnum(lexer->c))
 	{
