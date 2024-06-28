@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/28 15:43:20 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 16:43:46 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	expand_exit_status(char **args)
 			if (args[i][j] == '$' && args[i][j + 1] == '?')
 			{
 				tmp = ft_substr(args[i], 0, j);
-				tmp2 = ft_itoa(g_exit_code);
+				tmp2 = ft_itoa(g_v->g_exit_code);
 				args[i] = ft_strjoin(tmp, tmp2);
 				free(tmp);
 				free(tmp2);
@@ -90,21 +90,21 @@ void	expand_exit_status(char **args)
 		}
 		i++;
 	}
-	g_exit_code = 0;
+	g_v->g_exit_code = 0;
 }
 
 void ft_wait(int status)
 {
 	if (WIFEXITED(status))
-		g_exit_code = WEXITSTATUS(status);
+		g_v->g_exit_code = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
-		g_exit_code = WTERMSIG(status) + 114;
+		g_v->g_exit_code = WTERMSIG(status) + 114;
 }
 
 int ft_execution(t_node *tree, char **env1, int fork_flag)
 {
 	if (!tree)
-		return (g_exit_code);
+		return (g_v->g_exit_code);
     t_node *tmp;
 
     tmp = tree;
@@ -129,7 +129,7 @@ int ft_execution(t_node *tree, char **env1, int fork_flag)
 			ft_exit(tree);
 		else
 		
-			g_exit_code = ft_execute(tree, env1, fork_flag);
+			g_v->g_exit_code = ft_execute(tree, env1, fork_flag);
 	}
 	if (tree->type == PIPE)
 	{
@@ -149,7 +149,7 @@ int ft_execution(t_node *tree, char **env1, int fork_flag)
 		if (ip1 == 0)
 		{
 			child(env1, tree, fd);
-			exit(g_exit_code);
+			exit(g_v->g_exit_code);
 		}
 		if (ip1 != 0)
 		{
@@ -159,7 +159,7 @@ int ft_execution(t_node *tree, char **env1, int fork_flag)
 			if (ip2 == 0)
 			{
 				child2(env1, tree, fd);
-				exit(g_exit_code);
+				exit(g_v->g_exit_code);
 			}
 		}
 		close(fd[0]);
@@ -168,7 +168,7 @@ int ft_execution(t_node *tree, char **env1, int fork_flag)
 		waitpid(ip2, &status, 0);
 		ft_wait(status);
 		signal(SIGINT, signal_handler);
-		return (g_exit_code);
+		return (g_v->g_exit_code);
 	}
     if (tree->type ==  REDIR)
     {
@@ -194,8 +194,8 @@ int ft_execution(t_node *tree, char **env1, int fork_flag)
 					close(copy_fd2);
 					close(copy_fd);
 					printf("minishell: %s: No such file or directory\n", redir->value);
-					g_exit_code = 1;
-					return (g_exit_code);
+					g_v->g_exit_code = 1;
+					return (g_v->g_exit_code);
 				}
 				dup2(fd, STDIN_FILENO);
 				close(fd);
@@ -210,8 +210,8 @@ int ft_execution(t_node *tree, char **env1, int fork_flag)
 					close(copy_fd2);
 					close(copy_fd);					
 					printf("minishell: %s: No such file or directory\n", redir->value);
-					g_exit_code = 1;
-					return (g_exit_code);
+					g_v->g_exit_code = 1;
+					return (g_v->g_exit_code);
 				}
 				dup2(fd2, STDOUT_FILENO);
 				close(fd2);
@@ -227,8 +227,8 @@ int ft_execution(t_node *tree, char **env1, int fork_flag)
 					close(copy_fd2);
 					close(copy_fd);
 					printf("minishell: %s: No such file or directory\n", redir->value);
-					g_exit_code = 1;
-					return (g_exit_code);
+					g_v->g_exit_code = 1;
+					return (g_v->g_exit_code);
 				}
 				dup2(fd2, STDOUT_FILENO);
 				close(fd2);
@@ -241,5 +241,5 @@ int ft_execution(t_node *tree, char **env1, int fork_flag)
 		close(copy_fd2);
 		close(copy_fd);
 	}
-	return (g_exit_code);
+	return (g_v->g_exit_code);
 }

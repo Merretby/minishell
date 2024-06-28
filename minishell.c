@@ -6,13 +6,13 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/28 15:36:57 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 16:37:39 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_exit_code;
+t_g_var	*g_v;
 
 int check_syntax(char *str)
 {
@@ -60,7 +60,8 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	lexer = NULL;
 	token = NULL;
-	g_exit_code = 0;
+	g_v = (t_g_var *)malloc(sizeof(t_g_var));
+	g_v->g_exit_code = 0;
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
 	str = readline("\033[0;32mminishell~$42 \033[0m");

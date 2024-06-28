@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/28 15:35:28 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 16:36:40 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,21 @@
 
 # define PATH_MAX 4096
 
-extern int g_exit_code;
+
+typedef struct s_free
+{
+	void			*adress;
+	struct s_free	*next;
+}	t_free;
+
+typedef struct g_var
+{
+	int		g_exit_code;
+	t_free	*adress;
+}	t_g_var;
+
+extern  t_g_var *g_v;
+// extern int g_exit_code;
 
 typedef	enum e_type
 {
@@ -44,6 +58,7 @@ typedef	enum e_type
 	TOKEN_FILE,
 	TOKEN_EOF,
 } t_type;
+
 
 typedef struct handle_signal
 {
@@ -198,7 +213,10 @@ char	*real_expand(char *line, char **env);
 void				expand(t_token **token, char **env);
 
 //free
-void delete_node(t_token **head, t_token *node);
+t_free	*init_free(void *content);
+void	ft_lstadd_back_free(t_free **lst, t_free *new);
+void	ft_lstclear_free(t_free **lst);
+void	delete_node(t_token **head, t_token *node);
 void	free_2d(char **str);
 
 #endif 

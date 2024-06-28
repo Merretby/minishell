@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:54:32 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/31 17:36:53 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 16:40:53 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int ft_exit(t_node *node)
     if (!node->data->cmd->args[i + 1])
     {
         printf("exit\n");
-        exit(g_exit_code);
+        exit(g_v->g_exit_code);
     }
     if (node->data->cmd->args[i + 1])
     {
@@ -41,7 +41,7 @@ int ft_exit(t_node *node)
         {
             printf("minishell: exit: %s: numeric argument required\n", node->data->cmd->args[i + 1]);
             printf("exit\n");
-            g_exit_code = 0;
+            g_v->g_exit_code = 0;
             exit(0);
         }
         else
@@ -57,7 +57,7 @@ int ft_exit(t_node *node)
             if (nb2 > 256)
                 nb2 = nb2 % 256;
             printf("exit\n");
-            g_exit_code = nb2;
+            g_v->g_exit_code = nb2;
             exit(nb2);
         }
     }

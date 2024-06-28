@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 14:21:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/28 14:02:16 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 16:41:12 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	 ft_execute(t_node *tree,  char **env, int fork_flag)
 		signal(SIGINT, signal_handler_2);
 		signal(SIGQUIT, signal_handler_2);
 		ft_execute2(tree, env);
-		return g_exit_code;
+		return g_v->g_exit_code;
 	}
 	else if (fork_flag == 1)
 	{
@@ -113,11 +113,11 @@ int	 ft_execute(t_node *tree,  char **env, int fork_flag)
 		{
 			wait(&status);
 			if (WIFEXITED(status))
-				g_exit_code = WEXITSTATUS(status);
+				g_v->g_exit_code = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
-				g_exit_code = WTERMSIG(status) + 128;
+				g_v->g_exit_code = WTERMSIG(status) + 128;
 		}
 	}
 	signal(SIGINT, signal_handler);
-	return (g_exit_code);
+	return (g_v->g_exit_code);
 }

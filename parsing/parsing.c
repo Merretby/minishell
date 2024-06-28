@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/28 15:41:19 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 16:42:32 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,12 +264,12 @@ void     helper(t_token **token, char **env)
 		concatenation_token(*token);
 		take_args(*token);
 		tree = pipeline(token);
-		g_exit_code = ft_execution(tree, str, 1);
+		g_v->g_exit_code = ft_execution(tree, str, 1);
 		free_tree(tree);
 		// print_tree(tree);
 	}
 	else 
-		g_exit_code = 2;
+		g_v->g_exit_code = 2;
 }
 
 t_redir	*create_redirection(t_token *token)
