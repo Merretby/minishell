@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 14:21:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/28 16:41:12 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 23:04:39 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,12 @@ void	ft_execute2(t_node *tree, char **env)
 	{
 		if (ft_strchr(tree->data->cmd->args[0], '/') == NULL)
 		{
-			str = ft_strjoin("/", tree->data->cmd->args[0]);
-			tmp = ft_strjoin(path[i], str);
-			free (str);
+			str = ft_strjoin2("/", tree->data->cmd->args[0]);
+			tmp = ft_strjoin2(path[i], str);
+			// free (str);
 			if (access(tmp, F_OK) == 0)
 				break ;
-			free(tmp);
+			// free(tmp);
 		}
 		else
 		{
@@ -108,6 +108,7 @@ int	 ft_execute(t_node *tree,  char **env, int fork_flag)
 			signal(SIGINT, SIG_DFL);
 			signal(SIGQUIT, SIG_DFL);
 			ft_execute2(tree, env);
+			exit (127);
 		}
 		else
 		{

@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/28 17:51:58 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 22:32:11 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,6 +213,8 @@ void				heredoc(t_token *token, char **env);
 char	*real_expand(char *line, char **env);
 
 //expand
+char	*ft_strjoin2(char *s1, char *s2);
+char	*ft_substr2(char const *s, unsigned int start, size_t len);
 void				expand(t_token **token, char **env);
 
 //free

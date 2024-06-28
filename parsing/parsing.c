@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/28 17:49:54 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 22:34:15 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ void	concatenation_token(t_token *token)
 			next = token->next;
 			while (next && (next->type == TOKEN_ID || next->type == TOKEN_STRING))
 			{
-				concatenated = ft_strjoin(token->value, next->value);
-				free(token->value);
+				concatenated = ft_strjoin2(token->value, next->value);
+				// free(token->value);
 				token->value = concatenated;
 				token->helper_flag = token->next->helper_flag;
 				token->next = next->next;
-				free(next->value);
-				free(next);
+				// free(next->value);
+				// free(next);
 				next = token->next;
 				if (token->helper_flag == 0)
 					break ;
@@ -115,8 +115,8 @@ void delete_node(t_token **head, t_token *node)
 	if (tmp == node)
 	{
 		(*head) = node->next;
-		free(node->value);
-		free(node);
+		// free(node->value);
+		// free(node);
 		node = NULL;
 	}
 	else
@@ -125,8 +125,8 @@ void delete_node(t_token **head, t_token *node)
 		node->prev->next = node->next;
 		if (node->next)
 			node->next->prev = node->prev;
-		free(node->value);
-		free(node);
+		// free(node->value);
+		// free(node);
 		node = NULL;
 	}
 }
