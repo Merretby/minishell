@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:00:56 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/28 22:30:29 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/29 14:12:33 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,8 @@ char	*remove_space(char *str)
 void insert_after(t_token *node, char *value) 
 {
     t_token *new_node;
-	new_node = ft_calloc1(1 ,sizeof(t_token));
+	new_node = malloc(sizeof(t_token));
+	ft_lstadd_back_free(&g_v->adress, init_free(new_node));
     new_node->value = ft_strdup1(value);
     new_node->next = node->next;
 	new_node->type = TOKEN_ID;
@@ -257,14 +258,14 @@ void	expand(t_token **token, char **env)
 						if (ft_strchr(loop_tmp->value, ' ') != NULL)
 						{
 							helper = loop_tmp;
-						    argument = ft_split(loop_tmp->value, ' ');
+						    argument = ft_split1(loop_tmp->value, ' ');
 						    while (argument[k])
 						    {
 						        insert_after(loop_tmp, argument[k]);
 						        loop_tmp = loop_tmp->next;
 						        k++;
 						    }
-							free(helper->value);
+							// free(helper->value);
 						    helper->value = argument[0];
 						}
 					}

@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:10 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/29 13:50:56 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/29 13:56:41 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,15 @@ int check_repetition(t_env **env1, char *value)
 		i = 0;
 		while (tmp->value[i] && tmp->value[i] != '=')
 			i++;
-		tmp2 = ft_substr(tmp->value, 0, i);
-		if (ft_strcmp(tmp2, ft_substr(value, 0, i)) == 0)
+		tmp2 = ft_substr2(tmp->value, 0, i);
+		if (ft_strcmp(tmp2, ft_substr2(value, 0, i)) == 0)
 		{
 			// free(tmp->value);
 			i = 0;
 			while (value[i] && value[i] != '=')
 				i++;
 			if (value[i]) 
-				tmp->value = ft_strdup(value);
+				tmp->value = ft_strdup1(value);
 			// free(tmp2);
 			return 1;
 		}
@@ -52,18 +52,18 @@ char *check_value(char *value)
         i++;
     if (ft_strlen(value) == i)
     {
-        value = ft_strjoin(value, "=");
-        value = ft_strjoin(value, "\'\'");
+        value = ft_strjoin2(value, "=");
+        value = ft_strjoin2(value, "\'\'");
         return value;
     }
     else
     {
-        tmp = ft_substr(value, 0, i + 1);
+        tmp = ft_substr2(value, 0, i + 1);
         if (value[i + 1] != '\"')
-            tmp = ft_strjoin(tmp, "\"");
-        tmp2 = ft_strjoin(tmp, value + i + 1);
-        free(tmp);
-        tmp2 = ft_strjoin(tmp2, "\"");
+            tmp = ft_strjoin2(tmp, "\"");
+        tmp2 = ft_strjoin2(tmp, value + i + 1);
+        // free(tmp);
+        tmp2 = ft_strjoin2(tmp2, "\"");
         return tmp2;
     }
     return value;
@@ -83,10 +83,10 @@ void ft_printexport(t_env *new)
                 printf("declare -x %s\n", new->value);
         else
         {
-            tmp = ft_substr(new->value, 0, i);
+            tmp = ft_substr2(new->value, 0, i);
             printf("declare -x %s=\"", tmp);
-            free(tmp);
-            tmp = ft_substr(new->value, i + 1, ft_strlen(new->value) - i - 1);
+            // free(tmp);
+            tmp = ft_substr2(new->value, i + 1, ft_strlen(new->value) - i - 1);
             printf("%s\"\n", tmp);
         }
         new = new->next;
@@ -103,10 +103,10 @@ int check_repetition2(t_env **new, char *value , int k)
         i = 0;
         while (tmp->value[i] && tmp->value[i] != '=')
             i++;
-        tmp2 = ft_substr(tmp->value, 0, i);
-        if (ft_strcmp(tmp2, ft_substr(value, 0, i)) == 0)
+        tmp2 = ft_substr2(tmp->value, 0, i);
+        if (ft_strcmp(tmp2, ft_substr2(value, 0, i)) == 0)
         {
-            tmp->value = ft_strjoin(tmp->value, ft_substr(value, k, ft_strlen(value) - k));
+            tmp->value = ft_strjoin2(tmp->value, ft_substr2(value, k, ft_strlen(value) - k));
             return 1;
         }
         tmp = tmp->next;
@@ -134,8 +134,8 @@ int check_add(t_env **new, char *str)
             return 1;
         else
         {
-            tmp = ft_strjoin(ft_substr(str, 0, i),  "=");
-            str = ft_strjoin(tmp, str + i + 2);
+            tmp = ft_strjoin2(ft_substr2(str, 0, i),  "=");
+            str = ft_strjoin2(tmp, str + i + 2);
             ft_lstadd_back2(new, ft_lstnew2(str));
             return 1;
         }
@@ -152,7 +152,7 @@ char  **ft_export(t_node *node, char **env1)
     t_env *to_free;
 
 	new = malloc(sizeof(t_env));
-    // ft_lstadd_back_free(&g_v->adress, init_free(new));
+    ft_lstadd_back_free(&g_v->adress, init_free(new));
 	if (!new)
 		return (0);
 	new->next = NULL;
