@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/28 23:25:33 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/29 12:32:05 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,9 @@ int ft_execution(t_node *tree, char **env1, int fork_flag)
     t_node *tmp;
 
     tmp = tree;
-	signal(SIGINT, signal_handler);
 	if (tree->type == CMD)
 	{
+		signal(SIGINT, signal_handler);
 		if (cherch_exit_status(tree->data->cmd->args))
 			expand_exit_status(tree->data->cmd->args);
 		if (ft_strcmp(tree->data->cmd->args[0], "pwd") == 0)

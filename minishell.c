@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/28 23:45:20 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/29 12:36:05 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,6 @@ int check_syntax(char *str)
 void	main2(t_token **token, t_lexer **lexer, char **env)
 {
 	(void)lexer;
-	t_token	*tmp;
-
-	tmp = *token;
-	while (tmp)
-	{
-		printf("type: %s   value: %s\n", defin(tmp->type), tmp->value);
-		tmp = tmp->next;
-	}
 	helper(token, env);
 	// free(*lexer);
 	// ft_free(token, lexer);
@@ -116,6 +108,7 @@ int	main(int ac, char **av, char **env)
 	// ft_lstadd_back_free(&g_v->adress, ft_lstnew_free(str));
 	while (str)
 	{
+		*retur_nvalue() = -1;
 		if (check_syntax(str))
 		{
 			lexer = init_lexer(str);

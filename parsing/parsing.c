@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/28 23:36:57 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/29 12:36:44 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,7 +259,10 @@ void     helper(t_token **token, char **env)
 	// tmp = *token;
 	if (*token == NULL)
 		return ;
+	signal(SIGINT, signal_handler);
 	heredoc(*token, str); 
+	if (*retur_nvalue() == 10)
+		return ;
 	if (parss_command(*token) == 1)
 	{
 		expand(token, str);
