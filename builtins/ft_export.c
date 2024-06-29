@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:10 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/25 15:36:59 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/29 14:09:00 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,11 @@ int check_repetition2(t_env **new, char *value , int k)
         tmp2 = ft_substr(tmp->value, 0, i);
         if (ft_strcmp(tmp2, ft_substr(value, 0, i)) == 0)
         {
-            tmp->value = ft_strjoin(tmp->value, ft_substr(value, k, ft_strlen(value) - k));
+            free(tmp2);
+            if (ft_strchr(tmp->value, '=') == NULL)
+                tmp->value = ft_strjoin(tmp->value, "=");
+            tmp->value = ft_strjoin(tmp->value,  ft_substr(value, k, ft_strlen(value) - k));
+            printf("declare -x %s\n", tmp->value);
             return 1;
         }
         tmp = tmp->next;
@@ -149,8 +153,10 @@ char  **ft_export(t_node *node, char **env1)
 	t_env *new;
 	char *value;
 	size_t i;
+    t_env *to_free;
 
 	new = malloc(sizeof(t_env));
+    // ft_lstadd_back_free(&g_v->adress, init_free(new));
 	if (!new)
 		return (0);
 	new->next = NULL;
@@ -171,7 +177,7 @@ char  **ft_export(t_node *node, char **env1)
 	if(node->data->cmd->args[1] == NULL)
 	{
 		ft_printexport(new->next);
-		free(new);
+		// free(new);
 		return env1;
 	}
 	while(node->data->cmd->args[i])
@@ -192,11 +198,11 @@ char  **ft_export(t_node *node, char **env1)
     while (tmp)
     {
         env1[i++] = tmp->value;
-        t_env *to_free = tmp;
+        to_free = tmp;
 		tmp = tmp->next;
-		free(to_free);
+		// free(to_free);
     }
     env1[i] = NULL;
-    free(new);
+    // free(new);
 	return env1;
 }

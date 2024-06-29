@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:20 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/28 14:02:55 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/29 14:41:59 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,21 +78,19 @@ char *ft_findEnv(char *env)
     return (key);
 }
 
-t_env *ft_New_env(char *value, t_env *env)
+void ft_New_env(char *value, t_env **env)
 {
     t_env *tmp;
-    // t_env *tmp2;
-    tmp = env;
+    tmp = *env;
     while (tmp)
     {
-        if (tmp->next && tmp->value && strcmp(value, ft_findEnv(tmp->next->value)) == 0)
+        if (tmp && strcmp(value, ft_findEnv(tmp->value)) == 0)
         {
             tmp->value = NULL;
-            return (env);
+            printf("unset %s\n", tmp->next->value);
         }
         tmp = tmp->next;
     }
-    return (env);
 }
 
 char **ft_unset(t_node *node, char **env1)
@@ -111,7 +109,7 @@ char **ft_unset(t_node *node, char **env1)
         while(env1[j])
         {
             if (strcmp(node->data->cmd->args[i], ft_findEnv(env1[j])) == 0)
-                env = ft_New_env(node->data->cmd->args[i], env);
+                ft_New_env(node->data->cmd->args[i], &env);
             j++;
         }
         i++;
@@ -119,7 +117,8 @@ char **ft_unset(t_node *node, char **env1)
     t_env *tmp = env;
     i = 0;
     while (tmp) {
-        env1[i++] = tmp->value;
+        if (tmp->value)
+            env1[i++] = tmp->value;
         t_env *to_free = tmp;
         tmp = tmp->next;
         free(to_free);

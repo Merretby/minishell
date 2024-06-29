@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 13:58:43 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/25 16:38:43 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/29 14:37:33 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	take_env(char **env)
 	{
 		if (ft_strchr(env[i], '='))
 			printf("%s\n", env[i]);
-		//add_env(&env_list, env[i]);
 		i++;
 	}
 	//print_env(env_list);

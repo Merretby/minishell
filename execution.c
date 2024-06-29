@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/29 10:36:50 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/29 12:32:05 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	expand_exit_status(char **args)
 {
 	int i;
 	int j;
+	char *after;
 	char *tmp;
 	char *tmp2;
 
@@ -80,10 +81,12 @@ void	expand_exit_status(char **args)
 		{
 			if (args[i][j] == '$' && args[i][j + 1] == '?')
 			{
-				tmp = ft_substr(args[i], 0, j);
+				tmp = ft_substr2(args[i], 0, j);
+				after = ft_substr2(args[i], j + 2, ft_strlen(args[i]));
 				tmp2 = ft_itoa(g_v->g_exit_code);
-				args[i] = ft_strjoin(tmp, tmp2);
-				free(tmp);
+				args[i] = ft_strjoin2(tmp, tmp2);
+				args[i] = ft_strjoin2(args[i], after);
+				// free(tmp);
 				free(tmp2);
 			}
 			j++;

@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:00:56 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/07 16:15:20 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 22:30:29 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ char	*get_word(char *str)
 	while (str[i] && ft_isalnum(str[i]))
 		i++;
 	tmp = (char *)malloc(sizeof(char) * (i + 1));
+	ft_lstadd_back_free(&g_v->adress, init_free(tmp));
 	if (!tmp)
 		return (NULL);
 	i = 0;
@@ -44,6 +45,7 @@ char	*remove_word(char *str)
 	while (str[i] && ft_isalnum(str[i]))
 		i++;
 	tmp = (char *)malloc(sizeof(char) * (j - i + 1));
+	ft_lstadd_back_free(&g_v->adress, init_free(tmp));
 	if (!tmp)
 		return (NULL);
 	j = 0;
@@ -63,9 +65,10 @@ char *join_char(char *str, char c)
 	int i;
 
 	if (!str)
-		str = ft_strdup("");
+		str = ft_strdup1("");
 	i = 0;
 	tmp = (char *)malloc(sizeof(char) * (ft_strlen(str) + 2));
+	ft_lstadd_back_free(&g_v->adress, init_free(tmp));
 	if (!tmp)
 		return (NULL);
 	while (str[i])
@@ -75,7 +78,7 @@ char *join_char(char *str, char c)
 	}
 	tmp[i] = c;
 	tmp[i + 1] = '\0';
-	free(str);
+	// free(str);
 	return (tmp);
 }
 
@@ -92,6 +95,7 @@ char	*ft_strjoin2(char *s1, char *s2)
 	j = 0;
 	i = -1;
 	ptr = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	ft_lstadd_back_free(&g_v->adress, init_free(ptr));
 	if (!ptr)
 		return (NULL);
 	while (s1 && s1[++i])
@@ -154,14 +158,14 @@ char	*real_expand(char *line, char **env)
 			if (check_doller(line) == 1)
 				if (line[0] != '$' && line[0] != '\\' && !ft_isdigit(line[0]))
 					tmp2 = join_char(tmp2, line[0]);
-			free(str);
+			// free(str);
 			i = -1;
 		}
 		i++;
 	}
 	if (line != NULL)
 		tmp2 = ft_strjoin2(tmp2, line);
-	free(line);
+	// free(line);
 	return (tmp2);
 }
 
@@ -180,6 +184,7 @@ char	*remove_space(char *str)
 		i++;
 	}
 	tmp = (char *)malloc(sizeof(char) * (i - j + 2));
+	ft_lstadd_back_free(&g_v->adress, init_free(tmp));
 	if (!tmp)
 		return (NULL);
 	i = 0;
@@ -199,15 +204,15 @@ char	*remove_space(char *str)
 		i++;
 	}
 	tmp[j] = '\0';
-	free(str);
+	// free(str);
 	return (tmp);
 }
 
 void insert_after(t_token *node, char *value) 
 {
     t_token *new_node;
-	new_node = calloc(1 ,sizeof(t_token));
-    new_node->value = ft_strdup(value);
+	new_node = ft_calloc1(1 ,sizeof(t_token));
+    new_node->value = ft_strdup1(value);
     new_node->next = node->next;
 	new_node->type = TOKEN_ID;
 	new_node->flag = -1;
@@ -240,11 +245,11 @@ void	expand(t_token **token, char **env)
 				{
 					while (loop_tmp->value[i] != '$' && loop_tmp->value[i])
 						i++;
-					befor = ft_substr(loop_tmp->value, j, i);
+					befor = ft_substr2(loop_tmp->value, j, i);
 					j = i;
-					after = ft_substr(loop_tmp->value, j, ft_strlen(loop_tmp->value));
+					after = ft_substr2(loop_tmp->value, j, ft_strlen(loop_tmp->value));
 					str = real_expand(after, env);
-					free(loop_tmp->value);
+					// free(loop_tmp->value);
 					loop_tmp->value = ft_strjoin2(befor, str);
 					if (loop_tmp->flag != 1)
 					{
@@ -263,9 +268,9 @@ void	expand(t_token **token, char **env)
 						    helper->value = argument[0];
 						}
 					}
-					free(str);
-					free(befor);
-					free(after);
+					// free(str);
+					// free(befor);
+					// free(after);
 					 if (loop_tmp->value[0] == '\0')
 					{
 						tmp = loop_tmp;

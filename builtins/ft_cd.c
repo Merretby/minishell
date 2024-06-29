@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:44:32 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/28 16:54:15 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/28 22:52:39 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char *fined_pwd(char **env)
         {
             while(env[i][j] != '=')
                 j++;
-            oldPwd = ft_strdup(&env[i][j + 1]);
+            oldPwd = ft_strdup1(&env[i][j + 1]);
             return (oldPwd);
         }
         i++;
@@ -45,12 +45,12 @@ void    change_env(char **env, char *buffer, char *oldPwd)
     {
         if (ft_strncmp(env[i], "PWD", 3) == 0)
         {
-            newPwd = ft_strjoin("PWD=", buffer);
+            newPwd = ft_strjoin2("PWD=", buffer);
             env[i] = newPwd;
         }
         if (ft_strncmp(env[i], "OLDPWD", 6) == 0)
         {
-            oldPwd1 = ft_strjoin("OLDPWD=", oldPwd);
+            oldPwd1 = ft_strjoin2("OLDPWD=", oldPwd);
             env[i] = oldPwd1;
         }
         i++;

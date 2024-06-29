@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 14:38:13 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/02 14:02:05 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/28 16:51:09 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ t_token	*init_token(int type, char *value, char c)
 	t_token	*token;
 
 	token = malloc(sizeof(t_token));
+	ft_lstadd_back_free(&g_v->adress, init_free(token));
 	if (!token)
 		return (NULL);
 	token->type = type;
