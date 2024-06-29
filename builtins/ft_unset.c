@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:20 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/29 18:46:29 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/29 18:51:01 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_env   *ft_lstnew2(char *value)
     t_env *new;
 
     new = malloc(sizeof(t_env));
-    // ft_lstadd_back_free(&g_v->adress, init_free(new));
+    ft_lstadd_back_free(&g_v->adress, init_free(new));
     if (!new)
         return (NULL);
     new->value = value;
@@ -69,7 +69,7 @@ char *ft_findEnv(char *env)
     while (env[i] != '=')
         i++;
     key = malloc(sizeof(char) * i + 1);
-    // ft_lstadd_back_free(&g_v->adress, init_free(key));
+    ft_lstadd_back_free(&g_v->adress, init_free(key));
     i = 0;
     while (env[i] != '=')
     {
@@ -103,7 +103,7 @@ char **ft_unset(t_node *node, char **env1)
     int     j = 0;
     
     env = malloc(sizeof(t_env));
-    // ft_lstadd_back_free(&g_v->adress, init_free(env));
+    ft_lstadd_back_free(&g_v->adress, init_free(env));
     env->value = env1[0];
     env->next = NULL;
     env = initialize(env, env1);
@@ -125,7 +125,7 @@ char **ft_unset(t_node *node, char **env1)
             env1[i++] = tmp->value;
         to_free = tmp;
         tmp = tmp->next;
-        free(to_free);
+        // free(to_free);
     }
     env1[i] = NULL;
 

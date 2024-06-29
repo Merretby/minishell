@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/29 18:49:25 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/29 18:50:33 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,11 +118,11 @@ int	main(int ac, char **av, char **env)
 		if (str[0] != '\0')
 			add_history(str);
 		free(str);
-		ft_lstclear_free(&g_v->adress);
 		lexer = NULL;
 		token = NULL;
 		str = readline("\033[0;32mminishell~$42 \033[0m");
 		signal(SIGINT, signal_handler);
 		signal(SIGQUIT, signal_handler);
 	}
+	ft_lstclear_free(&g_v->adress);
 }
