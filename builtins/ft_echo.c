@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 11:38:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/08 14:41:51 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/24 16:25:07 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void      ft_print2(char **str)
 int     ft_echo(t_node *node)
 {
     int i;
-    
     if (!node->data->cmd->args[1])
     {
         write(1, "\n", 1);

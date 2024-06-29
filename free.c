@@ -6,11 +6,58 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:46:16 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/06 16:26:34 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/28 16:56:36 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_free	*init_free(void *content)
+{
+	t_free	*new;
+
+	if (!content)
+		return (NULL);
+	new = (t_free *)malloc(sizeof(t_free));
+	if (!new)
+		return (NULL);
+	new->adress = content;
+	new->next = NULL;
+	return (new);
+}
+
+void	ft_lstadd_back_free(t_free **lst, t_free *new)
+{
+	t_free	*tmp;
+
+	if (!lst || !new)
+		return ;
+	if (!*lst)
+	{
+		*lst = new;
+		return ;
+	}
+	tmp = *lst;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
+}
+
+void	ft_lstclear_free(t_free **lst)
+{
+	t_free	*tmp;
+
+	if (!lst || !*lst)
+		return ;
+	while (*lst)
+	{
+		tmp = *lst;
+		*lst = (*lst)->next;
+		free(tmp->adress);
+		free(tmp);
+	}
+	*lst = NULL;
+}
 
 void	ft_free(t_token **token, t_lexer **lexer)
 {
@@ -24,7 +71,6 @@ void	ft_free(t_token **token, t_lexer **lexer)
 		free(tmp);
 	}
 	*token = NULL;
-	free(*lexer);
 	*lexer = NULL;
 }
 

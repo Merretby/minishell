@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:20 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/09 18:54:28 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/28 14:02:55 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 t_env   *ft_lstnew2(char *value)
 {

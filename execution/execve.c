@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 14:21:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/28 12:04:06 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/28 16:55:20 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	case1(char *tmp, t_node *tree, char **env)
 
 void	case2(t_node *tree, char **env)
 {
-
 	if (access(tree->data->cmd->args[0], F_OK | X_OK) == 0)
 		execve(tree->data->cmd->args[0], tree->data->cmd->args, env);
 	else
@@ -41,6 +40,8 @@ char	*path_check(char **env)
 	int	i;
 
 	i = 0;
+	if (env == NULL)
+		return (NULL);
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], "PATH=", 5) == 0)
@@ -58,7 +59,10 @@ void	ft_execute2(t_node *tree, char **env)
 	int		i;
 
 	i = 0;
+
 	str = path_check(env);
+	if (str == NULL)
+		exit(127);
 	path = ft_split(str + 5, ':');
 	while (path[i] && tree->data->cmd->args)
 	{
@@ -82,8 +86,6 @@ void	ft_execute2(t_node *tree, char **env)
 		case1(tmp, tree, env);
 }
 
-
-
 int	 ft_execute(t_node *tree,  char **env, int fork_flag)
 {
 	int ip1;
@@ -96,7 +98,7 @@ int	 ft_execute(t_node *tree,  char **env, int fork_flag)
 		signal(SIGINT, signal_handler_2);
 		signal(SIGQUIT, signal_handler_2);
 		ft_execute2(tree, env);
-		return 0;
+		return g_v->g_exit_code;
 	}
 	else if (fork_flag == 1)
 	{
@@ -111,11 +113,11 @@ int	 ft_execute(t_node *tree,  char **env, int fork_flag)
 		{
 			wait(&status);
 			if (WIFEXITED(status))
-				g_exit_code = WEXITSTATUS(status);
+				g_v->g_exit_code = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
-				g_exit_code = WTERMSIG(status) + 128;
+				g_v->g_exit_code = WTERMSIG(status) + 128;
 		}
 	}
 	signal(SIGINT, signal_handler);
-	return (g_exit_code);
+	return (g_v->g_exit_code);
 }

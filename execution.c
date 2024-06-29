@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/28 15:20:40 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/29 10:36:50 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	expand_exit_status(char **args)
 			if (args[i][j] == '$' && args[i][j + 1] == '?')
 			{
 				tmp = ft_substr(args[i], 0, j);
-				tmp2 = ft_itoa(g_exit_code);
+				tmp2 = ft_itoa(g_v->g_exit_code);
 				args[i] = ft_strjoin(tmp, tmp2);
 				free(tmp);
 				free(tmp2);
@@ -90,18 +90,27 @@ void	expand_exit_status(char **args)
 		}
 		i++;
 	}
-	g_exit_code = 0;
+	g_v->g_exit_code = 0;
 }
 
-void ft_execution(t_node *tree, char **env1, int fork_flag)
+void ft_wait(int status)
+{
+	if (WIFEXITED(status))
+		g_v->g_exit_code = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		g_v->g_exit_code = WTERMSIG(status) + 114;
+}
+
+int ft_execution(t_node *tree, char **env1, int fork_flag)
 {
 	if (!tree)
-		return;
+		return (g_v->g_exit_code);
     t_node *tmp;
 
     tmp = tree;
 	if (tree->type == CMD)
 	{
+		signal(SIGINT, signal_handler);
 		if (cherch_exit_status(tree->data->cmd->args))
 			expand_exit_status(tree->data->cmd->args);
 		if (ft_strcmp(tree->data->cmd->args[0], "pwd") == 0)
@@ -119,10 +128,12 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 		else if (ft_strcmp(tree->data->cmd->args[0], "exit") == 0)
 			ft_exit(tree);
 		else
-			g_exit_code = ft_execute(tree, env1, fork_flag);
+		
+			g_v->g_exit_code = ft_execute(tree, env1, fork_flag);
 	}
 	if (tree->type == PIPE)
 	{
+		int status;
 		int fd[2];
 		int ip1;
 		int ip2;
@@ -138,7 +149,7 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 		if (ip1 == 0)
 		{
 			child(env1, tree, fd);
-			exit(1);
+			exit(g_v->g_exit_code);
 		}
 		if (ip1 != 0)
 		{
@@ -148,17 +159,18 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 			if (ip2 == 0)
 			{
 				child2(env1, tree, fd);
-				exit(1);
+				exit(g_v->g_exit_code);
 			}
 		}
 		close(fd[0]);
 		close(fd[1]);
-		wait(NULL);
-		wait(NULL);
+		waitpid(ip1, &status, 0);
+		waitpid(ip2, &status, 0);
+		ft_wait(status);
 		signal(SIGINT, signal_handler);
-		return;
+		return (g_v->g_exit_code);
 	}
-	  if (tree->type ==  REDIR)
+    if (tree->type ==  REDIR)
     {
         t_redir *redir;
         int fd;
@@ -174,7 +186,7 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 			if(redir->type == TOKEN_FILE)
 			{
 				
-				fd = open(redir->value, O_RDONLY);
+				fd = open(redir->value, O_RDONLY, 0644);
 				if (fd == -1)
 				{
 					dup2(copy_fd, STDIN_FILENO);	
@@ -182,8 +194,8 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 					close(copy_fd2);
 					close(copy_fd);
 					printf("minishell: %s: No such file or directory\n", redir->value);
-					g_exit_code = 1;
-					return ;
+					g_v->g_exit_code = 1;
+					return (g_v->g_exit_code);
 				}
 				dup2(fd, STDIN_FILENO);
 				close(fd);
@@ -198,8 +210,8 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 					close(copy_fd2);
 					close(copy_fd);					
 					printf("minishell: %s: No such file or directory\n", redir->value);
-					g_exit_code = 1;
-					return;
+					g_v->g_exit_code = 1;
+					return (g_v->g_exit_code);
 				}
 				dup2(fd2, STDOUT_FILENO);
 				close(fd2);
@@ -215,8 +227,8 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 					close(copy_fd2);
 					close(copy_fd);
 					printf("minishell: %s: No such file or directory\n", redir->value);
-					g_exit_code = 1;
-					return;
+					g_v->g_exit_code = 1;
+					return (g_v->g_exit_code);
 				}
 				dup2(fd2, STDOUT_FILENO);
 				close(fd2);
@@ -229,4 +241,5 @@ void ft_execution(t_node *tree, char **env1, int fork_flag)
 		close(copy_fd2);
 		close(copy_fd);
 	}
+	return (g_v->g_exit_code);
 }

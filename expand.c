@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:00:56 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/06 16:27:28 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/07 16:15:20 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ char *join_char(char *str, char c)
 	}
 	tmp[i] = c;
 	tmp[i + 1] = '\0';
+	free(str);
 	return (tmp);
 }
 
@@ -164,16 +165,69 @@ char	*real_expand(char *line, char **env)
 	return (tmp2);
 }
 
+char	*remove_space(char *str)
+{
+	int i;
+	int j;
+	char *tmp;
+
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] == ' ')
+			j++;
+		i++;
+	}
+	tmp = (char *)malloc(sizeof(char) * (i - j + 2));
+	if (!tmp)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ')
+		{
+			tmp[j] = str[i];
+			j++;
+		}
+		if (str[i] == ' ' && str[i + 1] != ' ')
+		{
+			tmp[j] = str[i];
+			j++;
+		}
+		i++;
+	}
+	tmp[j] = '\0';
+	free(str);
+	return (tmp);
+}
+
+void insert_after(t_token *node, char *value) 
+{
+    t_token *new_node;
+	new_node = calloc(1 ,sizeof(t_token));
+    new_node->value = ft_strdup(value);
+    new_node->next = node->next;
+	new_node->type = TOKEN_ID;
+	new_node->flag = -1;
+	new_node->helper_flag = -1;
+    node->next = new_node;
+}
+
 void	expand(t_token **token, char **env)
 {
 	int i;
 	int j;
+	char **argument;
 	t_token *tmp;
+	t_token *helper;
 	char *str;
 	char *befor;
 	char *after;
 
 	j = 0;
+	int k = 1;
 	t_token *loop_tmp = *token;
 	while (loop_tmp)
 	{
@@ -192,6 +246,23 @@ void	expand(t_token **token, char **env)
 					str = real_expand(after, env);
 					free(loop_tmp->value);
 					loop_tmp->value = ft_strjoin2(befor, str);
+					if (loop_tmp->flag != 1)
+					{
+						loop_tmp->value = remove_space(loop_tmp->value);
+						if (ft_strchr(loop_tmp->value, ' ') != NULL)
+						{
+							helper = loop_tmp;
+						    argument = ft_split(loop_tmp->value, ' ');
+						    while (argument[k])
+						    {
+						        insert_after(loop_tmp, argument[k]);
+						        loop_tmp = loop_tmp->next;
+						        k++;
+						    }
+							free(helper->value);
+						    helper->value = argument[0];
+						}
+					}
 					free(str);
 					free(befor);
 					free(after);

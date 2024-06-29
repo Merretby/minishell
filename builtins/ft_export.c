@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:10 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/09 18:20:41 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/25 15:36:59 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 int check_repetition(t_env **env1, char *value)
 {
@@ -41,7 +40,6 @@ int check_repetition(t_env **env1, char *value)
 	}
 	return 0;
 }
-
 
 char *check_value(char *value)
 {
@@ -145,22 +143,6 @@ int check_add(t_env **new, char *str)
     return 0;
 }
 
-void    ft_inisialize_env(char **env1)
-{
-    char s[PATH_MAX];
-
-    getcwd(s, sizeof(s));
-    env1[0] = "OLDPWD";
-    env1[1] = ft_strjoin("PWD=", s);
-    env1[2] = "SHLVL=1";
-    env1[3] = "_=/usr/bin/env";
-    env1[4] = NULL;
-    // declare -x OLDPWD
-    // declare -x PWD="/nfs1/homes/mnachit/Desktop"
-    // declare -x SHLVL=1
-
-
-}
 
 char  **ft_export(t_node *node, char **env1)
 {
@@ -211,8 +193,8 @@ char  **ft_export(t_node *node, char **env1)
     {
         env1[i++] = tmp->value;
         t_env *to_free = tmp;
-        tmp = tmp->next;
-        free(to_free);
+		tmp = tmp->next;
+		free(to_free);
     }
     env1[i] = NULL;
     free(new);

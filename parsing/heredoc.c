@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:44:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/28 15:03:16 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/29 10:38:52 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ void	heredoc(t_token *token, char **env)
 			dup2(*retur_nvalue(), 0);
 			close(*retur_nvalue());
 			signal(SIGINT, signal_handler_4);
+			*retur_nvalue() = 10;
 		}
 		tmp = tmp->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/28 14:51:32 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/28 16:57:31 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,21 @@
 
 # define PATH_MAX 4096
 
-extern int g_exit_code;
+
+typedef struct s_free
+{
+	void			*adress;
+	struct s_free	*next;
+}	t_free;
+
+typedef struct g_var
+{
+	int		g_exit_code;
+	t_free	*adress;
+}	t_g_var;
+
+extern  t_g_var *g_v;
+// extern int g_exit_code;
 
 typedef	enum e_type
 {
@@ -45,6 +59,12 @@ typedef	enum e_type
 	TOKEN_EOF,
 } t_type;
 
+
+typedef struct handle_signal
+{
+	int				signal;
+}	t_handle_signal;
+
 typedef enum e_rd
 {
 	CMD = 0,
@@ -57,11 +77,6 @@ typedef struct s_args
 	char			*args;
 	struct s_args	*next;
 }	t_args;
-
-typedef struct handle_signal
-{
-	int				signal;
-}	t_handle_signal;
 
 typedef struct s_token
 {
@@ -146,7 +161,7 @@ void				advance(t_lexer *lexer);
 char				*defin(int c);
 
 // token
-void				lexer_to_next_token(t_lexer *lexer, t_token **token);
+void				lexer_to_next_token(t_lexer **lexer, t_token **token);
 t_token				*advance_token(t_lexer *lexer, t_token *token);
 
 // linkedlist
@@ -157,8 +172,9 @@ void				ft_lstadd_back2(t_env **lst, t_env *new);
 int *retur_nvalue(void);
 void signal_handler_4(int signum);
 
+
 //execution
-void ft_execution(t_node *tree, char **env1, int fork_flag);
+int ft_execution(t_node *tree, char **env1, int fork_flag);
 int	 ft_execute(t_node *tree,  char **env, int fork_flag);
 void check_signal2();
 void	signal_handler(int signum);
@@ -191,11 +207,16 @@ int					parss_command(t_token *token);
 //heredoc
 char				*concatenation(t_token *token, int *flaag);
 void				heredoc(t_token *token, char **env);
-char				*real_expand(char *line, char **env);
+char	*real_expand(char *line, char **env);
 
 //expand
 void				expand(t_token **token, char **env);
 
-void delete_node(t_token **head, t_token *node);
+//free
+t_free	*init_free(void *content);
+void	ft_lstadd_back_free(t_free **lst, t_free *new);
+void	ft_lstclear_free(t_free **lst);
+void	delete_node(t_token **head, t_token *node);
+void	free_2d(char **str);
 
 #endif 

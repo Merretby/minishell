@@ -6,13 +6,13 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/28 12:55:03 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/28 16:57:12 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_exit_code;
+t_g_var	*g_v;
 
 int check_syntax(char *str)
 {
@@ -43,6 +43,13 @@ int check_syntax(char *str)
 	return (1);
 }
 
+void	main2(t_token **token, t_lexer **lexer, char **env)
+{
+	helper(token, env);
+	free(*lexer);
+	ft_free(token, lexer);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	char	*str;
@@ -53,19 +60,18 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	lexer = NULL;
 	token = NULL;
+	g_v = (t_g_var *)malloc(sizeof(t_g_var));
+	g_v->g_exit_code = 0;
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
 	str = readline("\033[0;32mminishell~$42 \033[0m");
-	g_exit_code = 0;
 	while (str)
 	{
 		if (check_syntax(str))
 		{
 			lexer = init_lexer(str);
-			lexer_to_next_token(lexer, &token);
-			helper(&token, env);
-			ft_free(&token, &lexer);
-			// printf("%d\n", g_exit_code);
+			lexer_to_next_token(&lexer, &token);
+			main2(&token, &lexer, env);
 		}
 		if (str[0] != '\0')
 			add_history(str);
@@ -74,5 +80,4 @@ int	main(int ac, char **av, char **env)
 		signal(SIGINT, signal_handler);
 		signal(SIGQUIT, signal_handler);
 	}
-	return (0);
 }
