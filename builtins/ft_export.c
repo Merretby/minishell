@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:10 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/28 17:49:21 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/29 13:50:56 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int check_repetition(t_env **env1, char *value)
 			while (value[i] && value[i] != '=')
 				i++;
 			if (value[i]) 
-				tmp->value = ft_strdup1(value);
+				tmp->value = ft_strdup(value);
 			// free(tmp2);
 			return 1;
 		}
@@ -149,9 +149,10 @@ char  **ft_export(t_node *node, char **env1)
 	t_env *new;
 	char *value;
 	size_t i;
+    t_env *to_free;
 
 	new = malloc(sizeof(t_env));
-    ft_lstadd_back_free(&g_v->adress, init_free(new));
+    // ft_lstadd_back_free(&g_v->adress, init_free(new));
 	if (!new)
 		return (0);
 	new->next = NULL;
@@ -172,7 +173,7 @@ char  **ft_export(t_node *node, char **env1)
 	if(node->data->cmd->args[1] == NULL)
 	{
 		ft_printexport(new->next);
-		free(new);
+		// free(new);
 		return env1;
 	}
 	while(node->data->cmd->args[i])
@@ -193,11 +194,11 @@ char  **ft_export(t_node *node, char **env1)
     while (tmp)
     {
         env1[i++] = tmp->value;
-        t_env *to_free = tmp;
+        to_free = tmp;
 		tmp = tmp->next;
-		free(to_free);
+		// free(to_free);
     }
     env1[i] = NULL;
-    free(new);
+    // free(new);
 	return env1;
 }
