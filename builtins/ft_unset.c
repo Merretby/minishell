@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:20 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/29 14:41:59 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/30 11:53:40 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,11 @@ char *ft_findEnv(char *env)
     int i = 0;
     char *key;
 
-    while (env[i] != '=')
+    while (env[i] && env[i] != '=')
         i++;
     key = malloc(sizeof(char) * i + 1);
     i = 0;
-    while (env[i] != '=')
+    while (env[i] && env[i] != '=')
     {
         key[i] = env[i];
         i++;
@@ -84,10 +84,9 @@ void ft_New_env(char *value, t_env **env)
     tmp = *env;
     while (tmp)
     {
-        if (tmp && strcmp(value, ft_findEnv(tmp->value)) == 0)
+        if (tmp && tmp->value && strcmp(value, ft_findEnv(tmp->value)) == 0)
         {
             tmp->value = NULL;
-            printf("unset %s\n", tmp->next->value);
         }
         tmp = tmp->next;
     }
@@ -108,7 +107,7 @@ char **ft_unset(t_node *node, char **env1)
         j  = 0;
         while(env1[j])
         {
-            if (strcmp(node->data->cmd->args[i], ft_findEnv(env1[j])) == 0)
+            if (env1[j] && strcmp(node->data->cmd->args[i], ft_findEnv(env1[j])) == 0)
                 ft_New_env(node->data->cmd->args[i], &env);
             j++;
         }
@@ -116,7 +115,8 @@ char **ft_unset(t_node *node, char **env1)
     }
     t_env *tmp = env;
     i = 0;
-    while (tmp) {
+    while (tmp)
+    {
         if (tmp->value)
             env1[i++] = tmp->value;
         t_env *to_free = tmp;
@@ -124,6 +124,5 @@ char **ft_unset(t_node *node, char **env1)
         free(to_free);
     }
     env1[i] = NULL;
-
     return env1;
 }

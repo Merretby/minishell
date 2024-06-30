@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:10 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/29 14:09:00 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/06/30 11:46:13 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,9 +200,7 @@ char  **ft_export(t_node *node, char **env1)
         env1[i++] = tmp->value;
         to_free = tmp;
 		tmp = tmp->next;
-		// free(to_free);
     }
     env1[i] = NULL;
-    // free(new);
 	return env1;
 }
