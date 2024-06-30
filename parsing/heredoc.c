@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:44:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/29 12:25:00 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/29 19:59:56 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,9 @@ char *concatenation(t_token *token, int *flaag)
 				while (next && (next->type == TOKEN_ID || next->type == TOKEN_STRING))
 				{
 					str = ft_strjoin2(tmp->value, next->value);
-					// free(tmp->value);
 					tmp->value = str;
 					tmp->helper_flag = tmp->next->helper_flag;
 					tmp->next = tmp->next->next;
-					// free(next->value);
-					// free(next);
 					next = tmp->next;
 					if (tmp->helper_flag == 0)
 						return (tmp->value);
@@ -96,9 +93,6 @@ char *expand_heredoc(char *line, char **env)
 			after = ft_substr2(line, j, ft_strlen(line));
 			tmp = real_expand(after, env);
 			line = ft_strjoin2(before, tmp);
-			// free(tmp);
-			// free(before);
-			// free(after);
 			break;
 		}
 		i++;
@@ -210,7 +204,6 @@ void	heredoc(t_token *token, char **env)
 						line = expand_heredoc(line, env);
 				}
 				ft_putendl_fd(line, fd_f);
-				// free (line);
 				line = readline("> ");
 				ft_lstadd_back_free(&g_v->adress, init_free(line));
 			}
@@ -218,8 +211,6 @@ void	heredoc(t_token *token, char **env)
 			tmp->type = TOKEN_REDIR_IN;
 			tmp->next->value = str;
 			tmp->next->type = TOKEN_FILE;
-			close(fd_f);
-			// free(eof);
 		}
 		if (*retur_nvalue() != -1)
 		{

@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:46:16 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/28 17:37:49 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/30 15:03:55 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,30 +73,30 @@ void	ft_lstclear_free(t_free **lst)
 	*lst = NULL;
 }
 
-void	ft_free(t_token **token, t_lexer **lexer)
-{
-	// t_token	*head;
-	t_token	*tmp;
+// void	ft_free(t_token **token, t_lexer **lexer)
+// {
+// 	// t_token	*head;
+// 	t_token	*tmp;
 
-	while (*token)
-	{
-		tmp = *token;
-		*token = (*token)->next;
-		free(tmp);
-	}
-	*token = NULL;
-	*lexer = NULL;
-}
+// 	while (*token)
+// 	{
+// 		tmp = *token;
+// 		*token = (*token)->next;
+// 		free(tmp);
+// 	}
+// 	*token = NULL;
+// 	*lexer = NULL;
+// }
 
-void	free_2d(char **str)
-{
-	int	i;
+// void	free_2d(char **str)
+// {
+// 	int	i;
 
-	i = 0;
-	while (str[i])
-	{
-		free(str[i]);
-		i++;
-	}
-	free(str);
-}
+// 	i = 0;
+// 	while (str[i])
+// 	{
+// 		free(str[i]);
+// 		i++;
+// 	}
+// 	free(str);
+// }

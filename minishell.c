@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/29 18:50:33 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/30 15:02:53 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,24 +31,23 @@ int check_syntax(char *str)
 	}
 	while (str[i])
 	{
-		i++;
-		if (str[i] == c)
+		if (str[++i] == c)
 			return (1);
 		if (str[i] == '\0')
 		{
-			printf("minishell: syntax error '%c'\n", c);
+			ft_putstr_fd("minishell: syntax error \n", 2);
+			g_v->g_exit_code = 2;
 			return (0);
 		}
 	}
 	return (1);
 }
 
-void	main2(t_token **token, t_lexer **lexer, char **env)
+void	main2(t_token **token, t_lexer **lexer, char **env, char *str)
 {
-	(void)lexer;
+	*lexer = init_lexer(str);
+	lexer_to_next_token(lexer, token);
 	helper(token, env);
-	// free(*lexer);
-	// ft_free(token, lexer);
 }
 
 void	*ft_calloc1(size_t nmemb, size_t size)
@@ -89,6 +88,12 @@ char	*ft_strdup1(const char *src)
 	return (ls);
 }
 
+void signal_norme(void)
+{
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, signal_handler);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	char	*str;
@@ -97,32 +102,23 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	lexer = NULL;
-	token = NULL;
 	g_v = (t_g_var *)malloc(sizeof(t_g_var));
 	g_v->adress = NULL;
 	g_v->g_exit_code = 0;
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, signal_handler);
+	signal_norme();
 	str = readline("\033[0;32mminishell~$42 \033[0m");
-	// ft_lstadd_back_free(&g_v->adress, ft_lstnew_free(str));
 	while (str)
 	{
+		lexer = NULL;
+		token = NULL;
 		*retur_nvalue() = -1;
 		if (check_syntax(str))
-		{
-			lexer = init_lexer(str);
-			lexer_to_next_token(&lexer, &token);
-			main2(&token, &lexer, env);
-		}
+			main2(&token, &lexer, env, str);
 		if (str[0] != '\0')
 			add_history(str);
 		free(str);
-		lexer = NULL;
-		token = NULL;
 		str = readline("\033[0;32mminishell~$42 \033[0m");
-		signal(SIGINT, signal_handler);
-		signal(SIGQUIT, signal_handler);
+		signal_norme();
 	}
 	ft_lstclear_free(&g_v->adress);
 }

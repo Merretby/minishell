@@ -32,5 +32,5 @@ re: fclean all
 push :
 	@make fclean
 	@git add .
-	@git commit -m "MiniShell"
+	@git commit -m "working norme"
 	@git push -f

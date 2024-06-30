@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:00:56 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/29 14:12:33 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/30 15:05:29 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*remove_word(char *str)
 	return (tmp);
 }
 
-char *join_char(char *str, char c)
+char	*join_char(char *str, char c)
 {
 	char *tmp;
 	int i;
@@ -78,7 +78,6 @@ char *join_char(char *str, char c)
 	}
 	tmp[i] = c;
 	tmp[i + 1] = '\0';
-	// free(str);
 	return (tmp);
 }
 
@@ -106,7 +105,7 @@ char	*ft_strjoin2(char *s1, char *s2)
 	return (ptr);
 }
 
-char *get_value(char *str, char **env)
+char	*get_value(char *str, char **env)
 {
 	int i;
 	char *tmp;
@@ -125,7 +124,7 @@ char *get_value(char *str, char **env)
 	return (NULL);
 }
 
-int check_doller(char *str)
+int	check_doller(char *str)
 {
 	int i;
 
@@ -158,14 +157,12 @@ char	*real_expand(char *line, char **env)
 			if (check_doller(line) == 1)
 				if (line[0] != '$' && line[0] != '\\' && !ft_isdigit(line[0]))
 					tmp2 = join_char(tmp2, line[0]);
-			// free(str);
 			i = -1;
 		}
 		i++;
 	}
 	if (line != NULL)
 		tmp2 = ft_strjoin2(tmp2, line);
-	// free(line);
 	return (tmp2);
 }
 
@@ -179,46 +176,36 @@ char	*remove_space(char *str)
 	j = 0;
 	while (str[i])
 	{
-		if (str[i] == ' ')
+		if (str[i++] == ' ')
 			j++;
-		i++;
 	}
 	tmp = (char *)malloc(sizeof(char) * (i - j + 2));
 	ft_lstadd_back_free(&g_v->adress, init_free(tmp));
-	if (!tmp)
-		return (NULL);
 	i = 0;
 	j = 0;
 	while (str[i])
 	{
 		if (str[i] != ' ')
-		{
-			tmp[j] = str[i];
-			j++;
-		}
+			tmp[j++] = str[i];
 		if (str[i] == ' ' && str[i + 1] != ' ')
-		{
-			tmp[j] = str[i];
-			j++;
-		}
+			tmp[j++] = str[i];
 		i++;
 	}
 	tmp[j] = '\0';
-	// free(str);
 	return (tmp);
 }
 
-void insert_after(t_token *node, char *value) 
+void	insert_after(t_token *node, char *value) 
 {
-    t_token *new_node;
+	t_token *new_node;
 	new_node = malloc(sizeof(t_token));
 	ft_lstadd_back_free(&g_v->adress, init_free(new_node));
-    new_node->value = ft_strdup1(value);
-    new_node->next = node->next;
+	new_node->value = ft_strdup1(value);
+	new_node->next = node->next;
 	new_node->type = TOKEN_ID;
 	new_node->flag = -1;
 	new_node->helper_flag = -1;
-    node->next = new_node;
+	node->next = new_node;
 }
 
 void	expand(t_token **token, char **env)
@@ -227,14 +214,16 @@ void	expand(t_token **token, char **env)
 	int j;
 	char **argument;
 	t_token *tmp;
+	t_token *loop_tmp;
 	t_token *helper;
 	char *str;
 	char *befor;
 	char *after;
+	int k;
 
 	j = 0;
-	int k = 1;
-	t_token *loop_tmp = *token;
+	k = 1;	
+	loop_tmp = *token;
 	while (loop_tmp)
 	{
 		i = 0;
@@ -250,7 +239,6 @@ void	expand(t_token **token, char **env)
 					j = i;
 					after = ft_substr2(loop_tmp->value, j, ft_strlen(loop_tmp->value));
 					str = real_expand(after, env);
-					// free(loop_tmp->value);
 					loop_tmp->value = ft_strjoin2(befor, str);
 					if (loop_tmp->flag != 1)
 					{
@@ -258,21 +246,17 @@ void	expand(t_token **token, char **env)
 						if (ft_strchr(loop_tmp->value, ' ') != NULL)
 						{
 							helper = loop_tmp;
-						    argument = ft_split1(loop_tmp->value, ' ');
-						    while (argument[k])
-						    {
-						        insert_after(loop_tmp, argument[k]);
-						        loop_tmp = loop_tmp->next;
-						        k++;
-						    }
-							// free(helper->value);
-						    helper->value = argument[0];
+							argument = ft_split1(loop_tmp->value, ' ');
+							while (argument[k])
+							{
+								insert_after(loop_tmp, argument[k]);
+								loop_tmp = loop_tmp->next;
+								k++;
+							}
+							helper->value = argument[0];
 						}
 					}
-					// free(str);
-					// free(befor);
-					// free(after);
-					 if (loop_tmp->value[0] == '\0')
+					if (loop_tmp->value[0] == '\0')
 					{
 						tmp = loop_tmp;
 						loop_tmp = loop_tmp->next;

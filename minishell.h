@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/29 14:10:55 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/29 19:49:00 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ typedef	enum e_type
 	TOKEN_PIPE,         // |
 	TOKEN_REDIR_IN,     // <
 	TOKEN_REDIR_OUT,    // >
-	// TOKEN_DOLLAR,       // $
 	TOKEN_REDIR_APPEND, // >>
 	TOKEN_HEREDOC,      // <<
 	TOKEN_ERROR,
