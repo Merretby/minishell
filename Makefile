@@ -5,9 +5,9 @@ CFILES = minishell.c lexer/token.c linkedlist.c lexer/lexer.c lexer/lexer2.c \
     parsing/parsing.c free.c init.c parsing/error.c parsing/heredoc.c\
     builtins/ft_echo.c builtins/ft_cd.c builtins/ft_pwd.c builtins/ft_export.c \
     builtins/ft_unset.c builtins/ft_env.c builtins/ft_exit.c execution.c \
-	expand.c execution/execve.c signals.c 
-RFLAGS = -lreadline
+	expand.c execution/execve.c signals.c builtins/ft_export2.c builtins/ft_unset2.c 
 
+RFLAGS = -lreadline
 OFILSE = $(CFILES:.c=.o)
 LIBFT = libft/libft.a
 
@@ -32,5 +32,5 @@ re: fclean all
 push :
 	@make fclean
 	@git add .
-	@git commit -m "working norme"
+	@git commit -m "norme"
 	@git push -f

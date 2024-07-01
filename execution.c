@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/30 15:28:49 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/01 15:16:04 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,102 @@ void ft_wait(int status)
 		g_v->g_exit_code = WTERMSIG(status) + 114;
 }
 
+void	ft_dup(int copy_fd, int copy_fd2)
+{
+	dup2(copy_fd, STDIN_FILENO);
+	dup2(copy_fd2, STDOUT_FILENO);
+	close(copy_fd2);
+	close(copy_fd);
+}
+
+int	ft_tokenfile(int copy_fd, int copy_fd2, t_redir *redir)
+{
+	int	fd;
+
+	fd = open(redir->value, O_RDONLY, 0644);
+	if (fd == -1)
+	{
+		ft_dup(copy_fd, copy_fd2);
+		printf("minishell: %s: No such file or directory\n", redir->value);
+		g_v->g_exit_code = 1;
+		return (g_v->g_exit_code);
+	}
+	dup2(fd, STDIN_FILENO);
+	close(fd);
+	return (g_v->g_exit_code);
+}
+
+int	ft_tokenoutfile(int copy_fd, int copy_fd2, t_redir *redir)
+{
+	int	fd;
+
+	fd = open(redir->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
+	{
+		ft_dup(copy_fd, copy_fd2);
+		printf("minishell: %s: No such file or directory\n", redir->value);
+		g_v->g_exit_code = 1;
+		return (g_v->g_exit_code);
+	}
+	dup2(fd, STDOUT_FILENO);
+	close(fd);
+	return (g_v->g_exit_code);
+}
+
+int	token_redir_append(int copy_fd, int copy_fd2, t_redir *redir)
+{
+	int	fd;
+
+	fd = open(redir->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd == -1)
+	{
+		ft_dup(copy_fd, copy_fd2);
+		printf("minishell: %s: No such file or directory\n", redir->value);
+		g_v->g_exit_code = 1;
+		return (g_v->g_exit_code);
+	}
+	dup2(fd, STDOUT_FILENO);
+	close(fd);
+	return (g_v->g_exit_code);
+}
+
+int	ft_redir(t_node *tree, char **env1)
+{
+	t_redir	*redir;
+	int		copy_fd;
+	int		copy_fd2;
+
+	redir = tree->data->red;
+	copy_fd = dup(STDIN_FILENO);
+	copy_fd2 = dup(STDOUT_FILENO);
+	while (redir)
+	{
+		if (redir->type == TOKEN_FILE)
+		{
+			g_v->g_exit_code = ft_tokenfile(copy_fd, copy_fd2, redir);
+			if (g_v->g_exit_code == 1)
+				return (g_v->g_exit_code);
+		}
+		if (redir->type == TOKEN_OUTFILE)
+		{
+			g_v->g_exit_code = ft_tokenoutfile(copy_fd, copy_fd2, redir);
+			if (g_v->g_exit_code == 1)
+				return (g_v->g_exit_code);
+		}
+		if (redir->type == TOKEN_REDIR_APPEND)
+		{
+			redir = redir->next;
+			g_v->g_exit_code = token_redir_append(copy_fd, copy_fd2, redir);
+			if (g_v->g_exit_code == 1)
+				return (g_v->g_exit_code);
+		}
+		redir = redir->next;
+	}
+	ft_execution(tree->left, env1, 1);
+	ft_dup(copy_fd, copy_fd2);
+	return (g_v->g_exit_code);
+}
+
 int	pipe_execution(t_node *tree, char **env1)
 {
 	int status;
@@ -142,78 +238,6 @@ int	pipe_execution(t_node *tree, char **env1)
 	return (g_v->g_exit_code);
 }
 
-int	redirect_execution(t_node *tree, char **env1)
-{
- 	t_redir *redir;
-	int fd;
-	int copy_fd;
-	int fd2;
-	int copy_fd2;
-
-	redir = tree->data->red;
-	copy_fd = dup(STDIN_FILENO);
-	copy_fd2 = dup(STDOUT_FILENO);
-	while (redir)
-	{
-		if(redir->type == TOKEN_FILE)
-		{
-			fd = open(redir->value, O_RDONLY, 0644);
-			if (fd == -1)
-			{
-				dup2(copy_fd, STDIN_FILENO);	
-				dup2(copy_fd2, STDOUT_FILENO);
-				close(copy_fd2);
-				close(copy_fd);
-				printf("minishell: %s: No such file or directory\n", redir->value);
-				g_v->g_exit_code = 1;
-				return (g_v->g_exit_code);
-			}
-			dup2(fd, STDIN_FILENO);
-			close(fd);
-		}
-		if (redir->type == TOKEN_OUTFILE)
-		{
-			fd2 = open(redir->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			if (fd2 == -1)
-			{
-				dup2(copy_fd, STDIN_FILENO);	
-				dup2(copy_fd2, STDOUT_FILENO);
-				close(copy_fd2);
-				close(copy_fd);					
-				printf("minishell: %s: No such file or directory\n", redir->value);
-				g_v->g_exit_code = 1;
-				return (g_v->g_exit_code);
-			}
-			dup2(fd2, STDOUT_FILENO);
-			close(fd2);
-		}
-		if (redir->type == TOKEN_REDIR_APPEND)
-		{
-			redir = redir->next;
-			fd2 = open(redir->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
-			if (fd2 == -1)
-			{
-				dup2(copy_fd, STDIN_FILENO);	
-				dup2(copy_fd2, STDOUT_FILENO);
-				close(copy_fd2);
-				close(copy_fd);
-				printf("minishell: %s: No such file or directory\n", redir->value);
-				g_v->g_exit_code = 1;
-				return (g_v->g_exit_code);
-			}
-			dup2(fd2, STDOUT_FILENO);
-			close(fd2);
-		}
-		redir = redir->next;
-	}
-	ft_execution(tree->left, env1, 1);
-	dup2(copy_fd, STDIN_FILENO);	
-	dup2(copy_fd2, STDOUT_FILENO);
-	close(copy_fd2);
-	close(copy_fd);
-	return (g_v->g_exit_code);
-}
-
 int cmd_execution(t_node *tree, char **env1, int fork_flag)
 {
 	signal(SIGINT, signal_handler);
@@ -250,6 +274,6 @@ int ft_execution(t_node *tree, char **env1, int fork_flag)
 	if (tree->type == PIPE)
 		g_v->g_exit_code = pipe_execution(tree, env1);
 	if (tree->type ==  REDIR)
-		g_v->g_exit_code = redirect_execution(tree, env1);
+		g_v->g_exit_code = ft_redir(tree, env1);
 	return (g_v->g_exit_code);
 }

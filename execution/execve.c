@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 14:21:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/29 14:22:26 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/01 15:12:53 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,8 @@ void	ft_execute2(t_node *tree, char **env)
 		{
 			str = ft_strjoin2("/", tree->data->cmd->args[0]);
 			tmp = ft_strjoin2(path[i], str);
-			// free (str);
 			if (access(tmp, F_OK) == 0)
 				break ;
-			// free(tmp);
 		}
 		else
 		{
@@ -86,19 +84,23 @@ void	ft_execute2(t_node *tree, char **env)
 		case1(tmp, tree, env);
 }
 
-int	 ft_execute(t_node *tree,  char **env, int fork_flag)
+void	signal_quit(int sig)
 {
-	int ip1;
+	(void)sig;
+	printf("Quit (core dumped)\n");
+}
+
+int	ft_execute(t_node *tree, char **env, int fork_flag)
+{
+	int	ip1;
 	int	status;
 
-	signal(SIGINT, signal_handler_child);
-	signal(SIGQUIT, signal_handler_child);
+	signal(SIGINT, signal_handler_2);
+	signal(SIGQUIT, signal_quit);
 	if (fork_flag == 0)
 	{
-		signal(SIGINT, signal_handler_2);
-		signal(SIGQUIT, signal_handler_2);
 		ft_execute2(tree, env);
-		return g_v->g_exit_code;
+		return (g_v->g_exit_code);
 	}
 	else if (fork_flag == 1)
 	{
@@ -108,7 +110,7 @@ int	 ft_execute(t_node *tree,  char **env, int fork_flag)
 			signal(SIGINT, SIG_DFL);
 			signal(SIGQUIT, SIG_DFL);
 			ft_execute2(tree, env);
-			exit (127);
+			exit(127);
 		}
 		else
 		{
@@ -120,5 +122,6 @@ int	 ft_execute(t_node *tree,  char **env, int fork_flag)
 		}
 	}
 	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
 	return (g_v->g_exit_code);
 }
