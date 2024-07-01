@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/30 16:17:57 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/01 21:07:47 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,7 +256,7 @@ void     helper(t_token **token, char **env)
 		return ;
 	if (parss_command(*token) == 1)
 	{
-		expand(token, str);
+		expand(token, str, 0);
 		concatenation_token(*token);
 		take_args(*token);
 		tree = pipeline(token);

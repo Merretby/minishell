@@ -32,5 +32,5 @@ re: fclean all
 push :
 	@make fclean
 	@git add .
-	@git commit -m "norme"
+	@git commit -m "norme fix expand"
 	@git push -f

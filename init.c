@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 16:57:56 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/30 15:03:34 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/01 19:15:13 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	**ft_split1(char const *s, char c)
 		return (NULL);
 	length = ft_len(s, c);
 	str = malloc((length + 1) * sizeof(char *));
-    ft_lstadd_back_free(&g_v->adress, init_free(str));
+	ft_lstadd_back_free(&g_v->adress, init_free(str));
 	if (!str)
 		return (NULL);
 	return (ft_daym(s, str, c, length));

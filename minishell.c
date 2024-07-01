@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/01 15:21:54 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/01 19:17:16 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 t_g_var	*g_v;
 
-int check_syntax(char *str)
+int	check_syntax(char *str)
 {
-	char c;
-	int i;
+	char	c;
+	int		i;
 
 	i = 0;
 	while (str[i])
@@ -25,7 +25,7 @@ int check_syntax(char *str)
 		if (str[i] == '\'' || str[i] == '"')
 		{
 			c = str[i];
-			break;
+			break ;
 		}
 		i++;
 	}
@@ -59,12 +59,12 @@ void	*ft_calloc1(size_t nmemb, size_t size)
 	if (size != 0 && nmemb > (i / size))
 		return (NULL);
 	str = malloc(nmemb * size);
-	// ft_lstadd_back_free(&g_v->adress, init_free(str));
 	if (!str)
 		return (NULL);
 	ft_bzero(str, (size * nmemb));
 	return (str);
 }
+
 char	*ft_strdup1(const char *src)
 {
 	size_t		i;
@@ -88,10 +88,10 @@ char	*ft_strdup1(const char *src)
 	return (ls);
 }
 
-void signal_norme(void)
+void	signal_norme(void)
 {
 	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, SIG_IGN);	
+	signal(SIGQUIT, SIG_IGN);
 }
 
 int	main(int ac, char **av, char **env)
