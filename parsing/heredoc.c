@@ -6,13 +6,13 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:44:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/29 19:59:56 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/30 16:24:05 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char *concatenation(t_token *token, int *flaag)
+char	*concatenation(t_token *token, int *flaag)
 {
 	t_token *tmp;
 	t_token *next;
@@ -73,7 +73,7 @@ char	*ft_substr2(char const *s, unsigned int start, size_t len)
 	return (str);
 }
 
-char *expand_heredoc(char *line, char **env)
+char	*expand_heredoc(char *line, char **env)
 {
 	int i;
 	int j;
@@ -153,32 +153,36 @@ char	*random_string(void)
 	return (str);
 }
 
-int *retur_nvalue(void)
+int	*retur_nvalue(void)
 {
 	static int retur_n = -1;
 	
 	return (&retur_n);
 }
 
-void signal_handler5(int signum)
+void	signal_handler5(int signum)
 {
 	(void)signum;
 	*retur_nvalue() = dup(0);
 	close(0);
 }
-
-
-void	heredoc(t_token *token, char **env)
+void	signal_heredoc_norme(void)
 {
-	int 	flaag;
+	dup2(*retur_nvalue(), 0);
+	close(*retur_nvalue());
+	signal(SIGINT, signal_handler_4);
+	g_v->g_exit_code = 130;
+	*retur_nvalue() = 10;
+}
+
+void	heredoc(t_token *token, char **env, int flaag)
+{
 	char 	*str;
 	char	*line;
 	char	*eof;
 	t_token	*tmp;
 	int		fd_f;
 
-
-	flaag = 0;
 	tmp = token;
 	while (tmp)
 	{
@@ -199,10 +203,8 @@ void	heredoc(t_token *token, char **env)
 					(ft_strlen(line) == ft_strlen(eof)))
 					break ;
 				if (tmp->next->flag != 1 && tmp->next->flag != 0)
-				{
 					if (ft_strchr(line, '$') != NULL && flaag == 0)
 						line = expand_heredoc(line, env);
-				}
 				ft_putendl_fd(line, fd_f);
 				line = readline("> ");
 				ft_lstadd_back_free(&g_v->adress, init_free(line));
@@ -213,12 +215,7 @@ void	heredoc(t_token *token, char **env)
 			tmp->next->type = TOKEN_FILE;
 		}
 		if (*retur_nvalue() != -1)
-		{
-			dup2(*retur_nvalue(), 0);
-			close(*retur_nvalue());
-			signal(SIGINT, signal_handler_4);
-			*retur_nvalue() = 10;
-		}
+			signal_heredoc_norme();
 		tmp = tmp->next;
 	}
 }

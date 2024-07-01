@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/29 19:49:00 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/30 16:18:20 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,7 @@ int					parss_command(t_token *token);
 
 //heredoc
 char				*concatenation(t_token *token, int *flaag);
-void				heredoc(t_token *token, char **env);
+void				heredoc(t_token *token, char **env, int flag);
 char	*real_expand(char *line, char **env);
 
 //expand

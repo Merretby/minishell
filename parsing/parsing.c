@@ -6,52 +6,52 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/06/29 12:36:44 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/30 16:17:57 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 
-void print_redir(t_redir*red)
-{
-	while (red)
-	{
-		printf("redirection--> %s\n", red->value);
-		red = red->next;
-	}
-}
+// void print_redir(t_redir*red)
+// {
+// 	while (red)
+// 	{
+// 		printf("redirection--> %s\n", red->value);
+// 		red = red->next;
+// 	}
+// }
 
-void   print_tree(t_node *tree)
-{
-	if (tree == NULL)
-		return ;
-	if (tree->type == PIPE)
-	{
-		printf("PIPE: %s\n", tree->data->pipe->value);
-	}
-	else if (tree->type == CMD)
-	{
-		// if (tree->data->cmd->value != NULL)
-		printf("CMD: %s\n", tree->data->cmd->value);
-		if (tree->data->cmd->args != NULL)
-		{
-			for (int i = 0; tree->data->cmd->args[i]; i++)
-				printf("args[%d]: %s, flag: %d\n", i, tree->data->cmd->args[i], tree->data->cmd->ex_flag);
-		}
-	}
-	else if (tree->type == REDIR)
-	{
-		if (tree->data->red->value != NULL)
-		{
-			printf("REDIR: %s\n", tree->data->red->value);
-			print_redir(tree->data->red);
-		}
+// void   print_tree(t_node *tree)
+// {
+// 	if (tree == NULL)
+// 		return ;
+// 	if (tree->type == PIPE)
+// 	{
+// 		printf("PIPE: %s\n", tree->data->pipe->value);
+// 	}
+// 	else if (tree->type == CMD)
+// 	{
+// 		// if (tree->data->cmd->value != NULL)
+// 		printf("CMD: %s\n", tree->data->cmd->value);
+// 		if (tree->data->cmd->args != NULL)
+// 		{
+// 			for (int i = 0; tree->data->cmd->args[i]; i++)
+// 				printf("args[%d]: %s, flag: %d\n", i, tree->data->cmd->args[i], tree->data->cmd->ex_flag);
+// 		}
+// 	}
+// 	else if (tree->type == REDIR)
+// 	{
+// 		if (tree->data->red->value != NULL)
+// 		{
+// 			printf("REDIR: %s\n", tree->data->red->value);
+// 			print_redir(tree->data->red);
+// 		}
 		
-	}
-	print_tree(tree->left);
-	print_tree(tree->right);
-}
+// 	}
+// 	print_tree(tree->left);
+// 	print_tree(tree->right);
+// }
 
 void	concatenation_token(t_token *token)
 {
@@ -70,12 +70,9 @@ void	concatenation_token(t_token *token)
 			while (next && (next->type == TOKEN_ID || next->type == TOKEN_STRING))
 			{
 				concatenated = ft_strjoin2(token->value, next->value);
-				// free(token->value);
 				token->value = concatenated;
 				token->helper_flag = token->next->helper_flag;
 				token->next = next->next;
-				// free(next->value);
-				// free(next);
 				next = token->next;
 				if (token->helper_flag == 0)
 					break ;
@@ -115,8 +112,6 @@ void delete_node(t_token **head, t_token *node)
 	if (tmp == node)
 	{
 		(*head) = node->next;
-		// free(node->value);
-		// free(node);
 		node = NULL;
 	}
 	else
@@ -125,8 +120,6 @@ void delete_node(t_token **head, t_token *node)
 		node->prev->next = node->next;
 		if (node->next)
 			node->next->prev = node->prev;
-		// free(node->value);
-		// free(node);
 		node = NULL;
 	}
 }
@@ -186,81 +179,79 @@ void	list_to_array(t_token *token)
 	token->arg[i] = NULL;
 }
 
-void	free_redir(t_redir *red)
-{
-	t_redir *tmp;
+// void	free_redir(t_redir *red)
+// {
+// 	t_redir *tmp;
 	
-	while (red)
-	{
-		tmp = red;
-		red = red->next;
-		free(tmp->value);
-		free(tmp);
-	}
-}
+// 	while (red)
+// 	{
+// 		tmp = red;
+// 		red = red->next;
+// 		free(tmp->value);
+// 		free(tmp);
+// 	}
+// }
 
-void	free_args(char **args)
-{
-	int i = 0;
+// void	free_args(char **args)
+// {
+// 	int i = 0;
 	
-	while (args[i])
-	{
-		free(args[i]);
-		i++;
-	}
-	free(args);
-}
+// 	while (args[i])
+// 	{
+// 		free(args[i]);
+// 		i++;
+// 	}
+// 	free(args);
+// }
 
-void	free_tree(t_node *tree)
-{
-	// int i = 0;
+// void	free_tree(t_node *tree)
+// {
+// 	// int i = 0;
 	
-	if (tree == NULL)
-		return ;
-	if (tree->type == CMD)
-	{
-		if (tree->data->cmd->value)
-			free(tree->data->cmd->value);
-		if (tree->data->cmd->args)
-		{
-			// while(tree->data->cmd->args[i++])
-			// 	free(tree->data->cmd->args[i]);
-			free(tree->data->cmd->args);
-			tree->data->cmd->args = NULL;
-		}
-		free(tree->data->cmd);
-	}
-	else if (tree->type == REDIR)
-	{
-		if (tree->data->red)
-			free_redir(tree->data->red);
-		tree->data->red = NULL;
-	}
-	else if (tree->type == PIPE)
-	{
-		if (tree->data->pipe->value)
-			free(tree->data->pipe->value);
-		if (tree->data->pipe)
-			free(tree->data->pipe);
-	}
-	free_tree(tree->left);
-	free_tree(tree->right);
-	free(tree->data);
-	free(tree);
-}
+// 	if (tree == NULL)
+// 		return ;
+// 	if (tree->type == CMD)
+// 	{
+// 		if (tree->data->cmd->value)
+// 			free(tree->data->cmd->value);
+// 		if (tree->data->cmd->args)
+// 		{
+// 			// while(tree->data->cmd->args[i++])
+// 			// 	free(tree->data->cmd->args[i]);
+// 			free(tree->data->cmd->args);
+// 			tree->data->cmd->args = NULL;
+// 		}
+// 		free(tree->data->cmd);
+// 	}
+// 	else if (tree->type == REDIR)
+// 	{
+// 		if (tree->data->red)
+// 			free_redir(tree->data->red);
+// 		tree->data->red = NULL;
+// 	}
+// 	else if (tree->type == PIPE)
+// 	{
+// 		if (tree->data->pipe->value)
+// 			free(tree->data->pipe->value);
+// 		if (tree->data->pipe)
+// 			free(tree->data->pipe);
+// 	}
+// 	free_tree(tree->left);
+// 	free_tree(tree->right);
+// 	free(tree->data);
+// 	free(tree);
+// }
 
 void     helper(t_token **token, char **env)
 {
-	t_node *tree = NULL;
-	// t_token *tmp;
-	char **str;
+	t_node	*tree;
+	char	**str;
 
 	str = env;
-	// tmp = *token;
 	if (*token == NULL)
 		return ;
 	signal(SIGINT, signal_handler);
-	heredoc(*token, str); 
+	heredoc(*token, str, 0); 
 	if (*retur_nvalue() == 10)
 		return ;
 	if (parss_command(*token) == 1)
@@ -339,13 +330,8 @@ t_node *command(t_token **token)
 		tmp2 = (*token);
 		*token = (*token)->next;
 		node = new_node(tmp2);
-		// free (tmp2);
 		while ((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING))
-		{
-			// tmp2 = (*token);
 			*token = (*token)->next;
-			// free (tmp2);
-		}
 		return(node);
 	}
 	return NULL;
@@ -369,7 +355,6 @@ t_node	*new_pipe(t_token *token)
 
 t_node  *pipeline(t_token **token)
 {
-	// t_token *tmp;
 	t_node *left;
 	t_node *new;
 
@@ -380,9 +365,7 @@ t_node  *pipeline(t_token **token)
 	{
 		new = new_pipe(*token);
 		new->type = PIPE;
-		// tmp = (*token);
 		*token = (*token)->next;
-		// free(tmp);
 		new->left = left;
 		new->right = pipeline(token);
 		left = new;
@@ -420,7 +403,6 @@ void ft_last_back_red(t_redir **lst, t_redir *new)
 
 t_node	*rederiction(t_token **token)
 {
-	// t_token *tmp2;
 	t_node *left;
 	t_node *node;
 	t_redir *tmp;
@@ -447,9 +429,7 @@ t_node	*rederiction(t_token **token)
 	{
 		node = new_redir(*token);
 		tmp = node->data->red;
-		// tmp2 = (*token);
 		(*token) = (*token)->next;
-		// free(tmp2);
 		while ((*token) && ((*token)->type == TOKEN_REDIR_IN ||\
 		 (*token)->type == TOKEN_REDIR_OUT ||\
 		 (*token)->type == TOKEN_REDIR_APPEND ||\
@@ -458,15 +438,9 @@ t_node	*rederiction(t_token **token)
 		 {
 			tmp->next = create_redirection(*token);
 			tmp = tmp->next;
-			// tmp2 = (*token);
 			(*token) = (*token)->next;
-			// free(tmp2);
 		 	if ((*token) && ((*token)->type == TOKEN_ID || (*token)->type == TOKEN_STRING))
-			{
-				// tmp2 = (*token);
 				(*token) = (*token)->next;
-				// free(tmp2);
-			}
 		 }
 		 node->left = left;
 		 left = node;
