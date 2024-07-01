@@ -12,11 +12,11 @@
 
 #include "../minishell.h"
 
-char *concatenation(t_token *token, int *flaag)
+char	*concatenation(t_token *token, int *flaag)
 {
-	t_token *tmp;
-	t_token *next;
-	char 	*str;
+	t_token	*tmp;
+	t_token	*next;
+	char	*str;
 
 	tmp = token;
 	(*flaag) = 1;
@@ -28,7 +28,8 @@ char *concatenation(t_token *token, int *flaag)
 			if (tmp->helper_flag == 1)
 			{
 				next = tmp->next;
-				while (next && (next->type == TOKEN_ID || next->type == TOKEN_STRING))
+				while (next && (next->type == TOKEN_ID
+						|| next->type == TOKEN_STRING))
 				{
 					str = ft_strjoin2(tmp->value, next->value);
 					// free(tmp->value);
@@ -76,16 +77,16 @@ char	*ft_substr2(char const *s, unsigned int start, size_t len)
 	return (str);
 }
 
-char *expand_heredoc(char *line, char **env)
+char	*expand_heredoc(char *line, char **env)
 {
-	int i;
-	int j;
-	char *tmp;
-	char *before;
-	char *after;
+	int		i;
+	int		j;
+	char	*tmp;
+	char	*before;
+	char	*after;
 
 	i = 0;
-	while(line[i])
+	while (line[i])
 	{
 		if (line[i] == '$')
 		{
@@ -99,7 +100,7 @@ char *expand_heredoc(char *line, char **env)
 			// free(tmp);
 			// free(before);
 			// free(after);
-			break;
+			break ;
 		}
 		i++;
 	}
@@ -152,37 +153,35 @@ char	*ft_itoa2(int n)
 
 char	*random_string(void)
 {
-	char			*str;
-	static int		i;
+	char		*str;
+	static int	i;
 
 	str = ft_strjoin2("/tmp/heredoc", ft_itoa2(i++));
 	return (str);
 }
 
-int *retur_nvalue(void)
+int	*retur_nvalue(void)
 {
-	static int retur_n = -1;
-	
+	static int	retur_n = -1;
+
 	return (&retur_n);
 }
 
-void signal_handler5(int signum)
+void	signal_handler5(int signum)
 {
 	(void)signum;
 	*retur_nvalue() = dup(0);
 	close(0);
 }
 
-
 void	heredoc(t_token *token, char **env)
 {
-	int 	flaag;
-	char 	*str;
+	int		flaag;
+	char	*str;
 	char	*line;
 	char	*eof;
 	t_token	*tmp;
 	int		fd_f;
-
 
 	flaag = 0;
 	tmp = token;
@@ -201,8 +200,8 @@ void	heredoc(t_token *token, char **env)
 			ft_lstadd_back_free(&g_v->adress, init_free(line));
 			while (line)
 			{
-				if (ft_strncmp(line, eof, ft_strlen(eof)) == 0 && \
-					(ft_strlen(line) == ft_strlen(eof)))
+				if (ft_strncmp(line, eof, ft_strlen(eof)) == 0
+					&& (ft_strlen(line) == ft_strlen(eof)))
 					break ;
 				if (tmp->next->flag != 1 && tmp->next->flag != 0)
 				{

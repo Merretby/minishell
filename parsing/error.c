@@ -17,7 +17,6 @@ int	parss_command(t_token *token)
 	t_token	*tmp;
 
 	tmp = token;
-
 	signal(SIGINT, signal_handler);
 	if (tmp && tmp->type == TOKEN_PIPE)
 	{
@@ -28,49 +27,63 @@ int	parss_command(t_token *token)
 	{
 		if (tmp->type == TOKEN_PIPE && tmp->next == NULL)
 		{
-			ft_putendl_fd("minishell: syntax error near unexpected token '|'", 2);
+			ft_putendl_fd("minishell: syntax error near unexpected token '|'",
+				2);
 			return (0);
 		}
 		if (tmp->type == TOKEN_PIPE && tmp->next->type == TOKEN_PIPE)
 		{
-			ft_putendl_fd("minishell: syntax error near unexpected token '||'", 2);
+			ft_putendl_fd("minishell: syntax error near unexpected token '||'",
+				2);
 			return (0);
 		}
-		if ((tmp->type == TOKEN_REDIR_IN || tmp->type == TOKEN_REDIR_OUT ||\
-		 	tmp->type == TOKEN_HEREDOC || tmp->type == TOKEN_REDIR_APPEND) && tmp->next == NULL)
+		if ((tmp->type == TOKEN_REDIR_IN || tmp->type == TOKEN_REDIR_OUT
+				|| tmp->type == TOKEN_HEREDOC
+				|| tmp->type == TOKEN_REDIR_APPEND) && tmp->next == NULL)
 		{
-			ft_putendl_fd("minishell: syntax error near unexpected token 'newline'", 2);
+			ft_putendl_fd("minishell: syntax error near unexpected token 'newline'",
+				2);
 			return (0);
 		}
-		if ((tmp->type == TOKEN_REDIR_APPEND && tmp->next->type == TOKEN_REDIR_OUT) \
-			|| (tmp->type == TOKEN_REDIR_IN && tmp->next->type == TOKEN_REDIR_OUT) \
-			|| (tmp->type == TOKEN_REDIR_OUT && tmp->next->type == TOKEN_REDIR_OUT))
+		if ((tmp->type == TOKEN_REDIR_APPEND
+				&& tmp->next->type == TOKEN_REDIR_OUT)
+			|| (tmp->type == TOKEN_REDIR_IN
+				&& tmp->next->type == TOKEN_REDIR_OUT)
+			|| (tmp->type == TOKEN_REDIR_OUT
+				&& tmp->next->type == TOKEN_REDIR_OUT))
 		{
-			ft_putendl_fd("minishell: syntax error near unexpected token `>'", 2);
+			ft_putendl_fd("minishell: syntax error near unexpected token `>'",
+				2);
 			return (0);
 		}
-		if ((tmp->type == TOKEN_REDIR_OUT && tmp->next->type == TOKEN_REDIR_IN) \
-			|| (tmp->type == TOKEN_REDIR_IN && tmp->next->type == TOKEN_REDIR_IN))
+		if ((tmp->type == TOKEN_REDIR_OUT && tmp->next->type == TOKEN_REDIR_IN)
+			|| (tmp->type == TOKEN_REDIR_IN
+				&& tmp->next->type == TOKEN_REDIR_IN))
 		{
-			ft_putendl_fd("minishell: syntax error near unexpected token `<'", 2);
+			ft_putendl_fd("minishell: syntax error near unexpected token `<'",
+				2);
 			return (0);
 		}
 		if (tmp->type == TOKEN_HEREDOC && tmp->next->type == TOKEN_HEREDOC)
 		{
-			ft_putendl_fd("minishell: syntax error near unexpected token `<<'", 2);
+			ft_putendl_fd("minishell: syntax error near unexpected token `<<'",
+				2);
 			return (0);
 		}
-		if (tmp->type == TOKEN_REDIR_APPEND && tmp->next->type == TOKEN_REDIR_APPEND)
+		if (tmp->type == TOKEN_REDIR_APPEND
+			&& tmp->next->type == TOKEN_REDIR_APPEND)
 		{
-			ft_putendl_fd("minishell: syntax error near unexpected token `>>'", 2);
+			ft_putendl_fd("minishell: syntax error near unexpected token `>>'",
+				2);
 			return (0);
 		}
-		if (tmp->next && (tmp->type == TOKEN_REDIR_IN \
-			|| tmp->type == TOKEN_REDIR_OUT ||tmp->type == TOKEN_HEREDOC \
-			|| tmp->type == TOKEN_REDIR_APPEND)\
+		if (tmp->next && (tmp->type == TOKEN_REDIR_IN
+				|| tmp->type == TOKEN_REDIR_OUT || tmp->type == TOKEN_HEREDOC
+				|| tmp->type == TOKEN_REDIR_APPEND)
 			&& tmp->next->type == TOKEN_PIPE)
 		{
-			ft_putendl_fd("minishell: syntax error near unexpected token '|'", 2);
+			ft_putendl_fd("minishell: syntax error near unexpected token '|'",
+				2);
 			return (0);
 		}
 		if (tmp->type == TOKEN_ERROR)

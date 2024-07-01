@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/29 12:32:05 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/01 14:55:26 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void child(char **env1, t_node *tree, int *fd)
+void	child(char **env1, t_node *tree, int *fd)
 {
 	close(fd[0]);
 	dup2(fd[1], STDOUT_FILENO);
@@ -20,7 +20,7 @@ void child(char **env1, t_node *tree, int *fd)
 	ft_execution(tree->left, env1, 0);
 }
 
-void child2(char **env1, t_node *tree, int *fd)
+void	child2(char **env1, t_node *tree, int *fd)
 {
 	close(fd[1]);
 	dup2(fd[0], STDIN_FILENO);
@@ -28,9 +28,9 @@ void child2(char **env1, t_node *tree, int *fd)
 	ft_execution(tree->right, env1, 0);
 }
 
-int ft_strcmp(const char *s1, const char *s2)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (s1[i] && s2[i] && s1[i] == s2[i])
@@ -38,17 +38,17 @@ int ft_strcmp(const char *s1, const char *s2)
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
-int ft_check(t_node *tree)
+int	ft_check(t_node *tree)
 {
-    if (tree->type == PIPE)
-        return (1);
-    return (0);
+	if (tree->type == PIPE)
+		return (1);
+	return (0);
 }
 
 int	cherch_exit_status(char **args)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (args[i])
@@ -67,11 +67,11 @@ int	cherch_exit_status(char **args)
 
 void	expand_exit_status(char **args)
 {
-	int i;
-	int j;
-	char *after;
-	char *tmp;
-	char *tmp2;
+	int		i;
+	int		j;
+	char	*after;
+	char	*tmp;
+	char	*tmp2;
 
 	i = 0;
 	while (args[i])
@@ -96,7 +96,7 @@ void	expand_exit_status(char **args)
 	g_v->g_exit_code = 0;
 }
 
-void ft_wait(int status)
+void	ft_wait(int status)
 {
 	if (WIFEXITED(status))
 		g_v->g_exit_code = WEXITSTATUS(status);
@@ -104,13 +104,113 @@ void ft_wait(int status)
 		g_v->g_exit_code = WTERMSIG(status) + 114;
 }
 
-int ft_execution(t_node *tree, char **env1, int fork_flag)
+void	ft_dup(int copy_fd, int copy_fd2)
 {
+	dup2(copy_fd, STDIN_FILENO);
+	dup2(copy_fd2, STDOUT_FILENO);
+	close(copy_fd2);
+	close(copy_fd);
+}
+
+int	ft_tokenfile(int copy_fd, int copy_fd2, t_redir *redir)
+{
+	int	fd;
+
+	fd = open(redir->value, O_RDONLY, 0644);
+	if (fd == -1)
+	{
+		ft_dup(copy_fd, copy_fd2);
+		printf("minishell: %s: No such file or directory\n", redir->value);
+		g_v->g_exit_code = 1;
+		return (g_v->g_exit_code);
+	}
+	dup2(fd, STDIN_FILENO);
+	close(fd);
+	return (g_v->g_exit_code);
+}
+
+int	ft_tokenoutfile(int copy_fd, int copy_fd2, t_redir *redir)
+{
+	int	fd;
+
+	fd = open(redir->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
+	{
+		ft_dup(copy_fd, copy_fd2);
+		printf("minishell: %s: No such file or directory\n", redir->value);
+		g_v->g_exit_code = 1;
+		return (g_v->g_exit_code);
+	}
+	dup2(fd, STDOUT_FILENO);
+	close(fd);
+	return (g_v->g_exit_code);
+}
+
+int	token_redir_append(int copy_fd, int copy_fd2, t_redir *redir)
+{
+	int	fd;
+
+	fd = open(redir->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd == -1)
+	{
+		ft_dup(copy_fd, copy_fd2);
+		printf("minishell: %s: No such file or directory\n", redir->value);
+		g_v->g_exit_code = 1;
+		return (g_v->g_exit_code);
+	}
+	dup2(fd, STDOUT_FILENO);
+	close(fd);
+	return (g_v->g_exit_code);
+}
+
+int	ft_redir(t_node *tree, char **env1)
+{
+	t_redir	*redir;
+	int		copy_fd;
+	int		copy_fd2;
+
+	redir = tree->data->red;
+	copy_fd = dup(STDIN_FILENO);
+	copy_fd2 = dup(STDOUT_FILENO);
+	while (redir)
+	{
+		if (redir->type == TOKEN_FILE)
+		{
+			g_v->g_exit_code = ft_tokenfile(copy_fd, copy_fd2, redir);
+			if (g_v->g_exit_code == 1)
+				return (g_v->g_exit_code);
+		}
+		if (redir->type == TOKEN_OUTFILE)
+		{
+			g_v->g_exit_code = ft_tokenoutfile(copy_fd, copy_fd2, redir);
+			if (g_v->g_exit_code == 1)
+				return (g_v->g_exit_code);
+		}
+		if (redir->type == TOKEN_REDIR_APPEND)
+		{
+			redir = redir->next;
+			g_v->g_exit_code = token_redir_append(copy_fd, copy_fd2, redir);
+			if (g_v->g_exit_code == 1)
+				return (g_v->g_exit_code);
+		}
+		redir = redir->next;
+	}
+	ft_execution(tree->left, env1, 1);
+	ft_dup(copy_fd, copy_fd2);
+	return (g_v->g_exit_code);
+}
+
+int	ft_execution(t_node *tree, char **env1, int fork_flag)
+{
+	t_node	*tmp;
+	int		status;
+	int		fd[2];
+	int		ip1;
+	int		ip2;
+
 	if (!tree)
 		return (g_v->g_exit_code);
-    t_node *tmp;
-
-    tmp = tree;
+	tmp = tree;
 	if (tree->type == CMD)
 	{
 		signal(SIGINT, signal_handler);
@@ -131,16 +231,10 @@ int ft_execution(t_node *tree, char **env1, int fork_flag)
 		else if (ft_strcmp(tree->data->cmd->args[0], "exit") == 0)
 			ft_exit(tree);
 		else
-		
 			g_v->g_exit_code = ft_execute(tree, env1, fork_flag);
 	}
 	if (tree->type == PIPE)
 	{
-		int status;
-		int fd[2];
-		int ip1;
-		int ip2;
-
 		ip1 = 0;
 		ip2 = 0;
 		if (pipe(fd) == -1)
@@ -149,6 +243,7 @@ int ft_execution(t_node *tree, char **env1, int fork_flag)
 		if (ip1 == -1)
 			perror("error in fork ip1");
 		signal(SIGINT, signal_handler_2);
+		signal(SIGQUIT, SIG_IGN);
 		if (ip1 == 0)
 		{
 			child(env1, tree, fd);
@@ -173,76 +268,7 @@ int ft_execution(t_node *tree, char **env1, int fork_flag)
 		signal(SIGINT, signal_handler);
 		return (g_v->g_exit_code);
 	}
-    if (tree->type ==  REDIR)
-    {
-        t_redir *redir;
-        int fd;
-        int copy_fd;
-		int fd2;
-		int copy_fd2;
-    
-        redir = tree->data->red;
-		copy_fd = dup(STDIN_FILENO);
-		copy_fd2 = dup(STDOUT_FILENO);
-	    while (redir)
-	    {
-			if(redir->type == TOKEN_FILE)
-			{
-				
-				fd = open(redir->value, O_RDONLY, 0644);
-				if (fd == -1)
-				{
-					dup2(copy_fd, STDIN_FILENO);	
-					dup2(copy_fd2, STDOUT_FILENO);
-					close(copy_fd2);
-					close(copy_fd);
-					printf("minishell: %s: No such file or directory\n", redir->value);
-					g_v->g_exit_code = 1;
-					return (g_v->g_exit_code);
-				}
-				dup2(fd, STDIN_FILENO);
-				close(fd);
-			}
-			if (redir->type == TOKEN_OUTFILE)
-			{
-				fd2 = open(redir->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-				if (fd2 == -1)
-				{
-					dup2(copy_fd, STDIN_FILENO);	
-					dup2(copy_fd2, STDOUT_FILENO);
-					close(copy_fd2);
-					close(copy_fd);					
-					printf("minishell: %s: No such file or directory\n", redir->value);
-					g_v->g_exit_code = 1;
-					return (g_v->g_exit_code);
-				}
-				dup2(fd2, STDOUT_FILENO);
-				close(fd2);
-			}
-			if (redir->type == TOKEN_REDIR_APPEND)
-			{
-				redir = redir->next;
-				fd2 = open(redir->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
-				if (fd2 == -1)
-				{
-					dup2(copy_fd, STDIN_FILENO);	
-					dup2(copy_fd2, STDOUT_FILENO);
-					close(copy_fd2);
-					close(copy_fd);
-					printf("minishell: %s: No such file or directory\n", redir->value);
-					g_v->g_exit_code = 1;
-					return (g_v->g_exit_code);
-				}
-				dup2(fd2, STDOUT_FILENO);
-				close(fd2);
-			}
-		    redir = redir->next;
-        }
-		ft_execution(tree->left, env1, 1);
-		dup2(copy_fd, STDIN_FILENO);	
-		dup2(copy_fd2, STDOUT_FILENO);
-		close(copy_fd2);
-		close(copy_fd);
-	}
+	if (tree->type == REDIR)
+		g_v->g_exit_code = ft_redir(tree, env1);
 	return (g_v->g_exit_code);
 }

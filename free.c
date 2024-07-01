@@ -54,7 +54,6 @@ void	ft_lstadd_back_free(t_free **lst, t_free *new)
 			ft_lstlast_free(*lst)->next = new;
 		}
 	}
-
 }
 
 void	ft_lstclear_free(t_free **lst)
@@ -75,9 +74,9 @@ void	ft_lstclear_free(t_free **lst)
 
 void	ft_free(t_token **token, t_lexer **lexer)
 {
-	// t_token	*head;
 	t_token	*tmp;
 
+	// t_token	*head;
 	while (*token)
 	{
 		tmp = *token;
@@ -90,7 +89,7 @@ void	ft_free(t_token **token, t_lexer **lexer)
 
 void	free_2d(char **str)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (str[i])

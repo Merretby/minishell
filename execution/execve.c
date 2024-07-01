@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execve.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 14:21:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/28 23:04:39 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/01 14:57:30 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,14 @@ void	ft_execute2(t_node *tree, char **env)
 {
 	char	*str;
 	char	**path;
-	char   *tmp;
+	char	*tmp;
 	int		i;
 
 	i = 0;
-
 	str = path_check(env);
 	if (str == NULL)
 		exit(127);
-	path = ft_split(str + 5, ':');
+	path = ft_split1(str + 5, ':');
 	while (path[i] && tree->data->cmd->args)
 	{
 		if (ft_strchr(tree->data->cmd->args[0], '/') == NULL)
@@ -85,20 +84,23 @@ void	ft_execute2(t_node *tree, char **env)
 	if (ft_strchr(tree->data->cmd->args[0], '/') == NULL)
 		case1(tmp, tree, env);
 }
-
-int	 ft_execute(t_node *tree,  char **env, int fork_flag)
+void	signal_quit(int sig)
 {
-	int ip1;
+	(void)sig;
+	printf("Quit (core dumped)\n");
+}
+
+int	ft_execute(t_node *tree, char **env, int fork_flag)
+{
+	int	ip1;
 	int	status;
 
-	signal(SIGINT, signal_handler_child);
-	signal(SIGQUIT, signal_handler_child);
+	signal(SIGINT, signal_handler_2);
+	signal(SIGQUIT, signal_quit);
 	if (fork_flag == 0)
 	{
-		signal(SIGINT, signal_handler_2);
-		signal(SIGQUIT, signal_handler_2);
 		ft_execute2(tree, env);
-		return g_v->g_exit_code;
+		return (g_v->g_exit_code);
 	}
 	else if (fork_flag == 1)
 	{
@@ -108,7 +110,7 @@ int	 ft_execute(t_node *tree,  char **env, int fork_flag)
 			signal(SIGINT, SIG_DFL);
 			signal(SIGQUIT, SIG_DFL);
 			ft_execute2(tree, env);
-			exit (127);
+			exit(127);
 		}
 		else
 		{
@@ -120,5 +122,6 @@ int	 ft_execute(t_node *tree,  char **env, int fork_flag)
 		}
 	}
 	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
 	return (g_v->g_exit_code);
 }

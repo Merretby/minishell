@@ -23,7 +23,7 @@ t_token	*ft_lstlast1(t_token *lst)
 
 void	ft_lstadd_back1(t_token **lst, t_token *new)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
 	if (lst != NULL && new != NULL)
 	{

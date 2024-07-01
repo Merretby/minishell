@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/29 13:57:15 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/07/01 14:51:47 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 t_g_var	*g_v;
 
-int check_syntax(char *str)
+int	check_syntax(char *str)
 {
-	char c;
-	int i;
+	char	c;
+	int		i;
 
 	i = 0;
 	while (str[i])
@@ -25,7 +25,7 @@ int check_syntax(char *str)
 		if (str[i] == '\'' || str[i] == '"')
 		{
 			c = str[i];
-			break;
+			break ;
 		}
 		i++;
 	}
@@ -68,9 +68,9 @@ void	*ft_calloc1(size_t nmemb, size_t size)
 }
 char	*ft_strdup1(const char *src)
 {
-	size_t		i;
-	size_t		size;
-	char		*ls;
+	size_t	i;
+	size_t	size;
+	char	*ls;
 
 	i = 0;
 	size = 0;
@@ -82,7 +82,7 @@ char	*ft_strdup1(const char *src)
 		return (NULL);
 	while (src[i] != '\0')
 	{
-		ls[i] = (char )src[i];
+		ls[i] = (char)src[i];
 		i++;
 	}
 	ls[i] = '\0';
@@ -97,17 +97,16 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	lexer = NULL;
-	token = NULL;
 	g_v = (t_g_var *)malloc(sizeof(t_g_var));
 	g_v->adress = NULL;
 	g_v->g_exit_code = 0;
 	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
 	str = readline("\033[0;32mminishell~$42 \033[0m");
-	// ft_lstadd_back_free(&g_v->adress, ft_lstnew_free(str));
 	while (str)
 	{
+		lexer = NULL;
+		token = NULL;
 		*retur_nvalue() = -1;
 		if (check_syntax(str))
 		{
@@ -118,11 +117,9 @@ int	main(int ac, char **av, char **env)
 		if (str[0] != '\0')
 			add_history(str);
 		free(str);
-		lexer = NULL;
-		token = NULL;
 		str = readline("\033[0;32mminishell~$42 \033[0m");
 		signal(SIGINT, signal_handler);
-		signal(SIGQUIT, signal_handler);
+		signal(SIGQUIT, SIG_IGN);
 	}
 	ft_lstclear_free(&g_v->adress);
 }
