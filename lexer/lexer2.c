@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 13:52:04 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 09:51:53 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/02 10:17:14 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ void	lexer_redirection_nor2(t_lexer **lexer, t_token **token)
 
 void	redirection2(t_lexer **lexer, t_token **token)
 {
-	
 	ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_REDIR_IN, "<",
 				(*lexer)->c)));
 	if ((*lexer)->c == ' ' || ((*lexer)->c >= 9 && (*lexer)->c <= 13))
@@ -135,7 +134,6 @@ void	lexer_redirection_nor(t_lexer **lexer, t_token **token)
 
 void	redirection(t_lexer **lexer, t_token **token)
 {
-
 	if ((*lexer)->c == '>')
 	{
 		ft_lstadd_back1(token, advance_token(*lexer, init_token(TOKEN_REDIR_OUT,

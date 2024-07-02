@@ -32,5 +32,5 @@ re: fclean all
 push :
 	@make fclean
 	@git add .
-	@git commit -m "norme fix expand"
+	@git commit -m "Too many functions in file"
 	@git push -f

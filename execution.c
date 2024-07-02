@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/07/02 10:03:49 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/02 10:35:17 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,15 +205,23 @@ int	ft_redir(t_node *tree, char **env1)
 	return (g_v->g_exit_code);
 }
 
-int	pipe_execution(t_node *tree, char **env1)
+void	pipe_fork(t_node *tree, char **env1, int ip2, int *fd)
+{
+	ip2 = fork();
+	if (ip2 == -1)
+		perror("error in fork ip2\n");
+	if (ip2 == 0)
+	{
+		child2(env1, tree, fd);
+		exit(g_v->g_exit_code);
+	}
+}
+
+int	pipe_execution(t_node *tree, char **env1, int ip1, int ip2)
 {
 	int	status;
 	int	fd[2];
-	int	ip1;
-	int	ip2;
 
-	ip1 = 0;
-	ip2 = 0;
 	if (pipe(fd) == -1)
 		exit(1);
 	ip1 = fork();
@@ -226,16 +234,7 @@ int	pipe_execution(t_node *tree, char **env1)
 		exit(g_v->g_exit_code);
 	}
 	if (ip1 != 0)
-	{
-		ip2 = fork();
-		if (ip2 == -1)
-			perror("error in fork ip2\n");
-		if (ip2 == 0)
-		{
-			child2(env1, tree, fd);
-			exit(g_v->g_exit_code);
-		}
-	}
+		pipe_fork(tree, env1, ip2, fd);
 	close(fd[0]);
 	close(fd[1]);
 	waitpid(ip1, &status, 0);
@@ -279,7 +278,7 @@ int	ft_execution(t_node *tree, char **env1, int fork_flag)
 	if (tree->type == CMD)
 		g_v->g_exit_code = cmd_execution(tree, env1, fork_flag);
 	if (tree->type == PIPE)
-		g_v->g_exit_code = pipe_execution(tree, env1);
+		g_v->g_exit_code = pipe_execution(tree, env1, 0, 0);
 	if (tree->type == REDIR)
 		g_v->g_exit_code = ft_redir(tree, env1);
 	return (g_v->g_exit_code);

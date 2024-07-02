@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 10:09:21 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/02 10:16:26 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ extern t_g_var		*g_v;
 
 typedef enum e_type
 {
-	TOKEN_ID,        // a-zA-Z0-9
-	TOKEN_STRING,    //"" ''
-	TOKEN_PIPE,      // |
-	TOKEN_REDIR_IN,  // <
-	TOKEN_REDIR_OUT, // >
-	TOKEN_REDIR_APPEND, // >>
-	TOKEN_HEREDOC,      // <<
+	TOKEN_ID,
+	TOKEN_STRING,
+	TOKEN_PIPE,
+	TOKEN_REDIR_IN,
+	TOKEN_REDIR_OUT,
+	TOKEN_REDIR_APPEND,
+	TOKEN_HEREDOC,
 	TOKEN_ERROR,
 	TOKEN_OUTFILE,
 	TOKEN_FILE,
