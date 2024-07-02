@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 17:32:13 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 11:02:26 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/02 15:34:17 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,10 @@ void	ft_last_back_red(t_redir **lst, t_redir *new)
 			new->next = NULL;
 		}
 	}
+}
+void	init_global(void)
+{
+	g_v = (t_g_var *)malloc(sizeof(t_g_var));
+	g_v->adress = NULL;
+	g_v->g_exit_code = 0;
 }
