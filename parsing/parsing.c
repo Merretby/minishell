@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/07/01 21:07:47 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/01 22:47:45 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,11 +247,12 @@ void     helper(t_token **token, char **env)
 	t_node	*tree;
 	char	**str;
 
+	g_v->g_flag = 0;
 	str = env;
 	if (*token == NULL)
 		return ;
 	signal(SIGINT, signal_handler);
-	heredoc(*token, str, 0); 
+	heredoc(*token, str); 
 	if (*retur_nvalue() == 10)
 		return ;
 	if (parss_command(*token) == 1)
@@ -261,8 +262,6 @@ void     helper(t_token **token, char **env)
 		take_args(*token);
 		tree = pipeline(token);
 		g_v->g_exit_code = ft_execution(tree, str, 1);
-		// free_tree(tree);
-		// print_tree(tree);
 	}
 	else 
 		g_v->g_exit_code = 2;

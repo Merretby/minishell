@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/01 21:08:00 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/01 22:47:52 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_free
 typedef struct g_var
 {
 	int				g_exit_code;
+	int				g_flag;
 	t_free			*adress;
 }					t_g_var;
 
@@ -200,8 +201,8 @@ void				helper(t_token **token, char **env);
 int					parss_command(t_token *token);
 
 // heredoc
-char				*concatenation(t_token *token, int *flaag);
-void				heredoc(t_token *token, char **env, int flaag);
+char				*concatenation(t_token *token);
+void				heredoc(t_token *token, char **env);
 char				*real_expand(char *line, char **env);
 
 // expand
