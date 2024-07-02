@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:44:50 by monachit          #+#    #+#             */
-/*   Updated: 2024/07/02 17:51:55 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/07/02 20:07:21 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	ft_pwd(t_node *tree, char *s)
 {
-
 	(void)tree;
 	printf("%s\n", s);
 	return (1);

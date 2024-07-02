@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 13:51:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/07/02 16:49:57 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/07/02 18:57:52 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	helper(t_token **token, char **env)
 	str = env;
 	if (*token == NULL)
 		return ;
-	signal(SIGINT, signal_handler);
 	heredoc(*token, str);
 	if (*retur_nvalue() == 10)
 		return ;

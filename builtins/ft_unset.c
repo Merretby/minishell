@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:20 by monachit          #+#    #+#             */
-/*   Updated: 2024/07/01 19:45:28 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/02 20:03:58 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ft_new_env(char *value, t_env **env)
 	tmp = *env;
 	while (tmp)
 	{
-		if (tmp && tmp->value && strcmp(value, ft_findenv(tmp->value)) == 0)
+		if (tmp && tmp->value && ft_strcmp(value, ft_findenv(tmp->value)) == 0)
 		{
 			tmp->value = NULL;
 		}

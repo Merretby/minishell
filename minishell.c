@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 16:49:58 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/07/02 19:42:47 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ int	main(int ac, char **av, char **env)
 			add_history(str);
 		str = readline("\033[0;32mminishell~$42 \033[0m");
 		ft_lstadd_back_free(&g_v->adress, init_free(str));
-		signal_norme();
 	}
 	ft_lstclear_free(&g_v->adress);
 }

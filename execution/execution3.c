@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 10:52:02 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 17:54:19 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/07/02 20:07:08 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	ft_execution(t_node *tree, char **env1, int fork_flag)
 	t_node	*tmp;
 	char	buffer[PATH_MAX];
 	char	buffer2[PATH_MAX];
-	
+
 	if (!tree)
 		return (g_v->g_exit_code);
 	tmp = tree;

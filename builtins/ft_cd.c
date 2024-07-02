@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:44:32 by monachit          #+#    #+#             */
-/*   Updated: 2024/07/02 16:02:54 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/07/02 20:02:58 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ void	change_env(char **env, char *buffer, char *oldpwd)
 	i = 0;
 	while (env[i])
 	{
-		if (ft_strncmp(env[i], "PWD", 3) == 0)
+		if (!ft_strcmp(env[i], "PWD"))
 		{
 			newpwd = ft_strjoin2("PWD=", buffer);
 			env[i] = newpwd;
 		}
-		if (ft_strncmp(env[i], "OLDPWD", 6) == 0)
+		if (!ft_strcmp(env[i], "OLDPWD"))
 		{
 			oldpwd1 = ft_strjoin2("OLDPWD=", oldpwd);
 			env[i] = oldpwd1;
@@ -66,7 +66,7 @@ int	ft_cd(t_node *node, char **env)
 	if (node->data->cmd->args[1] == NULL || ft_strncmp(node->data->cmd->args[1],
 			"~", 1) == 0)
 	{
-		g_v->g_exit_code = 1;
+		g_v->g_exit_code = 0;
 		chdir(getenv("HOME"));
 	}
 	else if (chdir(node->data->cmd->args[1]) == -1)
