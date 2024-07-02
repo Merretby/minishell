@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_libft2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 11:04:58 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 11:08:47 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/02 13:55:31 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,8 @@ char	*ft_itoa2(int n)
 
 int	*retur_nvalue(void)
 {
-	static int	retur_n;
+	static int	retur_n = -1;
 
-	retur_n = -1;
 	return (&retur_n);
 }
 

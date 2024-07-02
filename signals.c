@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 18:56:15 by mnachit           #+#    #+#             */
-/*   Updated: 2024/07/02 11:08:59 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/02 13:51:31 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	signal_heredoc(int signum)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	*retur_nvalue() = dup(0);
+	printf("hay== %d\n", *retur_nvalue());
 	close(0);
 }
 

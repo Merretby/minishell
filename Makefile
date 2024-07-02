@@ -8,8 +8,8 @@ CFILES = minishell.c lexer/token.c lexer/lexer.c lexer/lexer2.c \
     builtins/ft_unset.c builtins/ft_env.c builtins/ft_exit.c execution/execution.c \
 	execution/expand.c execution/execve.c signals.c builtins/ft_export2.c builtins/ft_unset2.c \
 	execution/expand2.c execution/expand3.c execution/execve2.c execution/execution2.c \
-	execution/execution3.c  mini_libft/mini_libft.c mini_libft/mini_libft2.c mini_libft/mini_split.c \
-	mini_libft/linkedlist.c 
+	execution/execution3.c  ini_libft/mini_libft.c ini_libft/mini_libft2.c ini_libft/mini_split.c \
+	ini_libft/linkedlist.c 
 
 RFLAGS = -lreadline
 OFILSE = $(CFILES:.c=.o)
