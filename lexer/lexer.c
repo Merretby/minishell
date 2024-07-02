@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 20:43:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/07/02 08:54:17 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/07/02 10:47:47 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,6 @@ char	*get_the_string(t_lexer *lexer, char c)
 	}
 	str[j] = '\0';
 	return (str);
-}
-
-int	ft_check_alnum(char c)
-{
-	if (c == '|' || c == '>' || c == '<' || c == '"' || c == '\0'
-		|| c == ' ' || (c >= 9 && c <= 13) || c == '\'' || c == ';' || c == '&')
-		return (0);
-	return (1);
 }
 
 char	*get_the_word(t_lexer *lexer)

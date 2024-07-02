@@ -6,13 +6,23 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/01 19:17:16 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/02 10:59:27 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 t_g_var	*g_v;
+
+void	signal_handler(int signum)
+{
+	if (signum == SIGINT)
+		ft_putstr_fd("\n", STDIN_FILENO);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	g_v->g_exit_code = 130;
+}
 
 int	check_syntax(char *str)
 {
@@ -48,44 +58,6 @@ void	main2(t_token **token, t_lexer **lexer, char **env, char *str)
 	*lexer = init_lexer(str);
 	lexer_to_next_token(lexer, token);
 	helper(token, env);
-}
-
-void	*ft_calloc1(size_t nmemb, size_t size)
-{
-	void	*str;
-	size_t	i;
-
-	i = -1;
-	if (size != 0 && nmemb > (i / size))
-		return (NULL);
-	str = malloc(nmemb * size);
-	if (!str)
-		return (NULL);
-	ft_bzero(str, (size * nmemb));
-	return (str);
-}
-
-char	*ft_strdup1(const char *src)
-{
-	size_t		i;
-	size_t		size;
-	char		*ls;
-
-	i = 0;
-	size = 0;
-	while (src[size] != '\0')
-		size++;
-	ls = malloc((size + 1) * sizeof(char));
-	ft_lstadd_back_free(&g_v->adress, init_free(ls));
-	if (!ls)
-		return (NULL);
-	while (src[i] != '\0')
-	{
-		ls[i] = (char )src[i];
-		i++;
-	}
-	ls[i] = '\0';
-	return (ls);
 }
 
 void	signal_norme(void)

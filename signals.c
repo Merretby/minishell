@@ -3,24 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 18:56:15 by mnachit           #+#    #+#             */
-/*   Updated: 2024/07/02 07:56:31 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/07/02 11:08:59 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	signal_handler(int signum)
-{
-	if (signum == SIGINT)
-		ft_putstr_fd("\n", STDIN_FILENO);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	g_v->g_exit_code = 130;
-}
 
 void	signal_handler_2(int signum)
 {

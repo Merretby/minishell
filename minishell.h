@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 07:56:50 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/07/02 11:41:18 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_free
 typedef struct g_var
 {
 	int				g_exit_code;
+	int				g_flag;
 	t_free			*adress;
 }					t_g_var;
 
@@ -43,13 +44,13 @@ extern t_g_var		*g_v;
 
 typedef enum e_type
 {
-	TOKEN_ID,        // a-zA-Z0-9
-	TOKEN_STRING,    //"" ''
-	TOKEN_PIPE,      // |
-	TOKEN_REDIR_IN,  // <
-	TOKEN_REDIR_OUT, // >
-	TOKEN_REDIR_APPEND, // >>
-	TOKEN_HEREDOC,      // <<
+	TOKEN_ID,
+	TOKEN_STRING,
+	TOKEN_PIPE,
+	TOKEN_REDIR_IN,
+	TOKEN_REDIR_OUT,
+	TOKEN_REDIR_APPEND,
+	TOKEN_HEREDOC,
 	TOKEN_ERROR,
 	TOKEN_OUTFILE,
 	TOKEN_FILE,
@@ -174,7 +175,6 @@ void				signal_handler(int signum);
 void				signal_handler_2(int signum);
 void				signal_handler_child(int signum);
 void				signal_heredoc(int signum);
-void				signal_quit(int sig);
 void				*ft_calloc1(size_t nmemb, size_t size);
 t_free				*init_free(void *content);
 char				*ft_strdup1(const char *src);
@@ -201,8 +201,8 @@ void				helper(t_token **token, char **env);
 int					parss_command(t_token *token);
 
 // heredoc
-char				*concatenation(t_token *token, int *flaag);
-void				heredoc(t_token *token, char **env, int flaag);
+char				*concatenation(t_token *token);
+void				heredoc(t_token *token, char **env);
 char				*real_expand(char *line, char **env);
 
 // expand
@@ -227,5 +227,68 @@ t_env				*initialize(t_env *env, char **env1);
 void				ft_lstadd_back2(t_env **lst, t_env *new);
 t_env				*ft_lstlast2(t_env *lst);
 t_env				*ft_lstnew2(char *value);
+void				signal_quit(int sig);
+int					ft_tokenfile(int copy_fd, int copy_fd2, t_redir *redir);
+int					ft_tokenoutfile(int copy_fd, int copy_fd2, t_redir *redir);
+int					token_redir_append(int copy_fd, int copy_fd2,
+						t_redir *redir);
+int					ft_redir2(int copy_fd, int copy_fd2, t_redir *redir);
+int					ft_redir(t_node *tree, char **env1);
+void				child(char **env1, t_node *tree, int *fd);
+void				child2(char **env1, t_node *tree, int *fd);
+int					ft_check(t_node *tree);
+int					cherch_exit_status(char **args);
+void				expand_exit_status(char **args);
+void				case1(char *tmp, t_node *tree, char **env);
+void				case2(t_node *tree, char **env);
+void				ft_dup(int copy_fd, int copy_fd2);
+char				*get_word(char *str);
+char				*remove_word(char *str);
+char				*join_char(char *str, char c);
+char				*get_value(char *str, char **env);
+int					check_doller(char *str);
+char				*change_tab(char *str);
+char				*remove_space(char *str);
+void				insert_after(t_token *node, char *value);
+char				*befor_str(char *value, int i, char **env);
+void				loop_value(t_token **loop_tmp, int k);
+void				lexer_append_nor2(t_lexer **lexer, t_token **token);
+void				redirection_append(t_lexer **lexer, t_token **token);
+void				lexer_redirection_nor2(t_lexer **lexer, t_token **token);
+void				redirection2(t_lexer **lexer, t_token **token);
+void				string(t_lexer **lexer, t_token **token);
+t_token				*ft_lstlast1(t_token *lst);
+void				ft_lstadd_back1(t_token **lst, t_token *new);
+t_redir				*ft_lstlast_red(t_redir *lst);
+void				ft_last_back_red(t_redir **lst, t_redir *new);
+int					ft_strcmp(const char *s1, const char *s2);
+char				*ft_strjoin2(char *s1, char *s2);
+void				*ft_calloc1(size_t nmemb, size_t size);
+char				*ft_strdup1(const char *src);
+char				*ft_substr2(char const *s, unsigned int start, size_t len);
+char				*ft_itoa2(int n);
+void				list_to_array(t_token *token);
+char				**ft_split1(char const *s, char c);
+void				signal_handler(int signum);
+int					ft_check_alnum(char c);
+t_token				*init_token(int type, char *value, char c);
+t_lexer				*init_lexer(char *content);
+void				concatenation_token2(t_token **token, t_token **next);
+void				concatenation_token(t_token *token);
+void				add_to_args(t_token *token, char *str);
+void				delete_node(t_token **head, t_token *node);
+void				take_args(t_token *token);
+char				*random_string(void);
+char				*end_of_file(t_token **tmp);
+char				*expand_heredoc(char *line, char **env);
+t_node				*rederiction(t_token **token);
+t_node				*new_pipe(t_token *token);
+t_node				*pipeline(t_token **token);
+void				redir2(t_token **token, t_node **left);
+void				redir3(t_redir **tmp, t_token **token);
+t_node				*rederiction(t_token **token);
+t_redir				*create_redirection(t_token *token);
+t_node				*new_redir(t_token *token);
+t_node				*new_node(t_token *token);
 
 #endif
