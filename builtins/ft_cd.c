@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:44:32 by monachit          #+#    #+#             */
-/*   Updated: 2024/07/02 18:04:43 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/02 20:10:25 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ void	change_env(char **env, char *buffer, char *oldpwd)
 	i = 0;
 	while (env[i])
 	{
-		if (ft_strncmp(env[i], "PWD", 3) == 0)
+		if (!ft_strcmp(env[i], "PWD"))
 		{
 			newpwd = ft_strjoin2("PWD=", buffer);
 			env[i] = newpwd;
 		}
-		if (ft_strncmp(env[i], "OLDPWD", 6) == 0)
+		if (!ft_strcmp(env[i], "OLDPWD"))
 		{
 			oldpwd1 = ft_strjoin2("OLDPWD=", oldpwd);
 			env[i] = oldpwd1;
