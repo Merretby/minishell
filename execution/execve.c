@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 14:21:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/01 15:12:53 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/02 10:09:50 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,20 +51,17 @@ char	*path_check(char **env)
 	return (env[i]);
 }
 
-void	ft_execute2(t_node *tree, char **env)
+void	ft_execute2(t_node *tree, char **env, int i)
 {
 	char	*str;
 	char	**path;
-	char   *tmp;
-	int		i;
-
-	i = 0;
+	char	*tmp;
 
 	str = path_check(env);
 	if (str == NULL)
 		exit(127);
 	path = ft_split1(str + 5, ':');
-	while (path[i] && tree->data->cmd->args)
+	while (path[++i] && tree->data->cmd->args)
 	{
 		if (ft_strchr(tree->data->cmd->args[0], '/') == NULL)
 		{
@@ -78,16 +75,25 @@ void	ft_execute2(t_node *tree, char **env)
 			case2(tree, env);
 			break ;
 		}
-		i++;
 	}
 	if (ft_strchr(tree->data->cmd->args[0], '/') == NULL)
 		case1(tmp, tree, env);
 }
 
-void	signal_quit(int sig)
+void	ft_execute_norme(t_node *tree, char **env)
 {
-	(void)sig;
-	printf("Quit (core dumped)\n");
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	ft_execute2(tree, env, -1);
+	exit(127);
+}
+
+void	ft_execute_norme2(int status)
+{
+	if (WIFEXITED(status))
+		g_v->g_exit_code = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		g_v->g_exit_code = WTERMSIG(status) + 128;
 }
 
 int	ft_execute(t_node *tree, char **env, int fork_flag)
@@ -99,26 +105,18 @@ int	ft_execute(t_node *tree, char **env, int fork_flag)
 	signal(SIGQUIT, signal_quit);
 	if (fork_flag == 0)
 	{
-		ft_execute2(tree, env);
+		ft_execute2(tree, env, -1);
 		return (g_v->g_exit_code);
 	}
 	else if (fork_flag == 1)
 	{
 		ip1 = fork();
 		if (ip1 == 0)
-		{
-			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_DFL);
-			ft_execute2(tree, env);
-			exit(127);
-		}
+			ft_execute_norme(tree, env);
 		else
 		{
 			wait(&status);
-			if (WIFEXITED(status))
-				g_v->g_exit_code = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
-				g_v->g_exit_code = WTERMSIG(status) + 128;
+			ft_execute_norme2(status);
 		}
 	}
 	signal(SIGINT, signal_handler);

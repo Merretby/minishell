@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/01 22:47:52 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/02 10:09:21 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,5 +227,6 @@ t_env				*initialize(t_env *env, char **env1);
 void				ft_lstadd_back2(t_env **lst, t_env *new);
 t_env				*ft_lstlast2(t_env *lst);
 t_env				*ft_lstnew2(char *value);
+void				signal_quit(int sig);
 
 #endif
