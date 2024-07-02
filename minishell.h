@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/01 14:29:49 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/07/02 07:56:50 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ typedef struct g_var
 }					t_g_var;
 
 extern t_g_var		*g_v;
-// extern int g_exit_code;
 
 typedef enum e_type
 {
@@ -49,7 +48,6 @@ typedef enum e_type
 	TOKEN_PIPE,      // |
 	TOKEN_REDIR_IN,  // <
 	TOKEN_REDIR_OUT, // >
-	// TOKEN_DOLLAR,       // $
 	TOKEN_REDIR_APPEND, // >>
 	TOKEN_HEREDOC,      // <<
 	TOKEN_ERROR,
@@ -156,7 +154,6 @@ char				*get_the_string(t_lexer *lexer, char c);
 t_token				*advance_token(t_lexer *lexer, t_token *token);
 void				skip_whitespace(t_lexer *lexer);
 void				advance(t_lexer *lexer);
-char				*defin(int c);
 
 // token
 void				lexer_to_next_token(t_lexer **lexer, t_token **token);
@@ -177,6 +174,7 @@ void				signal_handler(int signum);
 void				signal_handler_2(int signum);
 void				signal_handler_child(int signum);
 void				signal_heredoc(int signum);
+void				signal_quit(int sig);
 void				*ft_calloc1(size_t nmemb, size_t size);
 t_free				*init_free(void *content);
 char				*ft_strdup1(const char *src);
@@ -200,26 +198,24 @@ t_token				*init_token(int type, char *value, char c);
 
 // parsing
 void				helper(t_token **token, char **env);
-void				ft_free(t_token **token, t_lexer **lexer);
 int					parss_command(t_token *token);
 
 // heredoc
 char				*concatenation(t_token *token, int *flaag);
-void				heredoc(t_token *token, char **env);
+void				heredoc(t_token *token, char **env, int flaag);
 char				*real_expand(char *line, char **env);
 
 // expand
 char				*ft_strjoin2(char *s1, char *s2);
 char				*ft_substr2(char const *s, unsigned int start, size_t len);
 char				**ft_split1(char const *s, char c);
-void				expand(t_token **token, char **env);
+void				expand(t_token **token, char **env, int i);
 
 // free
 t_free				*init_free(void *content);
 void				ft_lstadd_back_free(t_free **lst, t_free *new);
 void				ft_lstclear_free(t_free **lst);
 void				delete_node(t_token **head, t_token *node);
-void				free_2d(char **str);
 void				ft_printexport(t_env *new);
 // norm
 

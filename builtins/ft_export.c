@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:10 by monachit          #+#    #+#             */
-/*   Updated: 2024/07/01 14:28:24 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/07/01 19:49:27 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	check_add(t_env **new, char *str)
 			return (1);
 		else
 		{
-			tmp = ft_strjoin(ft_substr(str, 0, i), "=");
-			str = ft_strjoin(tmp, str + i + 2);
+			tmp = ft_strjoin2(ft_substr2(str, 0, i), "=");
+			str = ft_strjoin2(tmp, str + i + 2);
 			ft_lstadd_back2(new, ft_lstnew2(str));
 			return (1);
 		}
@@ -91,6 +91,7 @@ char	**ft_export(t_node *node, char **env1)
 	t_env	*new;
 
 	new = malloc(sizeof(t_env));
+	ft_lstadd_back_free(&g_v->adress, init_free(new));
 	if (!new)
 		return (0);
 	new->next = NULL;

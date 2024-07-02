@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:00:56 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/29 14:12:33 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/01 21:15:48 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ char	*join_char(char *str, char c)
 	}
 	tmp[i] = c;
 	tmp[i + 1] = '\0';
-	// free(str);
 	return (tmp);
 }
 
@@ -158,15 +157,29 @@ char	*real_expand(char *line, char **env)
 			if (check_doller(line) == 1)
 				if (line[0] != '$' && line[0] != '\\' && !ft_isdigit(line[0]))
 					tmp2 = join_char(tmp2, line[0]);
-			// free(str);
 			i = -1;
 		}
 		i++;
 	}
 	if (line != NULL)
 		tmp2 = ft_strjoin2(tmp2, line);
-	// free(line);
 	return (tmp2);
+}
+
+char	*change_tab(char *str)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\t')
+			str[i] = ' ';
+		i++;
+	}
+	tmp = ft_strdup1(str);
+	return (tmp);
 }
 
 char	*remove_space(char *str)
@@ -177,34 +190,23 @@ char	*remove_space(char *str)
 
 	i = 0;
 	j = 0;
+	str = change_tab(str);
 	while (str[i])
-	{
-		if (str[i] == ' ')
+		if (str[i++] == ' ')
 			j++;
-		i++;
-	}
 	tmp = (char *)malloc(sizeof(char) * (i - j + 2));
 	ft_lstadd_back_free(&g_v->adress, init_free(tmp));
-	if (!tmp)
-		return (NULL);
 	i = 0;
 	j = 0;
 	while (str[i])
 	{
 		if (str[i] != ' ')
-		{
-			tmp[j] = str[i];
-			j++;
-		}
+			tmp[j++] = str[i];
 		if (str[i] == ' ' && str[i + 1] != ' ')
-		{
-			tmp[j] = str[i];
-			j++;
-		}
+			tmp[j++] = str[i];
 		i++;
 	}
 	tmp[j] = '\0';
-	// free(str);
 	return (tmp);
 }
 
@@ -222,21 +224,66 @@ void	insert_after(t_token *node, char *value)
 	node->next = new_node;
 }
 
-void	expand(t_token **token, char **env)
+char	*befor_str(char *value, int i, char	**env)
 {
-	int		i;
-	int		j;
-	char	**argument;
-	t_token	*tmp;
-	t_token	*helper;
 	char	*str;
 	char	*befor;
 	char	*after;
-	int		k;
-	t_token	*loop_tmp;
+	int		j;
 
 	j = 0;
-	k = 1;
+	befor = ft_substr2(value, j, i);
+	j = i;
+	after = ft_substr2(value, j, ft_strlen(value));
+	str = real_expand(after, env);
+	return (ft_strjoin2(befor, str));
+}
+
+void	loop_value(t_token **loop_tmp, int k)
+{
+	t_token	*helper;
+	char	**argument;
+
+	(*loop_tmp)->value = remove_space((*loop_tmp)->value);
+	if (ft_strchr((*loop_tmp)->value, ' ') != NULL)
+	{
+		helper = (*loop_tmp);
+		argument = ft_split1((*loop_tmp)->value, ' ');
+		while (argument[k])
+		{
+			insert_after((*loop_tmp), argument[k]);
+			(*loop_tmp) = (*loop_tmp)->next;
+			k++;
+		}
+		helper->value = argument[0];
+	}
+}
+
+void	handel_norme_expand(char **env, t_token **loop_tmp, int i)
+{
+	while ((*loop_tmp)->value[i] != '$' && (*loop_tmp)->value[i])
+		i++;
+	(*loop_tmp)->value = befor_str((*loop_tmp)->value, i, env);
+	if ((*loop_tmp)->flag != 1)
+		loop_value(loop_tmp, 1);
+}
+
+int	handel_norme_expand2(t_token **token, t_token **loop_tmp)
+{
+	t_token	*tmp;
+
+	tmp = (*loop_tmp);
+	(*loop_tmp) = (*loop_tmp)->next;
+	delete_node(token, tmp);
+	if (loop_tmp)
+		return (1);
+	return (0);
+}
+
+void	expand(t_token **token, char **env, int i)
+{
+	t_token	*loop_tmp;
+
 	loop_tmp = *token;
 	while (loop_tmp)
 	{
@@ -247,43 +294,10 @@ void	expand(t_token **token, char **env)
 			{
 				if (ft_isalnum(loop_tmp->value[i + 1]))
 				{
-					while (loop_tmp->value[i] != '$' && loop_tmp->value[i])
-						i++;
-					befor = ft_substr2(loop_tmp->value, j, i);
-					j = i;
-					after = ft_substr2(loop_tmp->value, j,
-							ft_strlen(loop_tmp->value));
-					str = real_expand(after, env);
-					// free(loop_tmp->value);
-					loop_tmp->value = ft_strjoin2(befor, str);
-					if (loop_tmp->flag != 1)
-					{
-						loop_tmp->value = remove_space(loop_tmp->value);
-						if (ft_strchr(loop_tmp->value, ' ') != NULL)
-						{
-							helper = loop_tmp;
-							argument = ft_split1(loop_tmp->value, ' ');
-							while (argument[k])
-							{
-								insert_after(loop_tmp, argument[k]);
-								loop_tmp = loop_tmp->next;
-								k++;
-							}
-							// free(helper->value);
-							helper->value = argument[0];
-						}
-					}
-					// free(str);
-					// free(befor);
-					// free(after);
+					handel_norme_expand(env, &loop_tmp, i);
 					if (loop_tmp->value[0] == '\0')
-					{
-						tmp = loop_tmp;
-						loop_tmp = loop_tmp->next;
-						delete_node(token, tmp);
-						if (loop_tmp)
+						if (handel_norme_expand2(token, &loop_tmp))
 							continue ;
-					}
 					break ;
 				}
 			}

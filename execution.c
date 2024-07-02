@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/07/01 14:55:26 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/07/02 08:48:49 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ void	expand_exit_status(char **args)
 	i = 0;
 	while (args[i])
 	{
-		j = 0;
-		while (args[i][j])
+		j = -1;
+		while (args[i][++j])
 		{
 			if (args[i][j] == '$' && args[i][j + 1] == '?')
 			{
@@ -86,10 +86,8 @@ void	expand_exit_status(char **args)
 				tmp2 = ft_itoa(g_v->g_exit_code);
 				args[i] = ft_strjoin2(tmp, tmp2);
 				args[i] = ft_strjoin2(args[i], after);
-				// free(tmp);
 				free(tmp2);
 			}
-			j++;
 		}
 		i++;
 	}
@@ -163,6 +161,30 @@ int	token_redir_append(int copy_fd, int copy_fd2, t_redir *redir)
 	return (g_v->g_exit_code);
 }
 
+int	ft_redir2(int copy_fd, int copy_fd2, t_redir *redir)
+{
+	if (redir->type == TOKEN_FILE)
+	{
+		g_v->g_exit_code = ft_tokenfile(copy_fd, copy_fd2, redir);
+		if (g_v->g_exit_code == 1)
+			return (g_v->g_exit_code);
+	}
+	if (redir->type == TOKEN_OUTFILE)
+	{
+		g_v->g_exit_code = ft_tokenoutfile(copy_fd, copy_fd2, redir);
+		if (g_v->g_exit_code == 1)
+			return (g_v->g_exit_code);
+	}
+	if (redir->type == TOKEN_REDIR_APPEND)
+	{
+		redir = redir->next;
+		g_v->g_exit_code = token_redir_append(copy_fd, copy_fd2, redir);
+		if (g_v->g_exit_code == 1)
+			return (g_v->g_exit_code);
+	}
+	return (g_v->g_exit_code);
+}
+
 int	ft_redir(t_node *tree, char **env1)
 {
 	t_redir	*redir;
@@ -174,25 +196,8 @@ int	ft_redir(t_node *tree, char **env1)
 	copy_fd2 = dup(STDOUT_FILENO);
 	while (redir)
 	{
-		if (redir->type == TOKEN_FILE)
-		{
-			g_v->g_exit_code = ft_tokenfile(copy_fd, copy_fd2, redir);
-			if (g_v->g_exit_code == 1)
-				return (g_v->g_exit_code);
-		}
-		if (redir->type == TOKEN_OUTFILE)
-		{
-			g_v->g_exit_code = ft_tokenoutfile(copy_fd, copy_fd2, redir);
-			if (g_v->g_exit_code == 1)
-				return (g_v->g_exit_code);
-		}
-		if (redir->type == TOKEN_REDIR_APPEND)
-		{
-			redir = redir->next;
-			g_v->g_exit_code = token_redir_append(copy_fd, copy_fd2, redir);
-			if (g_v->g_exit_code == 1)
-				return (g_v->g_exit_code);
-		}
+		if (ft_redir2(copy_fd, copy_fd2, redir) == 1)
+			return (g_v->g_exit_code);
 		redir = redir->next;
 	}
 	ft_execution(tree->left, env1, 1);
@@ -200,74 +205,81 @@ int	ft_redir(t_node *tree, char **env1)
 	return (g_v->g_exit_code);
 }
 
+int	pipe_execution(t_node *tree, char **env1)
+{
+	int	status;
+	int	fd[2];
+	int	ip1;
+	int	ip2;
+
+	ip1 = 0;
+	ip2 = 0;
+	if (pipe(fd) == -1)
+		exit(1);
+	ip1 = fork();
+	if (ip1 == -1)
+		perror("error in fork ip1");
+	signal(SIGINT, signal_handler_2);
+	if (ip1 == 0)
+	{
+		child(env1, tree, fd);
+		exit(g_v->g_exit_code);
+	}
+	if (ip1 != 0)
+	{
+		ip2 = fork();
+		if (ip2 == -1)
+			perror("error in fork ip2\n");
+		if (ip2 == 0)
+		{
+			child2(env1, tree, fd);
+			exit(g_v->g_exit_code);
+		}
+	}
+	close(fd[0]);
+	close(fd[1]);
+	waitpid(ip1, &status, 0);
+	waitpid(ip2, &status, 0);
+	ft_wait(status);
+	signal(SIGINT, signal_handler);
+	return (g_v->g_exit_code);
+}
+
+int	cmd_execution(t_node *tree, char **env1, int fork_flag)
+{
+	signal(SIGINT, signal_handler);
+	if (cherch_exit_status(tree->data->cmd->args))
+		expand_exit_status(tree->data->cmd->args);
+	if (ft_strcmp(tree->data->cmd->args[0], "pwd") == 0)
+		ft_pwd(tree);
+	else if (ft_strcmp(tree->data->cmd->args[0], "echo") == 0)
+		ft_echo(tree);
+	else if (ft_strcmp(tree->data->cmd->args[0], "cd") == 0)
+		ft_cd(tree, env1);
+	else if (ft_strcmp(tree->data->cmd->args[0], "export") == 0)
+		env1 = ft_export(tree, env1);
+	else if (ft_strcmp(tree->data->cmd->args[0], "unset") == 0)
+		env1 = ft_unset(tree, env1);
+	else if (ft_strcmp(tree->data->cmd->args[0], "env") == 0)
+		ft_env(env1);
+	else if (ft_strcmp(tree->data->cmd->args[0], "exit") == 0)
+		ft_exit(tree);
+	else
+		g_v->g_exit_code = ft_execute(tree, env1, fork_flag);
+	return (g_v->g_exit_code);
+}
+
 int	ft_execution(t_node *tree, char **env1, int fork_flag)
 {
 	t_node	*tmp;
-	int		status;
-	int		fd[2];
-	int		ip1;
-	int		ip2;
 
 	if (!tree)
 		return (g_v->g_exit_code);
 	tmp = tree;
 	if (tree->type == CMD)
-	{
-		signal(SIGINT, signal_handler);
-		if (cherch_exit_status(tree->data->cmd->args))
-			expand_exit_status(tree->data->cmd->args);
-		if (ft_strcmp(tree->data->cmd->args[0], "pwd") == 0)
-			ft_pwd(tree);
-		else if (ft_strcmp(tree->data->cmd->args[0], "echo") == 0)
-			ft_echo(tree);
-		else if (ft_strcmp(tree->data->cmd->args[0], "cd") == 0)
-			ft_cd(tree, env1);
-		else if (ft_strcmp(tree->data->cmd->args[0], "export") == 0)
-			env1 = ft_export(tree, env1);
-		else if (ft_strcmp(tree->data->cmd->args[0], "unset") == 0)
-			env1 = ft_unset(tree, env1);
-		else if (ft_strcmp(tree->data->cmd->args[0], "env") == 0)
-			ft_env(env1);
-		else if (ft_strcmp(tree->data->cmd->args[0], "exit") == 0)
-			ft_exit(tree);
-		else
-			g_v->g_exit_code = ft_execute(tree, env1, fork_flag);
-	}
+		g_v->g_exit_code = cmd_execution(tree, env1, fork_flag);
 	if (tree->type == PIPE)
-	{
-		ip1 = 0;
-		ip2 = 0;
-		if (pipe(fd) == -1)
-			exit(1);
-		ip1 = fork();
-		if (ip1 == -1)
-			perror("error in fork ip1");
-		signal(SIGINT, signal_handler_2);
-		signal(SIGQUIT, SIG_IGN);
-		if (ip1 == 0)
-		{
-			child(env1, tree, fd);
-			exit(g_v->g_exit_code);
-		}
-		if (ip1 != 0)
-		{
-			ip2 = fork();
-			if (ip2 == -1)
-				perror("error in fork ip2\n");
-			if (ip2 == 0)
-			{
-				child2(env1, tree, fd);
-				exit(g_v->g_exit_code);
-			}
-		}
-		close(fd[0]);
-		close(fd[1]);
-		waitpid(ip1, &status, 0);
-		waitpid(ip2, &status, 0);
-		ft_wait(status);
-		signal(SIGINT, signal_handler);
-		return (g_v->g_exit_code);
-	}
+		g_v->g_exit_code = pipe_execution(tree, env1);
 	if (tree->type == REDIR)
 		g_v->g_exit_code = ft_redir(tree, env1);
 	return (g_v->g_exit_code);

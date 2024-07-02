@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:44:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/29 12:25:00 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/06/30 16:24:05 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,9 @@ char	*concatenation(t_token *token, int *flaag)
 						|| next->type == TOKEN_STRING))
 				{
 					str = ft_strjoin2(tmp->value, next->value);
-					// free(tmp->value);
 					tmp->value = str;
 					tmp->helper_flag = tmp->next->helper_flag;
 					tmp->next = tmp->next->next;
-					// free(next->value);
-					// free(next);
 					next = tmp->next;
 					if (tmp->helper_flag == 0)
 						return (tmp->value);
@@ -97,9 +94,6 @@ char	*expand_heredoc(char *line, char **env)
 			after = ft_substr2(line, j, ft_strlen(line));
 			tmp = real_expand(after, env);
 			line = ft_strjoin2(before, tmp);
-			// free(tmp);
-			// free(before);
-			// free(after);
 			break ;
 		}
 		i++;
@@ -173,17 +167,23 @@ void	signal_handler5(int signum)
 	*retur_nvalue() = dup(0);
 	close(0);
 }
-
-void	heredoc(t_token *token, char **env)
+void	signal_heredoc_norme(void)
 {
-	int		flaag;
+	dup2(*retur_nvalue(), 0);
+	close(*retur_nvalue());
+	signal(SIGINT, signal_handler_4);
+	g_v->g_exit_code = 130;
+	*retur_nvalue() = 10;
+}
+
+void	heredoc(t_token *token, char **env, int flaag)
+{
 	char	*str;
 	char	*line;
 	char	*eof;
 	t_token	*tmp;
 	int		fd_f;
 
-	flaag = 0;
 	tmp = token;
 	while (tmp)
 	{
@@ -204,12 +204,9 @@ void	heredoc(t_token *token, char **env)
 					&& (ft_strlen(line) == ft_strlen(eof)))
 					break ;
 				if (tmp->next->flag != 1 && tmp->next->flag != 0)
-				{
 					if (ft_strchr(line, '$') != NULL && flaag == 0)
 						line = expand_heredoc(line, env);
-				}
 				ft_putendl_fd(line, fd_f);
-				// free (line);
 				line = readline("> ");
 				ft_lstadd_back_free(&g_v->adress, init_free(line));
 			}
@@ -217,16 +214,9 @@ void	heredoc(t_token *token, char **env)
 			tmp->type = TOKEN_REDIR_IN;
 			tmp->next->value = str;
 			tmp->next->type = TOKEN_FILE;
-			close(fd_f);
-			// free(eof);
 		}
 		if (*retur_nvalue() != -1)
-		{
-			dup2(*retur_nvalue(), 0);
-			close(*retur_nvalue());
-			signal(SIGINT, signal_handler_4);
-			*retur_nvalue() = 10;
-		}
+			signal_heredoc_norme();
 		tmp = tmp->next;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:20 by monachit          #+#    #+#             */
-/*   Updated: 2024/06/30 13:33:21 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/07/01 19:45:28 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ char	*ft_findenv(char *env)
 	while (env[i] && env[i] != '=')
 		i++;
 	key = malloc(sizeof(char) * i + 1);
+	ft_lstadd_back_free(&g_v->adress, init_free(key));
 	i = 0;
 	while (env[i] && env[i] != '=')
 	{
@@ -55,6 +56,7 @@ char	**ft_unset(t_node *node, char **env1)
 	i = 1;
 	j = 0;
 	env = malloc(sizeof(t_env));
+	ft_lstadd_back_free(&g_v->adress, init_free(env));
 	env->value = env1[0];
 	env->next = NULL;
 	env = initialize(env, env1);
@@ -63,7 +65,7 @@ char	**ft_unset(t_node *node, char **env1)
 		j = 0;
 		while (env1[j])
 		{
-			if (env1[j] && strcmp(node->data->cmd->args[i],
+			if (env1[j] && ft_strcmp(node->data->cmd->args[i],
 					ft_findenv(env1[j])) == 0)
 				ft_new_env(node->data->cmd->args[i], &env);
 			j++;

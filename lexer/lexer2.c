@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 13:52:04 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/28 16:50:59 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/02 08:59:05 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,10 +203,10 @@ void	lexer_to_next_token(t_lexer **lexer, t_token **token)
 		if ((*lexer)->c == ' ' || ((*lexer)->c >= 9 && (*lexer)->c <= 13))
 			skip_whitespace((*lexer));
 		else if ((*lexer)->c == '>' && (*lexer)->content[(*lexer)->i
-			+ 1] == '>')
+				+ 1] == '>')
 			redirection_append(&(*lexer), token);
 		else if ((*lexer)->c == '<' && (*lexer)->content[(*lexer)->i
-			+ 1] == '<')
+				+ 1] == '<')
 		{
 			ft_lstadd_back1(token, advance_token((*lexer),
 					init_token(TOKEN_HEREDOC, "<<", (*lexer)->c)));
