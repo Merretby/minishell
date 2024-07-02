@@ -6,37 +6,11 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 20:43:59 by mnachit           #+#    #+#             */
-/*   Updated: 2024/05/31 22:44:24 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/02 10:47:47 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-char	*defin(int c)
-{
-	switch (c)
-	{
-	case TOKEN_REDIR_OUT:
-		return ("REDIR_OUT");
-	case TOKEN_REDIR_IN:
-		return ("REDIR_IN");
-	case TOKEN_PIPE:
-		return ("PIPE");
-	case TOKEN_STRING:
-		return ("STRING");
-	case TOKEN_REDIR_APPEND:
-		return ("APPEND");
-	case TOKEN_HEREDOC:
-		return ("HEREDOC");
-	case TOKEN_OUTFILE:
-		return ("OUTFILE");
-	case TOKEN_FILE:
-		return ("FILE");
-	default:
-		return ("CMD");
-	}
-	return (NULL);
-}
 
 void	advance(t_lexer *lexer)
 {
@@ -74,6 +48,7 @@ char	*get_the_string(t_lexer *lexer, char c)
 		tmp.c = tmp.content[tmp.i++];
 	}
 	str = malloc(sizeof(char) * (j + 1));
+	ft_lstadd_back_free(&g_v->adress, init_free(str));
 	advance(lexer);
 	j = 0;
 	while (lexer->c != c && lexer->c != '\0')
@@ -83,15 +58,6 @@ char	*get_the_string(t_lexer *lexer, char c)
 	}
 	str[j] = '\0';
 	return (str);
-}
-
-int	ft_check_alnum(char c)
-{
-	// 3la 9bal had lcase ls -al ... 5asa t3ti ls / -al
-	if (c == '|' || c == '>' || c == '<' || c == '"' || c == '\0'
-		|| c == ' ' || (c >= 9 && c <= 13) || c == '\'' || c == ';' || c == '&')
-		return (0);
-	return (1);
 }
 
 char	*get_the_word(t_lexer *lexer)
@@ -109,6 +75,7 @@ char	*get_the_word(t_lexer *lexer)
 		tmp.c = tmp.content[tmp.i];
 	}
 	str = malloc(sizeof(char) * (j + 1));
+	ft_lstadd_back_free(&g_v->adress, init_free(str));
 	j = 0;
 	while (ft_check_alnum(lexer->c))
 	{

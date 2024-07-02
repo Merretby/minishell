@@ -1,18 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   linkedlist.c                                       :+:      :+:    :+:   */
+/*   ft_unset2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/03 17:32:13 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/06/02 17:45:35 by moer-ret         ###   ########.fr       */
+/*   Created: 2024/06/30 13:33:31 by mnachit           #+#    #+#             */
+/*   Updated: 2024/07/01 19:44:53 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-t_token	*ft_lstlast1(t_token *lst)
+t_env	*ft_lstnew2(char *value)
+{
+	t_env	*new;
+
+	new = malloc(sizeof(t_env));
+	ft_lstadd_back_free(&g_v->adress, init_free(new));
+	if (!new)
+		return (NULL);
+	new->value = value;
+	new->next = NULL;
+	return (new);
+}
+
+t_env	*ft_lstlast2(t_env *lst)
 {
 	if (!lst)
 		return (NULL);
@@ -21,23 +34,29 @@ t_token	*ft_lstlast1(t_token *lst)
 	return (lst);
 }
 
-void	ft_lstadd_back1(t_token **lst, t_token *new)
+void	ft_lstadd_back2(t_env **lst, t_env *new)
 {
-	t_token *tmp;
-
 	if (lst != NULL && new != NULL)
 	{
 		if (*lst == NULL)
 		{
 			*lst = new;
 			new->next = NULL;
-			new->prev = NULL;
 		}
 		else
-		{
-			tmp = ft_lstlast1(*lst);
-			ft_lstlast1(*lst)->next = new;
-			new->prev = tmp;
-		}
+			ft_lstlast2(*lst)->next = new;
 	}
+}
+
+t_env	*initialize(t_env *env, char **env1)
+{
+	int	i;
+
+	i = 1;
+	while (env1[i])
+	{
+		ft_lstadd_back2(&env, ft_lstnew2(env1[i]));
+		i++;
+	}
+	return (env);
 }

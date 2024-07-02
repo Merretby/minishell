@@ -6,128 +6,72 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:20 by monachit          #+#    #+#             */
-/*   Updated: 2024/05/31 17:38:01 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/01 19:45:28 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-
-t_env   *ft_lstnew2(char *value)
+char	*ft_findenv(char *env)
 {
-    t_env *new;
+	int		i;
+	char	*key;
 
-    new = malloc(sizeof(t_env));
-    if (!new)
-        return (NULL);
-    new->value = value;
-    new->next = NULL;
-    return (new);
-}
-
-t_env	*ft_lstlast2(t_env *lst)
-{
-	if (!lst)
-		return (NULL);
-	while (lst->next)
-		lst = lst->next;
-	return (lst);
-}
-
-void	ft_lstadd_back2(t_env **lst, t_env *new)
-{
-	if (lst != NULL && new != NULL)
+	i = 0;
+	while (env[i] && env[i] != '=')
+		i++;
+	key = malloc(sizeof(char) * i + 1);
+	ft_lstadd_back_free(&g_v->adress, init_free(key));
+	i = 0;
+	while (env[i] && env[i] != '=')
 	{
-		if (*lst == NULL)
+		key[i] = env[i];
+		i++;
+	}
+	key[i] = '\0';
+	return (key);
+}
+
+void	ft_new_env(char *value, t_env **env)
+{
+	t_env	*tmp;
+
+	tmp = *env;
+	while (tmp)
+	{
+		if (tmp && tmp->value && strcmp(value, ft_findenv(tmp->value)) == 0)
 		{
-			*lst = new;
-			new->next = NULL;
+			tmp->value = NULL;
 		}
-		else
-    		ft_lstlast2(*lst)->next = new;
+		tmp = tmp->next;
 	}
 }
 
-t_env *initialize(t_env *env, char **env1)
+char	**ft_unset(t_node *node, char **env1)
 {
-    int i;
+	t_env	*env;
+	int		i;
+	int		j;
 
-    i = 1;
-    while (env1[i])
-    {
-        ft_lstadd_back2(&env, ft_lstnew2(env1[i]));
-        i++;
-    }
-    return env;
-}
-
-char *ft_findEnv(char *env)
-{
-    int i = 0;
-    char *key;
-
-    while (env[i] != '=')
-        i++;
-    key = malloc(sizeof(char) * i + 1);
-    i = 0;
-    while (env[i] != '=')
-    {
-        key[i] = env[i];
-        i++;
-    }
-    key[i] = '\0';
-    return (key);
-}
-
-t_env *ft_New_env(char *value, t_env *env)
-{
-    t_env *tmp;
-    t_env *tmp2;
-    tmp = env;
-    while (tmp)
-    {
-        if (tmp->next && strcmp(value, ft_findEnv(tmp->next->value)) == 0)
-        {
-            tmp2 = tmp->next;
-            tmp->next = tmp->next->next;
-            free(tmp2);
-            return (env);
-        }
-        tmp = tmp->next;
-    }
-    return (env);
-}
-
-char **ft_unset(t_node *node, char **env1)
-{
-    t_env *env;
-    int     i = 1;
-    int     j = 0;
-    
-    env = malloc(sizeof(t_env));
-    env->value = env1[0];
-    env->next = NULL;
-    env = initialize(env, env1);
-    while (node->data->cmd->args[i])
-    {
-        j  = 0;
-        while(env1[j])
-        {
-            if (strcmp(node->data->cmd->args[i], ft_findEnv(env1[j])) == 0)
-                env = ft_New_env(node->data->cmd->args[i], env);
-            j++;
-        }
-        i++;
-    }
-    t_env *tmp = env;
-    i = 0;
-    while (tmp) {
-        env1[i++] = tmp->value;
-        t_env *to_free = tmp;
-        tmp = tmp->next;
-        free(to_free);
-    }
-    env1[i] = NULL;
-
-    return env1;
+	i = 1;
+	j = 0;
+	env = malloc(sizeof(t_env));
+	ft_lstadd_back_free(&g_v->adress, init_free(env));
+	env->value = env1[0];
+	env->next = NULL;
+	env = initialize(env, env1);
+	while (node->data->cmd->args[i])
+	{
+		j = 0;
+		while (env1[j])
+		{
+			if (env1[j] && ft_strcmp(node->data->cmd->args[i],
+					ft_findenv(env1[j])) == 0)
+				ft_new_env(node->data->cmd->args[i], &env);
+			j++;
+		}
+		i++;
+	}
+	env1 = ft_env1(env1, env);
+	return (env1);
 }
