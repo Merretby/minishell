@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 10:52:02 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 10:53:44 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/02 17:54:19 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,13 @@ int	pipe_execution(t_node *tree, char **env1, int ip1, int ip2)
 	return (g_v->g_exit_code);
 }
 
-int	cmd_execution(t_node *tree, char **env1, int fork_flag)
+int	cmd_execution(t_node *tree, char **env1, int fork_flag, char *s)
 {
 	signal(SIGINT, signal_handler);
 	if (cherch_exit_status(tree->data->cmd->args))
 		expand_exit_status(tree->data->cmd->args);
 	if (ft_strcmp(tree->data->cmd->args[0], "pwd") == 0)
-		ft_pwd(tree);
+		ft_pwd(tree, s);
 	else if (ft_strcmp(tree->data->cmd->args[0], "echo") == 0)
 		ft_echo(tree);
 	else if (ft_strcmp(tree->data->cmd->args[0], "cd") == 0)
@@ -78,6 +78,11 @@ int	cmd_execution(t_node *tree, char **env1, int fork_flag)
 		ft_env(env1);
 	else if (ft_strcmp(tree->data->cmd->args[0], "exit") == 0)
 		ft_exit(tree);
+	else if (ft_strcmp(tree->data->cmd->args[0], "/\0") == 0)
+	{
+		printf("minishell: %s: Is a directory \n", tree->data->cmd->args[0]);
+		g_v->g_exit_code = 126;
+	}
 	else
 		g_v->g_exit_code = ft_execute(tree, env1, fork_flag);
 	return (g_v->g_exit_code);
@@ -86,12 +91,21 @@ int	cmd_execution(t_node *tree, char **env1, int fork_flag)
 int	ft_execution(t_node *tree, char **env1, int fork_flag)
 {
 	t_node	*tmp;
-
+	char	buffer[PATH_MAX];
+	char	buffer2[PATH_MAX];
+	
 	if (!tree)
 		return (g_v->g_exit_code);
 	tmp = tree;
 	if (tree->type == CMD)
-		g_v->g_exit_code = cmd_execution(tree, env1, fork_flag);
+	{
+		getcwd(buffer, PATH_MAX);
+		if (!buffer[0])
+			ft_strcpy(buffer, buffer2);
+		else
+			getcwd(buffer2, PATH_MAX);
+		g_v->g_exit_code = cmd_execution(tree, env1, fork_flag, buffer);
+	}
 	if (tree->type == PIPE)
 		g_v->g_exit_code = pipe_execution(tree, env1, 0, 0);
 	if (tree->type == REDIR)

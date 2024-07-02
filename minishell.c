@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 10:59:27 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/02 16:49:58 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,10 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	g_v = (t_g_var *)malloc(sizeof(t_g_var));
-	g_v->adress = NULL;
-	g_v->g_exit_code = 0;
+	init_global();
 	signal_norme();
 	str = readline("\033[0;32mminishell~$42 \033[0m");
+	ft_lstadd_back_free(&g_v->adress, init_free(str));
 	while (str)
 	{
 		lexer = NULL;
@@ -88,8 +87,8 @@ int	main(int ac, char **av, char **env)
 			main2(&token, &lexer, env, str);
 		if (str[0] != '\0')
 			add_history(str);
-		free(str);
 		str = readline("\033[0;32mminishell~$42 \033[0m");
+		ft_lstadd_back_free(&g_v->adress, init_free(str));
 		signal_norme();
 	}
 	ft_lstclear_free(&g_v->adress);

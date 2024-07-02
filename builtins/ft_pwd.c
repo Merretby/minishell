@@ -3,21 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:44:50 by monachit          #+#    #+#             */
-/*   Updated: 2024/07/01 15:07:09 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/02 17:51:55 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_pwd(t_node *tree)
+int	ft_pwd(t_node *tree, char *s)
 {
-	char	buffer[PATH_MAX];
 
 	(void)tree;
-	getcwd(buffer, PATH_MAX);
-	printf("%s\n", buffer);
+	printf("%s\n", s);
 	return (1);
 }

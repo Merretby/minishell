@@ -6,11 +6,20 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:00:56 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 11:37:31 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/07/02 17:06:32 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	ft_check_mini(t_node *tree)
+{
+	if (!ft_strcmp(tree->data->cmd->args[0], "./minishell"))
+	{
+		signal(SIGINT, signal_handler_child);
+		signal(SIGQUIT, SIG_IGN);
+	}
+}
 
 char	*real_expand(char *line, char **env)
 {
