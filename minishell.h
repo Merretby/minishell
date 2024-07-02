@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 12:24:44 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/02 14:39:27 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,7 @@ t_redir				*ft_lstlast_red(t_redir *lst);
 void				ft_last_back_red(t_redir **lst, t_redir *new);
 void				list_to_array(t_token *token);
 t_env				*ft_lstlast2(t_env *lst);
+void				init_global(void);
 
 // signal
 int					*retur_nvalue(void);
@@ -176,7 +177,6 @@ void				signal_handler_2(int signum);
 void				signal_handler_child(int signum);
 void				signal_heredoc(int signum);
 void				signal_quit(int sig);
-
 
 // mini_libft
 char				**ft_split1(char const *s, char c);
@@ -192,7 +192,8 @@ int					ft_execution(t_node *tree, char **env1, int fork_flag);
 int					ft_execute(t_node *tree, char **env, int fork_flag);
 int					ft_tokenfile(int copy_fd, int copy_fd2, t_redir *redir);
 int					ft_tokenoutfile(int copy_fd, int copy_fd2, t_redir *redir);
-int					token_redir_append(int copy_fd, int copy_fd2, t_redir *redir);
+int					token_redir_append(int copy_fd, int copy_fd2,
+						t_redir *redir);
 int					ft_redir2(int copy_fd, int copy_fd2, t_redir *redir);
 int					ft_redir(t_node *tree, char **env1);
 void				child(char **env1, t_node *tree, int *fd);
@@ -234,7 +235,6 @@ void				redir2(t_token **token, t_node **left);
 void				redir3(t_redir **tmp, t_token **token);
 t_redir				*create_redirection(t_token *token);
 t_node				*new_redir(t_token *token);
-
 
 // heredoc
 char				*concatenation(t_token *token);

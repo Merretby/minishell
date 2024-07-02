@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:44:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 11:08:11 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/02 15:07:22 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	signal_handler5(int signum)
 {
 	(void)signum;
+	printf("signal_handler5\n");
 	*retur_nvalue() = dup(0);
 	close(0);
 }
@@ -74,7 +75,10 @@ void	heredoc(t_token *token, char **env)
 		if (tmp->type == TOKEN_HEREDOC)
 			heredoc2(&tmp, env);
 		if (*retur_nvalue() != -1)
+		{
 			signal_heredoc_norme();
+			return ;
+		}
 		tmp = tmp->next;
 	}
 }
