@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:44:32 by monachit          #+#    #+#             */
-/*   Updated: 2024/07/01 15:11:27 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/02 18:04:43 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,7 @@ int	ft_cd(t_node *node, char **env)
 	if (node->data->cmd->args[1] == NULL || ft_strncmp(node->data->cmd->args[1],
 			"~", 1) == 0)
 	{
-		printf("cd: HOME not set\n");
-		g_v->g_exit_code = 1;
+		g_v->g_exit_code = 0;
 		chdir(getenv("HOME"));
 	}
 	else if (chdir(node->data->cmd->args[1]) == -1)

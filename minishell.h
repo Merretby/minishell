@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 14:39:27 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/02 18:03:24 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,7 @@ void				signal_handler_2(int signum);
 void				signal_handler_child(int signum);
 void				signal_heredoc(int signum);
 void				signal_quit(int sig);
+void				ft_check_mini(t_node *tree);
 
 // mini_libft
 char				**ft_split1(char const *s, char c);
@@ -186,6 +187,7 @@ void				*ft_calloc1(size_t nmemb, size_t size);
 char				*ft_strdup1(const char *src);
 char				*ft_substr2(char const *s, unsigned int start, size_t len);
 char				*ft_itoa2(int n);
+char				*ft_strcpy(char *dest, char *src);
 
 // execution
 int					ft_execution(t_node *tree, char **env1, int fork_flag);
@@ -208,10 +210,10 @@ int					ft_cd(t_node *node, char **env);
 int					ft_echo(t_node *tree);
 void				take_env(char **env);
 int					ft_env(char **env);
-int					ft_exit(t_node *tree);
+int					ft_exit(t_node *tree, int fork_flag);
 char				**ft_export(t_node *tree, char **env1);
 void				ft_printexport(t_env *new);
-int					ft_pwd(t_node *tree);
+int					ft_pwd(t_node *tree, char *s);
 char				**ft_unset(t_node *node, char **env1);
 char				**ft_env1(char **env1, t_env *new);
 t_env				*initialize(t_env *env, char **env1);
