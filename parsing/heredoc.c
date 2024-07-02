@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:44:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 08:59:45 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/02 09:01:43 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,7 @@ char	*end_of_file(t_token **tmp)
 	return (eof);
 }
 
-void heredoc2(t_token **tmp, char **env)
+void	heredoc2(t_token **tmp, char **env)
 {
 	char	*line;
 	int		fd_f;
@@ -218,9 +218,9 @@ void heredoc2(t_token **tmp, char **env)
 	ft_lstadd_back_free(&g_v->adress, init_free(line));
 	while (line)
 	{
-		if (ft_strncmp(line, eof, ft_strlen(eof)) == 0 && \
-			(ft_strlen(line) == ft_strlen(eof)))
-				break ;
+		if (ft_strncmp(line, eof, ft_strlen(eof)) == 0 \
+			&& (ft_strlen(line) == ft_strlen(eof)))
+			break ;
 		if ((*tmp)->next->flag != 1 && (*tmp)->next->flag != 0)
 			if (ft_strchr(line, '$') != NULL && g_v->g_flag == 0)
 				line = expand_heredoc(line, env);
