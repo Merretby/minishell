@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:10 by monachit          #+#    #+#             */
-/*   Updated: 2024/07/01 19:49:27 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/04 18:16:03 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,27 @@ void	ft_inisialize_node(t_env **new, char **env1)
 
 int	check_error(char *s)
 {
-	if (!ft_isalpha(s[0]))
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	if (!ft_isalpha(s[0]) && s[0] != '_')
+		return (printf("minishell~$42: export: `%s': not a valid identifier\n",
+				s), 1);
+	while (s[i])
 	{
-		printf("minishell~$42: export: `%s': not a valid identifier\n", s);
-		return (1);
+		if ((s[i] == '=') || (s[i] == '+' && s[i + 1] && s[i + 1] == '='))
+			break ;
+		i++;
+	}
+	tmp = ft_substr2(s, 0, i);
+	i = 0;
+	while (tmp[i])
+	{
+		if (!ft_isalnum(tmp[i]) && tmp[i] != '_')
+			return (printf("minishell~$42: export: `%s': ",
+					s), printf("not a valid identifier\n"), free(tmp), 1);
+		i++;
 	}
 	return (0);
 }

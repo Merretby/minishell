@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/04 17:07:37 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/04 18:21:53 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ int					ft_tokenfile(int copy_fd, int copy_fd2, t_redir *redir);
 int					ft_tokenoutfile(int copy_fd, int copy_fd2, t_redir *redir);
 int					token_redir_append(int copy_fd, int copy_fd2,
 						t_redir *redir);
-int					ft_redir2(int copy_fd, int copy_fd2, t_redir *redir);
+int					ft_redir2(int copy_fd, int copy_fd2, t_redir **redir);
 int					ft_redir(t_node *tree, char **env1);
 void				child(char **env1, t_node *tree, int *fd);
 void				child2(char **env1, t_node *tree, int *fd);
