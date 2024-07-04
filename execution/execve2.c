@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 10:49:14 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/04 15:50:05 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/07/04 21:23:42 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	case1(char *tmp, t_node *tree, char **env)
 
 void	case2(t_node *tree, char **env)
 {
+	if (ft_strchr(tree->data->cmd->args[0], '/') == NULL)
+		exit(0);
 	if (access(tree->data->cmd->args[0], F_OK | X_OK) == 0)
 		execve(tree->data->cmd->args[0], tree->data->cmd->args, env);
 	else
