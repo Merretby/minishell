@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:00:56 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 19:53:18 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/07/04 15:50:27 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ void	expand(t_token **token, char **env, int i)
 				{
 					handel_norme_expand(env, &loop_tmp, i);
 					if (loop_tmp->value[0] == '\0')
-						if (handel_norme_expand2(token, &loop_tmp))
+						if (handel_norme_expand2(token, &loop_tmp) && \
+							(loop_tmp && loop_tmp->value != NULL))
 							continue ;
 					break ;
 				}

@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:44:32 by monachit          #+#    #+#             */
-/*   Updated: 2024/07/02 20:02:58 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/07/04 17:13:58 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ void	change_env(char **env, char *buffer, char *oldpwd)
 	{
 		if (!ft_strcmp(env[i], "PWD"))
 		{
-			newpwd = ft_strjoin2("PWD=", buffer);
+			newpwd = ft_strjoin("PWD=", buffer);
 			env[i] = newpwd;
 		}
 		if (!ft_strcmp(env[i], "OLDPWD"))
 		{
-			oldpwd1 = ft_strjoin2("OLDPWD=", oldpwd);
+			oldpwd1 = ft_strjoin("OLDPWD=", oldpwd);
 			env[i] = oldpwd1;
 		}
 		i++;
@@ -63,6 +63,14 @@ int	ft_cd(t_node *node, char **env)
 	char	buffer[PATH_MAX];
 
 	oldpwd = fined_pwd(env);
+	if (node->data->cmd->args[1] && node->data->cmd->args[2])
+	{
+		printf("cd: too many arguments\n");
+		g_v->g_exit_code = 1;
+		return (1);
+	}
+	if (!ft_strcmp(node->data->cmd->args[1], "\0"))
+		return (0);
 	if (node->data->cmd->args[1] == NULL || ft_strncmp(node->data->cmd->args[1],
 			"~", 1) == 0)
 	{

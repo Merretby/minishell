@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/07/02 12:25:25 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/04 15:44:09 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	token_redir_append(int copy_fd, int copy_fd2, t_redir *redir)
 {
 	int	fd;
 
-	fd = open(redir->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	fd = open(redir->value, O_WRONLY | O_CREAT | O_APPEND);
 	if (fd == -1)
 	{
 		ft_dup(copy_fd, copy_fd2);
@@ -63,24 +63,24 @@ int	token_redir_append(int copy_fd, int copy_fd2, t_redir *redir)
 	return (g_v->g_exit_code);
 }
 
-int	ft_redir2(int copy_fd, int copy_fd2, t_redir *redir)
+int	ft_redir2(int copy_fd, int copy_fd2, t_redir **redir)
 {
-	if (redir->type == TOKEN_FILE)
+	if ((*redir)->type == TOKEN_FILE)
 	{
-		g_v->g_exit_code = ft_tokenfile(copy_fd, copy_fd2, redir);
+		g_v->g_exit_code = ft_tokenfile(copy_fd, copy_fd2, *redir);
 		if (g_v->g_exit_code == 1)
 			return (g_v->g_exit_code);
 	}
-	if (redir->type == TOKEN_OUTFILE)
+	else if ((*redir)->type == TOKEN_OUTFILE)
 	{
-		g_v->g_exit_code = ft_tokenoutfile(copy_fd, copy_fd2, redir);
+		g_v->g_exit_code = ft_tokenoutfile(copy_fd, copy_fd2, *redir);
 		if (g_v->g_exit_code == 1)
 			return (g_v->g_exit_code);
 	}
-	if (redir->type == TOKEN_REDIR_APPEND)
+	else if ((*redir)->type == TOKEN_REDIR_APPEND)
 	{
-		redir = redir->next;
-		g_v->g_exit_code = token_redir_append(copy_fd, copy_fd2, redir);
+		*redir = (*redir)->next;
+		g_v->g_exit_code = token_redir_append(copy_fd, copy_fd2, *redir);
 		if (g_v->g_exit_code == 1)
 			return (g_v->g_exit_code);
 	}
@@ -98,7 +98,7 @@ int	ft_redir(t_node *tree, char **env1)
 	copy_fd2 = dup(STDOUT_FILENO);
 	while (redir)
 	{
-		if (ft_redir2(copy_fd, copy_fd2, redir) == 1)
+		if (ft_redir2(copy_fd, copy_fd2, &redir) == 1)
 			return (g_v->g_exit_code);
 		redir = redir->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 17:55:10 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/07/04 17:35:16 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,7 @@ void				signal_handler_2(int signum);
 void				signal_handler_child(int signum);
 void				signal_heredoc(int signum);
 void				signal_quit(int sig);
+void				ft_check_mini(t_node *tree);
 
 // mini_libft
 char				**ft_split1(char const *s, char c);
@@ -186,6 +187,7 @@ void				*ft_calloc1(size_t nmemb, size_t size);
 char				*ft_strdup1(const char *src);
 char				*ft_substr2(char const *s, unsigned int start, size_t len);
 char				*ft_itoa2(int n);
+char				*ft_strcpy(char *dest, char *src);
 
 // execution
 int					ft_execution(t_node *tree, char **env1, int fork_flag);
@@ -194,7 +196,7 @@ int					ft_tokenfile(int copy_fd, int copy_fd2, t_redir *redir);
 int					ft_tokenoutfile(int copy_fd, int copy_fd2, t_redir *redir);
 int					token_redir_append(int copy_fd, int copy_fd2,
 						t_redir *redir);
-int					ft_redir2(int copy_fd, int copy_fd2, t_redir *redir);
+int					ft_redir2(int copy_fd, int copy_fd2, t_redir **redir);
 int					ft_redir(t_node *tree, char **env1);
 void				child(char **env1, t_node *tree, int *fd);
 void				child2(char **env1, t_node *tree, int *fd);
@@ -208,7 +210,7 @@ int					ft_cd(t_node *node, char **env);
 int					ft_echo(t_node *tree);
 void				take_env(char **env);
 int					ft_env(char **env);
-int					ft_exit(t_node *tree);
+int					ft_exit(t_node *tree, int fork_flag);
 char				**ft_export(t_node *tree, char **env1);
 void				ft_printexport(t_env *new);
 int					ft_pwd(t_node *tree, char *s);
@@ -241,7 +243,6 @@ char				*concatenation(t_token *token);
 void				heredoc(t_token *token, char **env);
 char				*random_string(void);
 char				*end_of_file(t_token **tmp);
-void				ft_check_mini(t_node *tree);
 
 // expand
 void				expand(t_token **token, char **env, int i);
@@ -255,11 +256,10 @@ char				*join_char(char *str, char c);
 char				*get_value(char *str, char **env);
 int					check_doller(char *str);
 char				*change_tab(char *str);
-char				*remove_space(char *str);
+char				*remove_space(char *str, int i);
 void				insert_after(t_token *node, char *value);
 char				*befor_str(char *value, int i, char **env);
 void				loop_value(t_token **loop_tmp, int k);
-char				*ft_strcpy(char *dest, char *src);
 
 // free
 t_free				*init_free(void *content);

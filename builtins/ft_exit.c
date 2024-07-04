@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:54:32 by monachit          #+#    #+#             */
-/*   Updated: 2024/07/02 09:03:39 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/02 18:11:29 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_isdigit2(char *str)
 	return (0);
 }
 
-int	ft_exit2(t_node *node)
+int	ft_exit2(t_node *node, int fork_flag)
 {
 	int	nb2;
 	int	i;
@@ -42,34 +42,40 @@ int	ft_exit2(t_node *node)
 		nb2 = 256 + nb2;
 	if (nb2 > 256)
 		nb2 = nb2 % 256;
-	printf("exit\n");
+	if (fork_flag == 1)
+		printf("exit\n");
 	g_v->g_exit_code = nb2;
 	exit(nb2);
 }
 
-int	ft_exit(t_node *node)
+void	ft_exit_norme(t_node *node, int i, int fork_flag)
+{
+	if (fork_flag == 1)
+		printf("exit\n");
+	printf("minishell: exit: %s: numeric argument required\n",
+		node->data->cmd->args[i + 1]);
+	g_v->g_exit_code = 2;
+	exit(2);
+}
+
+int	ft_exit(t_node *node, int fork_flag)
 {
 	int	i;
 
 	i = 0;
 	if (!node->data->cmd->args[i + 1])
 	{
-		printf("exit\n");
+		if (fork_flag == 1)
+			printf("exit\n");
 		exit(g_v->g_exit_code);
 	}
 	if (node->data->cmd->args[i + 1])
 	{
 		if (!ft_isdigit2(node->data->cmd->args[i + 1]))
-		{
-			printf("minishell: exit: %s: numeric argument required\n",
-				node->data->cmd->args[i + 1]);
-			printf("exit\n");
-			g_v->g_exit_code = 0;
-			exit(0);
-		}
+			ft_exit_norme(node, i, fork_flag);
 		else
 		{
-			if (ft_exit2(node) == 1)
+			if (ft_exit2(node, fork_flag) == 1)
 				return (1);
 		}
 	}

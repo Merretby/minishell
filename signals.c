@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 18:56:15 by mnachit           #+#    #+#             */
-/*   Updated: 2024/07/02 19:53:39 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/07/04 13:22:45 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	signal_handler_2(int signum)
 {
 	(void)signum;
-	ft_putstr_fd("\n", 0);
+	ft_putstr_fd("\n", 1);
 	g_v->g_exit_code = 130;
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 10:52:02 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 20:07:08 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/07/02 20:12:53 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	cmd_execution(t_node *tree, char **env1, int fork_flag, char *s)
 	else if (ft_strcmp(tree->data->cmd->args[0], "env") == 0)
 		ft_env(env1);
 	else if (ft_strcmp(tree->data->cmd->args[0], "exit") == 0)
-		ft_exit(tree);
+		ft_exit(tree, fork_flag);
 	else if (ft_strcmp(tree->data->cmd->args[0], "/\0") == 0)
 	{
 		printf("minishell: %s: Is a directory \n", tree->data->cmd->args[0]);

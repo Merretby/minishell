@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 14:21:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 19:54:39 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/07/04 15:49:29 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ft_execute2(t_node *tree, char **env, int i)
 
 	str = path_check(env);
 	if (str == NULL)
-		exit(127);
+		case2(tree, env);
 	path = ft_split1(str + 5, ':');
 	while (path[++i] && tree->data->cmd->args)
 	{
