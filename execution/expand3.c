@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 10:54:53 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 10:56:37 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/04 17:07:25 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,20 @@ char	*change_tab(char *str)
 	return (tmp);
 }
 
-char	*remove_space(char *str)
+char	*remove_space(char *str, int i)
 {
-	int		i;
 	int		j;
 	char	*tmp;
 
-	i = 0;
 	j = 0;
 	str = change_tab(str);
 	while (str[i])
-		if (str[i++] == ' ')
+	{
+		if (str[i] == ' ' && str[i + 1] == ' ')
 			j++;
-	tmp = (char *)malloc(sizeof(char) * (i - j + 2));
+		i++;
+	}
+	tmp = (char *)malloc(sizeof(char) * (i - j + 1));
 	ft_lstadd_back_free(&g_v->adress, init_free(tmp));
 	i = 0;
 	j = 0;
@@ -90,7 +91,7 @@ void	loop_value(t_token **loop_tmp, int k)
 	t_token	*helper;
 	char	**argument;
 
-	(*loop_tmp)->value = remove_space((*loop_tmp)->value);
+	(*loop_tmp)->value = remove_space((*loop_tmp)->value, 0);
 	if (ft_strchr((*loop_tmp)->value, ' ') != NULL)
 	{
 		helper = (*loop_tmp);

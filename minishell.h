@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 18:03:24 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/04 17:07:37 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,7 +256,7 @@ char				*join_char(char *str, char c);
 char				*get_value(char *str, char **env);
 int					check_doller(char *str);
 char				*change_tab(char *str);
-char				*remove_space(char *str);
+char				*remove_space(char *str, int i);
 void				insert_after(t_token *node, char *value);
 char				*befor_str(char *value, int i, char **env);
 void				loop_value(t_token **loop_tmp, int k);
