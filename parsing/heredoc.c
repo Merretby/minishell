@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:44:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 15:07:22 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/04 15:46:43 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,10 @@ void	heredoc2(t_token **tmp, char **env)
 			&& (ft_strlen(line) == ft_strlen(eof)))
 			break ;
 		if ((*tmp)->next->flag != 1 && (*tmp)->next->flag != 0)
+		{
 			if (ft_strchr(line, '$') != NULL && g_v->g_flag == 0)
 				line = expand_heredoc(line, env);
+		}
 		ft_putendl_fd(line, fd_f);
 		line = readline("> ");
 		ft_lstadd_back_free(&g_v->adress, init_free(line));
