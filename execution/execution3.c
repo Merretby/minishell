@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 10:52:02 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/04 18:18:11 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/05 12:11:57 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	cmd_execution(t_node *tree, char **env1, int fork_flag, char *s)
 		ft_exit(tree, fork_flag);
 	else if (ft_strcmp(tree->data->cmd->args[0], "/\0") == 0)
 	{
-		printf("minishell: %s: Is a directory \n", tree->data->cmd->args[0]);
+		ft_putendl_fd("minishell: /: Is a directory", 2);
 		g_v->g_exit_code = 126;
 	}
 	else

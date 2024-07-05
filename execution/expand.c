@@ -6,20 +6,11 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:00:56 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/05 11:29:40 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/05 12:21:13 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	ft_check_mini(t_node *tree)
-{
-	if (!ft_strcmp(tree->data->cmd->args[0], "./minishell"))
-	{
-		signal(SIGINT, signal_handler_child);
-		signal(SIGQUIT, SIG_IGN);
-	}
-}
 
 char	*real_expand(char *line, char **env)
 {
@@ -70,6 +61,13 @@ int	handel_norme_expand2(t_token **token, t_token **loop_tmp)
 	return (0);
 }
 
+int	normeinet(t_token *loop_tmp, int i)
+{
+	if (ft_isalnum(loop_tmp->value[i + 1]) || loop_tmp->value[i + 1] == '_')
+		return (1);
+	return (0);
+}
+
 void	expand(t_token **token, char **env, int i)
 {
 	t_token	*loop_tmp;
@@ -82,7 +80,7 @@ void	expand(t_token **token, char **env, int i)
 		{
 			if (loop_tmp->value[i] == '$' && loop_tmp->flag != 0)
 			{
-				if (ft_isalnum(loop_tmp->value[i + 1]) || loop_tmp->value[i + 1] == '_')
+				if (normeinet(loop_tmp, i))
 				{
 					handel_norme_expand(env, &loop_tmp, i);
 					if (loop_tmp->value[0] == '\0')

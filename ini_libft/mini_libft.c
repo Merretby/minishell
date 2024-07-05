@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 10:40:59 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/05 10:26:04 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/05 12:13:12 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,10 +109,7 @@ char	*ft_substr2(char const *s, unsigned int start, size_t len)
 	if (!str)
 		return (NULL);
 	while (s[start] && i < len)
-	{
-		str[i++] = s[start];
-		start++;
-	}
+		str[i++] = s[start++];
 	str[i] = '\0';
 	return (str);
 }

@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:54:32 by monachit          #+#    #+#             */
-/*   Updated: 2024/07/04 18:15:41 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/05 11:58:37 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_exit2(t_node *node, int fork_flag)
 	i = 0;
 	if (node->data->cmd->args[i + 2])
 	{
-		printf("minishell: exit: too many arguments\n");
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (1);
 	}
 	nb2 = ft_atoi(node->data->cmd->args[i + 1]);
@@ -52,8 +52,9 @@ void	ft_exit_norme(t_node *node, int i, int fork_flag)
 {
 	if (fork_flag == 1)
 		printf("exit\n");
-	printf("minishell: exit: %s: numeric argument required\n",
-		node->data->cmd->args[i + 1]);
+	ft_putstr_fd("minishell: exit: ", 2);
+	ft_putstr_fd(node->data->cmd->args[i + 1], 2);
+	ft_putstr_fd(": numeric argument required\n", 2);
 	g_v->g_exit_code = 2;
 	exit(2);
 }

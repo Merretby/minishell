@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:27:57 by monachit          #+#    #+#             */
-/*   Updated: 2024/07/04 18:17:34 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/05 11:47:35 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ int	ft_tokenfile(int copy_fd, int copy_fd2, t_redir *redir)
 	if (fd == -1)
 	{
 		ft_dup(copy_fd, copy_fd2);
-		printf("minishell: %s: No such file or directory\n", redir->value);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(redir->value, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 		g_v->g_exit_code = 1;
 		return (g_v->g_exit_code);
 	}
@@ -37,7 +39,9 @@ int	ft_tokenoutfile(int copy_fd, int copy_fd2, t_redir *redir)
 	if (fd == -1)
 	{
 		ft_dup(copy_fd, copy_fd2);
-		printf("minishell: %s: No such file or directory\n", redir->value);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(redir->value, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 		g_v->g_exit_code = 1;
 		return (g_v->g_exit_code);
 	}
@@ -54,7 +58,9 @@ int	token_redir_append(int copy_fd, int copy_fd2, t_redir *redir)
 	if (fd == -1)
 	{
 		ft_dup(copy_fd, copy_fd2);
-		printf("minishell: %s: No such file or directory\n", redir->value);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(redir->value, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 		g_v->g_exit_code = 1;
 		return (g_v->g_exit_code);
 	}

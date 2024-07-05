@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:44:32 by monachit          #+#    #+#             */
-/*   Updated: 2024/07/05 10:08:17 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/05 12:44:23 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,22 +102,21 @@ int	ft_cd(t_node *node, char **env)
 
 	oldpwd = fined_pwd(env);
 	if (node->data->cmd->args[1] && node->data->cmd->args[2])
-		return (g_v->g_exit_code = 1, printf("cd: too many arguments\n"), 1);
+		return (g_v->g_exit_code = 1, ft_putstr_fd("cd: too many arguments\n",
+				2), 1);
 	if (!ft_strcmp(node->data->cmd->args[1], "\0"))
 		return (0);
 	if (node->data->cmd->args[1] == NULL || ft_strcmp(node->data->cmd->args[1],
 			"~") == 0)
 	{
 		g_v->g_exit_code = 0;
-		if (chdir(get_env(env, 5)) == -1)
-			return (g_v->g_exit_code = 1,
-				printf("minishell~$42: cd: HOME not set\n"), 1);
+		if (ft_check_cd(env) == 1)
+			return (g_v->g_exit_code = 1, 1);
 	}
 	else if (chdir(node->data->cmd->args[1]) == -1)
 	{
-		printf("cd: %s: No such file or directory\n", node->data->cmd->args[1]);
-		g_v->g_exit_code = 1;
-		return (1);
+		error_cd(node->data->cmd->args[1]);
+		return (g_v->g_exit_code = 1, 1);
 	}
 	getcwd(buffer, PATH_MAX);
 	change_env(env, buffer, oldpwd);

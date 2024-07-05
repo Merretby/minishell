@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/05 10:01:01 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/05 12:44:49 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,6 +220,9 @@ t_env				*initialize(t_env *env, char **env1);
 int					check_repetition2(t_env **new, char *value, int k);
 char				*check_value(char *value);
 int					check_repetition(t_env **env1, char *value);
+void				error_cd(char *str);
+void				ft_print_error_export(char *s);
+int					ft_check_cd(char **env);
 
 // parsing
 int					parss_command(t_token *token);

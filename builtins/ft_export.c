@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:10 by monachit          #+#    #+#             */
-/*   Updated: 2024/07/04 18:16:03 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/05 12:20:54 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,10 @@ int	check_error(char *s)
 
 	i = 0;
 	if (!ft_isalpha(s[0]) && s[0] != '_')
-		return (printf("minishell~$42: export: `%s': not a valid identifier\n",
-				s), 1);
+	{
+		ft_print_error_export(s);
+		return (1);
+	}
 	while (s[i])
 	{
 		if ((s[i] == '=') || (s[i] == '+' && s[i + 1] && s[i + 1] == '='))
@@ -73,8 +75,7 @@ int	check_error(char *s)
 	while (tmp[i])
 	{
 		if (!ft_isalnum(tmp[i]) && tmp[i] != '_')
-			return (printf("minishell~$42: export: `%s': ",
-					s), printf("not a valid identifier\n"), free(tmp), 1);
+			return (ft_print_error_export(s), 1);
 		i++;
 	}
 	return (0);
@@ -114,8 +115,7 @@ char	**ft_export(t_node *node, char **env1)
 	new->next = NULL;
 	new->value = NULL;
 	if (node->data->cmd->args[1] && node->data->cmd->args[1][0] == '=')
-		return (printf("minishell: export: `%s': not a valid identifier\n",
-				node->data->cmd->args[1]), env1);
+		return (ft_print_error_export(node->data->cmd->args[1]), env1);
 	ft_inisialize_node(&new, env1);
 	if (node->data->cmd->args[1] == NULL)
 	{
