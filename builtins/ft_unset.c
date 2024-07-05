@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 14:00:20 by monachit          #+#    #+#             */
-/*   Updated: 2024/07/02 20:07:48 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/05 09:58:36 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ char	**ft_unset(t_node *node, char **env1)
 
 	i = 1;
 	j = 0;
+	if (env1[0] == NULL)
+		return (env1);
 	env = malloc(sizeof(t_env));
 	ft_lstadd_back_free(&g_v->adress, init_free(env));
 	env->value = env1[0];
@@ -72,6 +74,5 @@ char	**ft_unset(t_node *node, char **env1)
 		}
 		i++;
 	}
-	env1 = ft_env1(env1, env);
-	return (env1);
+	return (env1 = ft_env1(env1, env), env1);
 }

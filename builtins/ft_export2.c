@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 13:23:23 by mnachit           #+#    #+#             */
-/*   Updated: 2024/07/01 19:48:10 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/05 09:36:18 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,20 @@ char	**ft_env1(char **env1, t_env *new)
 	int		i;
 	t_env	*to_free;
 
-	tmp = new->next;
+	tmp = new;
 	i = 0;
 	while (tmp)
 	{
-		env1[i++] = tmp->value;
+		if (tmp->value)
+		{
+			env1[i] = tmp->value;
+			i++;
+		}
 		to_free = tmp;
 		tmp = tmp->next;
 	}
 	env1[i] = NULL;
+	i = 0;
 	return (env1);
 }
 

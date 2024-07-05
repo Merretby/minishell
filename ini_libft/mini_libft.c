@@ -6,7 +6,7 @@
 /*   By: mnachit <mnachit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 10:40:59 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/04 18:27:27 by mnachit          ###   ########.fr       */
+/*   Updated: 2024/07/05 08:06:26 by mnachit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ char	*ft_substr2(char const *s, unsigned int start, size_t len)
 	size_t	i;
 
 	i = 0;
+	if (!s)
+		return (NULL);
 	if (start > ft_strlen(s))
 		return (ft_strdup1(""));
 	else if (ft_strlen(s + start) < len)
@@ -107,10 +109,7 @@ char	*ft_substr2(char const *s, unsigned int start, size_t len)
 	if (!str)
 		return (NULL);
 	while (s[start] && i < len)
-	{
-		str[i++] = s[start];
-		start++;
-	}
+		str[i++] = s[start++];
 	str[i] = '\0';
 	return (str);
 }
