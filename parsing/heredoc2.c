@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 11:06:29 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 11:07:07 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/05 10:02:23 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,27 +52,29 @@ char	*concatenation(t_token *token)
 	return (NULL);
 }
 
-char	*expand_heredoc(char *line, char **env)
+char	*expand_heredoc(char *line, char **env, int i, int j)
 {
-	int		i;
-	int		j;
 	char	*tmp;
 	char	*before;
 	char	*after;
 
-	i = 0;
 	while (line[i])
 	{
 		if (line[i] == '$')
 		{
-			while (line[i] && line[i] != '$')
-				i++;
-			before = ft_substr2(line, 0, i);
-			j = i;
-			after = ft_substr2(line, j, ft_strlen(line));
-			tmp = real_expand(after, env);
-			line = ft_strjoin2(before, tmp);
-			break ;
+			if (ft_isalnum(line[i + 1]))
+			{
+				while (line[i] && line[i] != '$')
+					i++;
+				before = ft_substr2(line, 0, i);
+				j = i;
+				after = ft_substr2(line, j, ft_strlen(line));
+				tmp = real_expand(after, env);
+				line = ft_strjoin2(before, tmp);
+				break ;
+			}
+			else if (line[i + 1] == '?')
+				line = ft_itoa2(g_v->g_exit_code);
 		}
 		i++;
 	}

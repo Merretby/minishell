@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/04 18:21:53 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/05 10:01:01 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,7 +249,7 @@ void				expand(t_token **token, char **env, int i);
 char				*real_expand(char *line, char **env);
 int					cherch_exit_status(char **args);
 void				expand_exit_status(char **args);
-char				*expand_heredoc(char *line, char **env);
+char				*expand_heredoc(char *line, char **env, int i, int j);
 char				*get_word(char *str);
 char				*remove_word(char *str);
 char				*join_char(char *str, char c);
