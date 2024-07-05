@@ -6,19 +6,11 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:44:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/05 10:00:53 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/05 10:36:45 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	signal_handler5(int signum)
-{
-	(void)signum;
-	printf("signal_handler5\n");
-	*retur_nvalue() = dup(0);
-	close(0);
-}
 
 void	signal_heredoc_norme(void)
 {

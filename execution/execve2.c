@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 10:49:14 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/05 09:54:23 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/05 10:41:42 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,18 @@ void	case1(char *tmp, t_node *tree, char **env)
 void	case2(t_node *tree, char **env)
 {
 	if (access(tree->data->cmd->args[0], F_OK | X_OK) == 0)
-		execve(tree->data->cmd->args[0], tree->data->cmd->args, env);
+	{
+		if (execve(tree->data->cmd->args[0], tree->data->cmd->args, env) == -1)
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(tree->data->cmd->args[0], 2);
+			ft_putstr_fd(" command not found\n", 2);
+			exit(127);
+		}
+	}
 	else
 	{
+		printf("hna\n");
 		write(2, "minishell: ", 11);
 		perror(tree->data->cmd->value);
 		exit(127);

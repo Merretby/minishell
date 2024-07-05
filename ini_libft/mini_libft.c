@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 10:40:59 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/04 18:30:32 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/05 10:26:04 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ char	*ft_substr2(char const *s, unsigned int start, size_t len)
 	size_t	i;
 
 	i = 0;
+	if (!s)
+		return (NULL);
 	if (start > ft_strlen(s))
 		return (ft_strdup1(""));
 	else if (ft_strlen(s + start) < len)
