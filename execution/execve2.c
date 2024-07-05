@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 10:49:14 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/05 10:41:42 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/05 11:16:26 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	case2(t_node *tree, char **env)
 	}
 	else
 	{
-		printf("hna\n");
 		write(2, "minishell: ", 11);
 		perror(tree->data->cmd->value);
 		exit(127);
