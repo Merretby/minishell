@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 18:56:15 by mnachit           #+#    #+#             */
-/*   Updated: 2024/07/02 20:16:44 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/05 11:49:04 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	signal_handler_2(int signum)
 {
 	(void)signum;
-	ft_putstr_fd("\n", 0);
+	ft_putstr_fd("\n", 1);
 	g_v->g_exit_code = 130;
 }
 
@@ -44,5 +44,5 @@ void	signal_handler_4(int signum)
 void	signal_quit(int sig)
 {
 	(void)sig;
-	printf("Quit (core dumped)\n");
+	ft_putstr_fd("Quit (core dumped)\n", 2);
 }

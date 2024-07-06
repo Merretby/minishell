@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:13:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 18:03:24 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/05 12:51:03 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ int					ft_tokenfile(int copy_fd, int copy_fd2, t_redir *redir);
 int					ft_tokenoutfile(int copy_fd, int copy_fd2, t_redir *redir);
 int					token_redir_append(int copy_fd, int copy_fd2,
 						t_redir *redir);
-int					ft_redir2(int copy_fd, int copy_fd2, t_redir *redir);
+int					ft_redir2(int copy_fd, int copy_fd2, t_redir **redir);
 int					ft_redir(t_node *tree, char **env1);
 void				child(char **env1, t_node *tree, int *fd);
 void				child2(char **env1, t_node *tree, int *fd);
@@ -220,6 +220,10 @@ t_env				*initialize(t_env *env, char **env1);
 int					check_repetition2(t_env **new, char *value, int k);
 char				*check_value(char *value);
 int					check_repetition(t_env **env1, char *value);
+void				error_cd(char *str);
+void				ft_print_error_export(char *s);
+int					ft_check_cd(char **env);
+char				*get_env(char **env, int len);
 
 // parsing
 int					parss_command(t_token *token);
@@ -249,14 +253,14 @@ void				expand(t_token **token, char **env, int i);
 char				*real_expand(char *line, char **env);
 int					cherch_exit_status(char **args);
 void				expand_exit_status(char **args);
-char				*expand_heredoc(char *line, char **env);
+char				*expand_heredoc(char *line, char **env, int i, int j);
 char				*get_word(char *str);
 char				*remove_word(char *str);
 char				*join_char(char *str, char c);
 char				*get_value(char *str, char **env);
 int					check_doller(char *str);
 char				*change_tab(char *str);
-char				*remove_space(char *str);
+char				*remove_space(char *str, int i);
 void				insert_after(t_token *node, char *value);
 char				*befor_str(char *value, int i, char **env);
 void				loop_value(t_token **loop_tmp, int k);

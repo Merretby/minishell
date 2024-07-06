@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 10:54:41 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 12:06:10 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/05 11:25:07 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ char	*get_word(char *str)
 	char	*tmp;
 
 	i = 0;
-	while (str[i] && ft_isalnum(str[i]))
+	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
 		i++;
 	tmp = (char *)malloc(sizeof(char) * (i + 1));
 	ft_lstadd_back_free(&g_v->adress, init_free(tmp));
 	if (!tmp)
 		return (NULL);
 	i = 0;
-	while (str[i] && ft_isalnum(str[i]))
+	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
 	{
 		tmp[i] = str[i];
 		i++;
@@ -42,7 +42,7 @@ char	*remove_word(char *str)
 
 	i = 0;
 	j = ft_strlen(str);
-	while (str[i] && ft_isalnum(str[i]))
+	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
 		i++;
 	tmp = (char *)malloc(sizeof(char) * (j - i + 1));
 	ft_lstadd_back_free(&g_v->adress, init_free(tmp));

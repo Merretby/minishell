@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:18:33 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 20:15:48 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/04 21:32:08 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,5 @@ int	main(int ac, char **av, char **env)
 		ft_lstadd_back_free(&g_v->adress, init_free(str));
 	}
 	ft_lstclear_free(&g_v->adress);
+	printf("exit\n");
 }

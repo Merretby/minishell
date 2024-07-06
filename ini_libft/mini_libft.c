@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 10:40:59 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/07/02 11:52:51 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/07/05 12:13:12 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	ft_strcmp(const char *s1, const char *s2)
 	int	i;
 
 	i = 0;
+	if (!s1 || !s2)
+		return (1);
 	while (s1[i] && s2[i] && s1[i] == s2[i])
 		i++;
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
@@ -90,6 +92,8 @@ char	*ft_substr2(char const *s, unsigned int start, size_t len)
 	size_t	i;
 
 	i = 0;
+	if (!s)
+		return (NULL);
 	if (start > ft_strlen(s))
 		return (ft_strdup1(""));
 	else if (ft_strlen(s + start) < len)
@@ -105,10 +109,7 @@ char	*ft_substr2(char const *s, unsigned int start, size_t len)
 	if (!str)
 		return (NULL);
 	while (s[start] && i < len)
-	{
-		str[i++] = s[start];
-		start++;
-	}
+		str[i++] = s[start++];
 	str[i] = '\0';
 	return (str);
 }
